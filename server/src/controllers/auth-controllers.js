@@ -40,7 +40,7 @@ export const registerController = async (req, res) => {
         const newUser = new User({ ...req.body, password: hash });
 
         await newUser.save();
-        const subject = 'JOB SEEKING - Xác thực tài khoản người dùng';
+        const subject = 'TimViecNhanh - Xác thực tài khoản người dùng';
         const token = generateVerifyEmailToken(newUser);
         const html = `<p>Hãy nhấn vào <a href="${process.env.BASE_URL}/api/v1/auth/verify?token=${token}"> liên kết</a> để xác thực tài khoản của bạn</p>
         <p>Thời gian hiệu lực trong vòng 24 giờ</p>`;
@@ -82,7 +82,7 @@ export const forgotPasswordController = async (req, res) => {
         if (!isEmailExist) return res.status(200).json({ code: 404, message: 'Email không tồn tại' });
         const userData = await User.findOne({ email: email });
         if (userData) {
-            const subject = 'JOB SEEKING - Đặt lại mật khẩu';
+            const subject = 'TimViecNhanh - Đặt lại mật khẩu';
             const token = generateResetPasswordToken(userData);
             const html = `<p>Xin chào ${userData.email}, Hãy nhấn vào <a href="${process.env.REACT_APP_BASE_URL}/reset-password">liên kết</a> này và  đặt lại mật khẩu của bạn</p>
             <p>Thời gian hiệu lực trong vòng 10 phút</p>`;
