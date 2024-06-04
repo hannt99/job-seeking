@@ -35,6 +35,10 @@ const UserSchema = new Schema(
             type: String,
             trim: true,
         },
+        companyAddress: {
+            type: String,
+            trim: true,
+        },
         companySize: {
             type: Number,
         },

@@ -3,31 +3,38 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+    --primary-color: #059669;
+    --primary-hover-color: #047857;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+html {
+    font-size: 62.5%;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    font-size: 1.6rem;
+    line-height: 1.5;
+    text-rendering: optimizeSpeed;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Pagination */
+.pagination {
+    width: fit-content;
+    background: #3a3a3a;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
+
+.pagination button {
+    margin-right: 0.5rem;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+.pagination button:disabled {
+    background-color: #333;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    cursor: not-allowed;
 }
