@@ -5,13 +5,28 @@ import axios from 'axios';
 import Link from 'next/link';
 
 const RegisterEmployer = () => {
+    const [allProvinces, setAllProvinces] = useState([]);
+    const [province, setProvince] = useState('');
+    const [allDistricts, setAllDistricts] = useState([]);
+
     useEffect(() => {
         const fetchProvinces = async () => {
-            const res = await axios.get('https://vapi.vnappmob.com/api/province');
-            console.log(res.data);
+            const res = await axios.get('https://esgoo.net/api-tinhthanh/1/0.htm');
+            setAllProvinces(res?.data?.data);
         };
         fetchProvinces();
     }, []);
+
+    useEffect(() => {
+        const fetchDistricts = async () => {
+            const jsonObject = new Function('return ' + province)();
+
+            const provinceId = jsonObject?.id;
+            const res = await axios.get(`https://esgoo.net/api-tinhthanh/2/${provinceId}.htm`);
+            setAllDistricts(res?.data?.data);
+        };
+        fetchDistricts();
+    }, [province]);
 
     return (
         <div className="relative grid grid-cols-1 xl:grid-cols-2 w-[360px] md:w-[690px] lg:w-[925px] xl:w-[1120px] z-50">
@@ -116,24 +131,36 @@ const RegisterEmployer = () => {
                             <label className="font-semibold text-[1.5rem]">
                                 Địa điểm làm việc<span className="text-[1.8rem] text-red-600">*</span>
                             </label>
-                            <select className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg">
-                                <option>-- Tỉnh/Thành phố --</option>
-                                <option>Tp.Hồ Chí Minh</option>
-                                <option>Hà Nội</option>
-                                <option>Long An</option>
-                                <option>Cà Mau</option>
-                                <option>Vĩnh Long</option>
+                            <select
+                                value={province}
+                                onChange={(e) => setProvince(e.target.value)}
+                                className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                            >
+                                <option value="">-- Tỉnh/Thành phố --</option>
+                                {allProvinces?.map((p, index) => {
+                                    return (
+                                        <option key={index} value={JSON.stringify({ id: p?.id, name: p?.full_name })}>
+                                            {p?.full_name}
+                                        </option>
+                                    );
+                                })}
                             </select>
                         </div>
                         <div className="space-y-4">
                             <label className="font-semibold text-[1.5rem]">Quận/huyện</label>
-                            <select className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg">
-                                <option>-- Quận/huyện --</option>
-                                <option>Quận 1</option>
-                                <option>Quận 2</option>
-                                <option>Quận 3</option>
-                                <option>Quận 4</option>
-                                <option>Quận 5</option>
+                            <select
+                                className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                    province ? '' : 'pointer-events-none opacity-70'
+                                }`}
+                            >
+                                <option value="">-- Quận/huyện --</option>
+                                {allDistricts?.map((d, index) => {
+                                    return (
+                                        <option key={index} value={d?.full_name}>
+                                            {d?.full_name}
+                                        </option>
+                                    );
+                                })}
                             </select>
                         </div>
                     </div>

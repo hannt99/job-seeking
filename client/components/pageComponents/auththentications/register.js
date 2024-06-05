@@ -1,15 +1,13 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import RegisterCandidate from './registerCandidate';
 import RegisterEmployer from './registerEmployer';
-import { useRouter } from 'next/navigation';
 
 const Register = () => {
-    const searchParams = useSearchParams();
-    const router = useRouter();
+    const pathname = usePathname();
 
-    return <>{searchParams.get('role') === 'candidate' ? <RegisterCandidate /> : <RegisterEmployer />}</>;
+    return <>{pathname?.includes('/register/employer') ? <RegisterEmployer /> : <RegisterCandidate />}</>;
 };
 
 export default Register;
