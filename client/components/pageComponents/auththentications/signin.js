@@ -29,7 +29,7 @@ const Signin = () => {
                     />
                 </div>
                 <Link
-                    href="#"
+                    href="/forgot-password"
                     className="block w-full text-[1.5rem] font-medium text-[#aaaaaa] text-right my-5 hover:text-[var(--primary-color)] transition-all"
                 >
                     Quên mật khẩu?
@@ -40,7 +40,7 @@ const Signin = () => {
                 <div className="space-x-5 text-center mt-7">
                     <span className="text-[#aaaaaa] text-[1.5rem]">Bạn chưa có tài khoản?</span>
                     <Link
-                        href="/register?k=auth&role=candidate"
+                        href="/register?role=candidate"
                         className="text-black font-medium hover:text-[var(--primary-color)] transition-all"
                     >
                         Đăng ký

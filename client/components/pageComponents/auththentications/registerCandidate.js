@@ -68,7 +68,7 @@ const RegisterCandidate = () => {
                 <div className="space-x-5 text-center mt-7">
                     <span className="text-[#aaaaaa] text-[1.5rem]">Bạn đã có tài khoản?</span>
                     <Link
-                        href="/signin?k=auth"
+                        href="/signin"
                         className="text-black font-medium hover:text-[var(--primary-color)] transition-all"
                     >
                         Đăng nhập

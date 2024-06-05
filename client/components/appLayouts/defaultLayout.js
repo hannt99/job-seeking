@@ -1,15 +1,29 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Header from '@/components/appLayouts/header';
 import Footer from '@/components/appLayouts/footer';
 
 const DefaultLayout = ({ main }) => {
-    const searchParams = useSearchParams();
+    const pathname = usePathname();
+
+    const checkPathname = () => {
+        if (pathname?.includes('/signin')) {
+            return true;
+        } else if (pathname?.includes('/register')) {
+            return true;
+        } else if (pathname?.includes('/forgot-password')) {
+            return true;
+        } else if (pathname?.includes('/reset-password')) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
     return (
         <>
-            {searchParams.get('k') === 'auth' ? (
+            {checkPathname() ? (
                 <div
                     className="relative flex w-full min-h-screen"
                     style={{
