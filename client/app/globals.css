@@ -17,6 +17,10 @@ body {
     text-rendering: optimizeSpeed;
 }
 
+.bg-multiply {
+    background: url('/assets/images/auth_bg.jpg') center / cover no-repeat;
+}
+
 /* Pagination */
 .pagination {
     width: fit-content;

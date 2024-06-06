@@ -35,24 +35,25 @@ const UserSchema = new Schema(
             trim: true,
             default: '',
         },
-        companyName: {
+        introduction: {
             type: String,
             trim: true,
             default: '',
+        },
+        companyName: {
+            type: String,
+            trim: true,
         },
         companyAddress: {
             type: String,
             trim: true,
-            default: '',
         },
         companySize: {
             type: Number,
-            default: 1,
         },
         position: {
             type: String,
             trim: true,
-            default: '',
         },
         avatar: {
             type: String,
@@ -64,7 +65,7 @@ const UserSchema = new Schema(
             default: false,
         },
         role: {
-            type: String,
+            type: Number,
             required: true,
             trim: true,
         },

@@ -11,6 +11,7 @@ import {
     numberValidator,
     dropListValidator,
 } from '@/utils/formValidation';
+import { success, error } from '@/utils/toastMessage';
 
 const RegisterEmployer = () => {
     const [fullName, setFullName] = useState('');
@@ -42,6 +43,8 @@ const RegisterEmployer = () => {
     const [provinceErrMsg, setProvinceErrMsg] = useState({});
     const [isProvinceErr, setIsProvinceErr] = useState(false);
     const [allDistricts, setAllDistricts] = useState([]);
+    const [district, setDistrict] = useState('');
+    const [isChecked, setIsChecked] = useState(false);
 
     const handleRegister = async () => {
         const isFullNameValid = fullNameValidator(fullName, setIsFullNameErr, setFullNameErrMsg);
@@ -67,9 +70,41 @@ const RegisterEmployer = () => {
             !isCompanyNameValid ||
             !isCompanySizeValid ||
             !isPositionValid ||
-            !isProvinceValid
+            !isProvinceValid ||
+            !isChecked
         )
             return;
+
+        const jsonObject = new Function('return ' + province)();
+        const provinceName = jsonObject?.name;
+
+        const data = {
+            email,
+            password,
+            fullName,
+            phone,
+            companyName,
+            companySize,
+            position,
+            companyAddress: `${district}, ${provinceName}`,
+            role: 0,
+        };
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, data);
+        if (res?.data?.code === 200) {
+            setFullName('');
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
+            setPhone('');
+            setCompanyName('');
+            setCompanySize('');
+            setPosition('');
+            setProvince('');
+            setDistrict('');
+            return success(res?.data?.message);
+        } else {
+            return error(res?.data?.message);
+        }
     };
 
     useEffect(() => {
@@ -271,10 +306,12 @@ const RegisterEmployer = () => {
                             <p className="text-red-600 text-[1.3rem]">{provinceErrMsg.province}</p>
                         </div>
                         <div className="space-y-4">
-                            <label className="block font-semibold text-[1.5rem] pb-0 md:pb-[3px]">Quận/huyện</label>
+                            <label className="block font-semibold text-[1.5rem] pb-0 md:pb-[4px]">Quận/huyện</label>
                             <select
+                                value={district}
+                                onChange={(e) => setDistrict(e.target.value)}
                                 className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
-                                    province ? '' : 'pointer-events-none opacity-70'
+                                    province ? '' : 'pointer-events-none opacity-60'
                                 }`}
                             >
                                 <option value="">-- Quận/huyện --</option>
@@ -290,7 +327,12 @@ const RegisterEmployer = () => {
                     </div>
                 </div>
                 <div className="flex items-start space-x-3 my-9">
-                    <input type="checkbox" className="accent-[var(--primary-color)] scale-125" />
+                    <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={(e) => setIsChecked(e.target.checked)}
+                        className="accent-[var(--primary-color)] scale-125"
+                    />
                     <label className="text-[1.5rem] leading-none">
                         Tôi đã đọc và đồng ý với{' '}
                         <Link href="#" className="text-[var(--primary-color)] font-medium">
@@ -305,7 +347,9 @@ const RegisterEmployer = () => {
                 </div>
                 <button
                     onClick={handleRegister}
-                    className="w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
+                    className={`w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all ${
+                        !isChecked ? 'pointer-events-none opacity-40' : ''
+                    }`}
                 >
                     Hoàn tất
                 </button>

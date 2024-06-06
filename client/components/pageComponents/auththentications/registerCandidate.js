@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import { fullNameValidator, emailValidator, passwordValidator } from '@/utils/formValidation';
+import { success, error } from '@/utils/toastMessage';
 
 const RegisterCandidate = () => {
     const [fullName, setFullName] = useState('');
@@ -18,6 +19,7 @@ const RegisterCandidate = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [confirmPasswordErrMsg, setConfirmPasswordErrMsg] = useState({});
     const [isConfirmPasswordErr, setIsConfirmPasswordErr] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
 
     const handleRegister = async () => {
         const isFullNameValid = fullNameValidator(fullName, setIsFullNameErr, setFullNameErrMsg);
@@ -30,13 +32,24 @@ const RegisterCandidate = () => {
             setConfirmPasswordErrMsg,
         );
 
-        if (!isFullNameValid || !isEmailValid || isPasswordValid || !isConfirmPasswordValid) return;
+        if (!isFullNameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isChecked) return;
 
         const data = {
             email,
             password,
             fullName,
+            role: 1,
         };
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, data);
+        if (res?.data?.code === 200) {
+            setFullName('');
+            setEmail('');
+            setPassword('');
+            setConfirmPassword('');
+            return success(res?.data?.message);
+        } else {
+            return error(res?.data?.message);
+        }
     };
 
     return (
@@ -118,7 +131,12 @@ const RegisterCandidate = () => {
                     <p className="text-red-600 text-[1.3rem]">{confirmPasswordErrMsg.confirmPassword}</p>
                 </div>
                 <div className="flex items-start space-x-3 my-9">
-                    <input type="checkbox" className="accent-[var(--primary-color)] scale-125" />
+                    <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={(e) => setIsChecked(e.target.checked)}
+                        className="accent-[var(--primary-color)] scale-125"
+                    />
                     <label className="text-[1.5rem] leading-none">
                         Tôi đã đọc và đồng ý với{' '}
                         <Link href="#" className="text-[var(--primary-color)] font-medium">
@@ -133,7 +151,9 @@ const RegisterCandidate = () => {
                 </div>
                 <button
                     onClick={handleRegister}
-                    className="w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
+                    className={`w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all ${
+                        !isChecked ? 'pointer-events-none opacity-40' : ''
+                    }`}
                 >
                     Đăng ký
                 </button>
