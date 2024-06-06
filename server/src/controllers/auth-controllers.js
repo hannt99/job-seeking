@@ -65,7 +65,7 @@ export const verifyController = async (req, res) => {
             await User.updateOne({ _id: user._id }, { $set: { isActived: true } });
 
             res.status(200).send(
-                `<h1 style="color:red;">Xác thực tài khoản thành công</h1><a href='#'>Chuyển đến trang đăng nhập</a>`,
+                `<h1 style="color:red;">Xác thực tài khoản thành công</h1><a href='${process.env.REACT_APP_BASE_URL}'>Chuyển đến trang đăng nhập</a>`,
             );
         });
     } catch (error) {

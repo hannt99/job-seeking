@@ -21,7 +21,8 @@ const RegisterCandidate = () => {
     const [isConfirmPasswordErr, setIsConfirmPasswordErr] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
 
-    const handleRegister = async () => {
+    const handleRegister = async (e) => {
+        e.preventDefault();
         const isFullNameValid = fullNameValidator(fullName, setIsFullNameErr, setFullNameErrMsg);
         const isEmailValid = emailValidator(email, setIsEmailErr, setEmailErrMsg);
         const isPasswordValid = passwordValidator(password, password, setIsPasswordErr, setPasswordErrMsg);
@@ -59,104 +60,106 @@ const RegisterCandidate = () => {
                     TimViecNhanh
                 </div>
                 <h1 className="font-semibold text-[2rem] my-7">Đăng ký</h1>
-                <div className="space-y-4">
-                    <label className="font-semibold text-[1.5rem]">
-                        Họ và tên<span className="text-[1.8rem] text-red-600">*</span>
-                    </label>
-                    <input
-                        type="text"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                        onBlur={() => fullNameValidator(fullName, setIsFullNameErr, setFullNameErrMsg)}
-                        placeholder="Han Nguyen"
-                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
-                            isFullNameErr ? 'border-red-600' : ''
+                <form>
+                    <div className="space-y-4">
+                        <label className="font-semibold text-[1.5rem]">
+                            Họ và tên<span className="text-[1.8rem] text-red-600">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                            onBlur={() => fullNameValidator(fullName, setIsFullNameErr, setFullNameErrMsg)}
+                            placeholder="Han Nguyen"
+                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                isFullNameErr ? 'border-red-600' : ''
+                            }`}
+                        />
+                        <p className="text-red-600 text-[1.3rem]">{fullNameErrMsg.fullName}</p>
+                    </div>
+                    <div className="space-y-4 mt-7">
+                        <label className="font-semibold text-[1.5rem]">
+                            Địa chỉ Email<span className="text-[1.8rem] text-red-600">*</span>
+                        </label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            onBlur={() => emailValidator(email, setIsEmailErr, setEmailErrMsg)}
+                            placeholder="name@example.com"
+                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                isEmailErr ? 'border-red-600' : ''
+                            }`}
+                        />
+                        <p className="text-red-600 text-[1.3rem]">{emailErrMsg.email}</p>
+                    </div>
+                    <div className="space-y-4 mt-7">
+                        <label className="font-semibold text-[1.5rem]">
+                            Mật khẩu<span className="text-[1.8rem] text-red-600">*</span>
+                        </label>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            onBlur={() => passwordValidator(password, password, setIsPasswordErr, setPasswordErrMsg)}
+                            placeholder="Mật khẩu"
+                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                isPasswordErr ? 'border-red-600' : ''
+                            }`}
+                        />
+                        <p className="text-red-600 text-[1.3rem]">{passwordErrMsg.password}</p>
+                    </div>
+                    <div className="space-y-4 mt-7">
+                        <label className="font-semibold text-[1.5rem]">
+                            Xác nhận mật khẩu<span className="text-[1.8rem] text-red-600">*</span>
+                        </label>
+                        <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            onBlur={() =>
+                                passwordValidator(
+                                    confirmPassword,
+                                    password,
+                                    setIsConfirmPasswordErr,
+                                    setConfirmPasswordErrMsg,
+                                )
+                            }
+                            placeholder="Xác nhận mật khẩu"
+                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                isConfirmPasswordErr ? 'border-red-600' : ''
+                            }`}
+                        />
+                        <p className="text-red-600 text-[1.3rem]">{confirmPasswordErrMsg.confirmPassword}</p>
+                    </div>
+                    <div className="flex items-start space-x-3 my-9">
+                        <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={(e) => setIsChecked(e.target.checked)}
+                            className="accent-[var(--primary-color)] scale-125"
+                        />
+                        <label className="text-[1.5rem] leading-none">
+                            Tôi đã đọc và đồng ý với{' '}
+                            <Link href="#" className="text-[var(--primary-color)] font-medium">
+                                Điều khoản dịch vụ
+                            </Link>{' '}
+                            và{' '}
+                            <Link href="#" className="text-[var(--primary-color)] font-medium">
+                                Chính sách bảo mật
+                            </Link>{' '}
+                            của TimViecNhanh
+                        </label>
+                    </div>
+                    <button
+                        onClick={handleRegister}
+                        className={`w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all ${
+                            !isChecked ? 'pointer-events-none opacity-40' : ''
                         }`}
-                    />
-                    <p className="text-red-600 text-[1.3rem]">{fullNameErrMsg.fullName}</p>
-                </div>
-                <div className="space-y-4 mt-7">
-                    <label className="font-semibold text-[1.5rem]">
-                        Địa chỉ Email<span className="text-[1.8rem] text-red-600">*</span>
-                    </label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        onBlur={() => emailValidator(email, setIsEmailErr, setEmailErrMsg)}
-                        placeholder="name@example.com"
-                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
-                            isEmailErr ? 'border-red-600' : ''
-                        }`}
-                    />
-                    <p className="text-red-600 text-[1.3rem]">{emailErrMsg.email}</p>
-                </div>
-                <div className="space-y-4 mt-7">
-                    <label className="font-semibold text-[1.5rem]">
-                        Mật khẩu<span className="text-[1.8rem] text-red-600">*</span>
-                    </label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        onBlur={() => passwordValidator(password, password, setIsPasswordErr, setPasswordErrMsg)}
-                        placeholder="Mật khẩu"
-                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
-                            isPasswordErr ? 'border-red-600' : ''
-                        }`}
-                    />
-                    <p className="text-red-600 text-[1.3rem]">{passwordErrMsg.password}</p>
-                </div>
-                <div className="space-y-4 mt-7">
-                    <label className="font-semibold text-[1.5rem]">
-                        Xác nhận mật khẩu<span className="text-[1.8rem] text-red-600">*</span>
-                    </label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        onBlur={() =>
-                            passwordValidator(
-                                confirmPassword,
-                                password,
-                                setIsConfirmPasswordErr,
-                                setConfirmPasswordErrMsg,
-                            )
-                        }
-                        placeholder="Xác nhận mật khẩu"
-                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
-                            isConfirmPasswordErr ? 'border-red-600' : ''
-                        }`}
-                    />
-                    <p className="text-red-600 text-[1.3rem]">{confirmPasswordErrMsg.confirmPassword}</p>
-                </div>
-                <div className="flex items-start space-x-3 my-9">
-                    <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={(e) => setIsChecked(e.target.checked)}
-                        className="accent-[var(--primary-color)] scale-125"
-                    />
-                    <label className="text-[1.5rem] leading-none">
-                        Tôi đã đọc và đồng ý với{' '}
-                        <Link href="#" className="text-[var(--primary-color)] font-medium">
-                            Điều khoản dịch vụ
-                        </Link>{' '}
-                        và{' '}
-                        <Link href="#" className="text-[var(--primary-color)] font-medium">
-                            Chính sách bảo mật
-                        </Link>{' '}
-                        của TimViecNhanh
-                    </label>
-                </div>
-                <button
-                    onClick={handleRegister}
-                    className={`w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all ${
-                        !isChecked ? 'pointer-events-none opacity-40' : ''
-                    }`}
-                >
-                    Đăng ký
-                </button>
+                    >
+                        Đăng ký
+                    </button>
+                </form>
                 <div className="space-x-5 text-center mt-7">
                     <span className="text-[#aaaaaa] text-[1.5rem]">Bạn đã có tài khoản?</span>
                     <Link
