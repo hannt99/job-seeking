@@ -5,6 +5,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import { fullNameValidator, emailValidator, passwordValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
+import Loading from '@/components/loading';
 
 const RegisterCandidate = () => {
     const [fullName, setFullName] = useState('');
@@ -20,6 +21,7 @@ const RegisterCandidate = () => {
     const [confirmPasswordErrMsg, setConfirmPasswordErrMsg] = useState({});
     const [isConfirmPasswordErr, setIsConfirmPasswordErr] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -34,7 +36,7 @@ const RegisterCandidate = () => {
         );
 
         if (!isFullNameValid || !isEmailValid || !isPasswordValid || !isConfirmPasswordValid || !isChecked) return;
-
+        setIsLoading(true);
         const data = {
             email,
             password,
@@ -47,8 +49,10 @@ const RegisterCandidate = () => {
             setEmail('');
             setPassword('');
             setConfirmPassword('');
+            setIsLoading(false);
             return success(res?.data?.message);
         } else {
+            setIsLoading(false);
             return error(res?.data?.message);
         }
     };
@@ -153,11 +157,12 @@ const RegisterCandidate = () => {
                     </div>
                     <button
                         onClick={handleRegister}
-                        className={`w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all ${
+                        className={`flex items-center justify-center gap-3 w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all ${
                             !isChecked ? 'pointer-events-none opacity-40' : ''
                         }`}
                     >
-                        Đăng ký
+                        {isLoading && <Loading />}
+                        <span>Đăng ký</span>
                     </button>
                 </form>
                 <div className="space-x-5 text-center mt-7">

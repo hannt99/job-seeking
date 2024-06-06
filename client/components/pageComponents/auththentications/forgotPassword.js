@@ -5,17 +5,20 @@ import axios from 'axios';
 import Link from 'next/link';
 import { emailValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
+import Loading from '@/components/loading';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [emailErrMsg, setEmailErrMsg] = useState({});
     const [isEmailErr, setIsEmailErr] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSendMail = async (e) => {
         e.preventDefault();
         const isEmailValid = emailValidator(email, setIsEmailErr, setEmailErrMsg);
 
         if (!isEmailValid) return;
+        setIsLoading(true);
         const data = {
             email,
         };
@@ -23,8 +26,10 @@ const ForgotPassword = () => {
         if (res?.data?.code === 200) {
             localStorage.setItem('resetToken', res?.data?.resetToken);
             setEmail('');
+            setIsLoading(false);
             return success(res?.data?.message);
         } else {
+            setIsLoading(false);
             return error(res?.data?.message);
         }
     };
@@ -58,9 +63,10 @@ const ForgotPassword = () => {
                     </div>
                     <button
                         onClick={handleSendMail}
-                        className="w-full bg-[var(--primary-color)] text-white font-medium py-3 mt-7 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
+                        className="flex items-center justify-center gap-3 w-full bg-[var(--primary-color)] text-white font-medium py-3 mt-7 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
                     >
-                        Gửi
+                        {isLoading && <Loading />}
+                        <span>Gửi</span>
                     </button>
                 </form>
                 <Link

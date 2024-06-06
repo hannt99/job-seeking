@@ -5,6 +5,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import { passwordValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
+import Loading from '@/components/loading';
 
 const ResetPassword = () => {
     const [password, setPassword] = useState('');
@@ -13,6 +14,7 @@ const ResetPassword = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [confirmPasswordErrMsg, setConfirmPasswordErrMsg] = useState({});
     const [isConfirmPasswordErr, setIsConfirmPasswordErr] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleResetPassword = async (e) => {
         e.preventDefault();
@@ -24,6 +26,7 @@ const ResetPassword = () => {
             setConfirmPasswordErrMsg,
         );
         if (!isPasswordValid || !isConfirmPasswordValid) return;
+        setIsLoading(true);
         const data = {
             token: localStorage.getItem('resetToken'),
             password,
@@ -33,8 +36,10 @@ const ResetPassword = () => {
             localStorage.removeItem('resetToken');
             setPassword('');
             setConfirmPassword('');
+            setIsLoading(false);
             return success(res?.data?.message);
         } else {
+            setIsLoading(false);
             return error(res?.data?.message);
         }
     };
@@ -88,9 +93,10 @@ const ResetPassword = () => {
                     </div>
                     <button
                         onClick={handleResetPassword}
-                        className="w-full bg-[var(--primary-color)] text-white font-medium py-3 mt-7 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
+                        className="flex items-center justify-center gap-3 w-full bg-[var(--primary-color)] text-white font-medium py-3 mt-7 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
                     >
-                        Đặt lại
+                        {isLoading && <Loading />}
+                        <span>Đặt lại</span>
                     </button>
                 </form>
                 <Link

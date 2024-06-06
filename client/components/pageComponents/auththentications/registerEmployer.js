@@ -12,6 +12,7 @@ import {
     dropListValidator,
 } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
+import Loading from '@/components/loading';
 
 const RegisterEmployer = () => {
     const [fullName, setFullName] = useState('');
@@ -45,6 +46,7 @@ const RegisterEmployer = () => {
     const [allDistricts, setAllDistricts] = useState([]);
     const [district, setDistrict] = useState('');
     const [isChecked, setIsChecked] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -76,6 +78,7 @@ const RegisterEmployer = () => {
         )
             return;
 
+        setIsLoading(true);
         const jsonObject = new Function('return ' + province)();
         const provinceName = jsonObject?.name;
 
@@ -102,8 +105,10 @@ const RegisterEmployer = () => {
             setPosition('');
             setProvince('');
             setDistrict('');
+            setIsLoading(false);
             return success(res?.data?.message);
         } else {
+            setIsLoading(false);
             return error(res?.data?.message);
         }
     };
@@ -356,11 +361,12 @@ const RegisterEmployer = () => {
                     </div>
                     <button
                         onClick={handleRegister}
-                        className={`w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all ${
+                        className={`flex items-center justify-center gap-3 w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all ${
                             !isChecked ? 'pointer-events-none opacity-40' : ''
                         }`}
                     >
-                        Hoàn tất
+                        {isLoading && <Loading />}
+                        <span>Hoàn tất</span>
                     </button>
                 </form>
                 <div className="space-x-5 text-center mt-7">

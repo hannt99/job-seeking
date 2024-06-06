@@ -6,6 +6,7 @@ import axios from 'axios';
 import { FaXmark } from 'react-icons/fa6';
 import { emailValidator, passwordValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
+import Loading from '@/components/loading';
 
 const Signin = () => {
     const [registerOpen, setRegisterOpen] = useState(false);
@@ -15,6 +16,7 @@ const Signin = () => {
     const [password, setPassword] = useState('');
     const [passwordErrMsg, setPasswordErrMsg] = useState({});
     const [isPasswordErr, setIsPasswordErr] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSignin = async (e) => {
         e.preventDefault();
@@ -26,12 +28,15 @@ const Signin = () => {
             email,
             password,
         };
+        setIsLoading(true);
         const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, data);
         if (res?.data?.code === 200) {
             setEmail('');
             setPassword('');
+            setIsLoading(false);
             return success(res?.data?.message);
         } else {
+            setIsLoading(false);
             return error(res?.data?.message);
         }
     };
@@ -92,9 +97,10 @@ const Signin = () => {
                         </Link>
                         <button
                             onClick={handleSignin}
-                            className="w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
+                            className="flex items-center justify-center gap-3 w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
                         >
-                            Đăng nhập
+                            {isLoading && <Loading />}
+                            <span>Đăng nhập</span>
                         </button>
                     </form>
                     <div className="space-x-5 text-center mt-7">
