@@ -1,6 +1,44 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
+import { fullNameValidator, emailValidator, passwordValidator } from '@/utils/formValidation';
 
 const RegisterCandidate = () => {
+    const [fullName, setFullName] = useState('');
+    const [fullNameErrMsg, setFullNameErrMsg] = useState({});
+    const [isFullNameErr, setIsFullNameErr] = useState(false);
+    const [email, setEmail] = useState('');
+    const [emailErrMsg, setEmailErrMsg] = useState({});
+    const [isEmailErr, setIsEmailErr] = useState(false);
+    const [password, setPassword] = useState('');
+    const [passwordErrMsg, setPasswordErrMsg] = useState({});
+    const [isPasswordErr, setIsPasswordErr] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPasswordErrMsg, setConfirmPasswordErrMsg] = useState({});
+    const [isConfirmPasswordErr, setIsConfirmPasswordErr] = useState(false);
+
+    const handleRegister = async () => {
+        const isFullNameValid = fullNameValidator(fullName, setIsFullNameErr, setFullNameErrMsg);
+        const isEmailValid = emailValidator(email, setIsEmailErr, setEmailErrMsg);
+        const isPasswordValid = passwordValidator(password, password, setIsPasswordErr, setPasswordErrMsg);
+        const isConfirmPasswordValid = passwordValidator(
+            confirmPassword,
+            password,
+            setIsConfirmPasswordErr,
+            setConfirmPasswordErrMsg,
+        );
+
+        if (!isFullNameValid || !isEmailValid || isPasswordValid || !isConfirmPasswordValid) return;
+
+        const data = {
+            email,
+            password,
+            fullName,
+        };
+    };
+
     return (
         <div className="relative grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-[360px] md:w-[690px] lg:w-[925px] xl:w-[1120px] z-50">
             <div className="bg-white w-full h-fit px-9 py-8 rounded-lg">
@@ -14,9 +52,15 @@ const RegisterCandidate = () => {
                     </label>
                     <input
                         type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        onBlur={() => fullNameValidator(fullName, setIsFullNameErr, setFullNameErrMsg)}
                         placeholder="Han Nguyen"
-                        className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                            isFullNameErr ? 'border-red-600' : ''
+                        }`}
                     />
+                    <p className="text-red-600 text-[1.3rem]">{fullNameErrMsg.fullName}</p>
                 </div>
                 <div className="space-y-4 mt-7">
                     <label className="font-semibold text-[1.5rem]">
@@ -24,9 +68,15 @@ const RegisterCandidate = () => {
                     </label>
                     <input
                         type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        onBlur={() => emailValidator(email, setIsEmailErr, setEmailErrMsg)}
                         placeholder="name@example.com"
-                        className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                            isEmailErr ? 'border-red-600' : ''
+                        }`}
                     />
+                    <p className="text-red-600 text-[1.3rem]">{emailErrMsg.email}</p>
                 </div>
                 <div className="space-y-4 mt-7">
                     <label className="font-semibold text-[1.5rem]">
@@ -34,9 +84,15 @@ const RegisterCandidate = () => {
                     </label>
                     <input
                         type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        onBlur={() => passwordValidator(password, password, setIsPasswordErr, setPasswordErrMsg)}
                         placeholder="Mật khẩu"
-                        className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                            isPasswordErr ? 'border-red-600' : ''
+                        }`}
                     />
+                    <p className="text-red-600 text-[1.3rem]">{passwordErrMsg.password}</p>
                 </div>
                 <div className="space-y-4 mt-7">
                     <label className="font-semibold text-[1.5rem]">
@@ -44,9 +100,22 @@ const RegisterCandidate = () => {
                     </label>
                     <input
                         type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        onBlur={() =>
+                            passwordValidator(
+                                confirmPassword,
+                                password,
+                                setIsConfirmPasswordErr,
+                                setConfirmPasswordErrMsg,
+                            )
+                        }
                         placeholder="Xác nhận mật khẩu"
-                        className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                            isConfirmPasswordErr ? 'border-red-600' : ''
+                        }`}
                     />
+                    <p className="text-red-600 text-[1.3rem]">{confirmPasswordErrMsg.confirmPassword}</p>
                 </div>
                 <div className="flex items-start space-x-3 my-9">
                     <input type="checkbox" className="accent-[var(--primary-color)] scale-125" />
@@ -62,7 +131,10 @@ const RegisterCandidate = () => {
                         của TimViecNhanh
                     </label>
                 </div>
-                <button className="w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all">
+                <button
+                    onClick={handleRegister}
+                    className="w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
+                >
                     Đăng ký
                 </button>
                 <div className="space-x-5 text-center mt-7">

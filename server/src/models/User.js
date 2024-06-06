@@ -18,37 +18,46 @@ const UserSchema = new Schema(
         fullName: {
             type: String,
             trim: true,
+            default: '',
         },
         gender: {
             type: String,
             trim: true,
+            default: 'Nam',
         },
         birthDate: {
             type: String,
             trim: true,
+            default: '',
         },
         phoneNumber: {
             type: String,
             trim: true,
+            default: '',
         },
         companyName: {
             type: String,
             trim: true,
+            default: '',
         },
         companyAddress: {
             type: String,
             trim: true,
+            default: '',
         },
         companySize: {
             type: Number,
+            default: 1,
         },
         position: {
             type: String,
             trim: true,
+            default: '',
         },
         avatar: {
             type: String,
             trim: true,
+            default: '',
         },
         isActived: {
             type: Boolean,

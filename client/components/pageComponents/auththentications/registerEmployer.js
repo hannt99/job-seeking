@@ -3,11 +3,74 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import {
+    fullNameValidator,
+    emailValidator,
+    passwordValidator,
+    phoneValidator,
+    numberValidator,
+    dropListValidator,
+} from '@/utils/formValidation';
 
 const RegisterEmployer = () => {
+    const [fullName, setFullName] = useState('');
+    const [fullNameErrMsg, setFullNameErrMsg] = useState({});
+    const [isFullNameErr, setIsFullNameErr] = useState(false);
+    const [email, setEmail] = useState('');
+    const [emailErrMsg, setEmailErrMsg] = useState({});
+    const [isEmailErr, setIsEmailErr] = useState(false);
+    const [password, setPassword] = useState('');
+    const [passwordErrMsg, setPasswordErrMsg] = useState({});
+    const [isPasswordErr, setIsPasswordErr] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [confirmPasswordErrMsg, setConfirmPasswordErrMsg] = useState({});
+    const [isConfirmPasswordErr, setIsConfirmPasswordErr] = useState(false);
+    const [phone, setPhone] = useState('');
+    const [phoneErrMsg, setPhoneErrMsg] = useState({});
+    const [isPhoneErr, setIsPhoneErr] = useState(false);
+    const [companyName, setCompanyName] = useState('');
+    const [companyNameErrMsg, setCompanyNameErrMsg] = useState({});
+    const [isCompanyNameErr, setIsCompanyNameErr] = useState(false);
+    const [companySize, setCompanySize] = useState('');
+    const [companySizeErrMsg, setCompanySizeErrMsg] = useState({});
+    const [isCompanySizeErr, setIsCompanySizeErr] = useState(false);
+    const [position, setPosition] = useState('');
+    const [positionErrMsg, setPositionErrMsg] = useState({});
+    const [isPositionErr, setIsPositionErr] = useState(false);
     const [allProvinces, setAllProvinces] = useState([]);
     const [province, setProvince] = useState('');
+    const [provinceErrMsg, setProvinceErrMsg] = useState({});
+    const [isProvinceErr, setIsProvinceErr] = useState(false);
     const [allDistricts, setAllDistricts] = useState([]);
+
+    const handleRegister = async () => {
+        const isFullNameValid = fullNameValidator(fullName, setIsFullNameErr, setFullNameErrMsg);
+        const isEmailValid = emailValidator(email, setIsEmailErr, setEmailErrMsg);
+        const isPasswordValid = passwordValidator(password, password, setIsPasswordErr, setPasswordErrMsg);
+        const isConfirmPasswordValid = passwordValidator(
+            confirmPassword,
+            password,
+            setIsConfirmPasswordErr,
+            setConfirmPasswordErrMsg,
+        );
+        const isPhoneValid = phoneValidator(phone, setIsPhoneErr, setPhoneErrMsg);
+        const isCompanyNameValid = fullNameValidator(companyName, setIsCompanyNameErr, setCompanyNameErrMsg);
+        const isCompanySizeValid = numberValidator(companySize, setIsCompanySizeErr, setCompanySizeErrMsg);
+        const isPositionValid = dropListValidator(position, setIsPositionErr, setPositionErrMsg);
+        const isProvinceValid = dropListValidator(province, setIsProvinceErr, setProvinceErrMsg);
+        if (
+            !isEmailValid ||
+            !isPasswordValid ||
+            !isConfirmPasswordValid ||
+            !isFullNameValid ||
+            !isPhoneValid ||
+            !isCompanyNameValid ||
+            !isCompanySizeValid ||
+            !isPositionValid ||
+            !isProvinceValid
+        )
+            return;
+    };
 
     useEffect(() => {
         const fetchProvinces = async () => {
@@ -42,9 +105,15 @@ const RegisterEmployer = () => {
                         </label>
                         <input
                             type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            onBlur={() => emailValidator(email, setIsEmailErr, setEmailErrMsg)}
                             placeholder="name@example.com"
-                            className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                isEmailErr ? 'border-red-600' : ''
+                            }`}
                         />
+                        <p className="text-red-600 text-[1.3rem]">{emailErrMsg.email}</p>
                     </div>
                     <div className="space-y-4">
                         <label className="font-semibold text-[1.5rem]">
@@ -52,9 +121,15 @@ const RegisterEmployer = () => {
                         </label>
                         <input
                             type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            onBlur={() => passwordValidator(password, password, setIsPasswordErr, setPasswordErrMsg)}
                             placeholder="Mật khẩu"
-                            className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                isPasswordErr ? 'border-red-600' : ''
+                            }`}
                         />
+                        <p className="text-red-600 text-[1.3rem]">{passwordErrMsg.password}</p>
                     </div>
                     <div className="space-y-4">
                         <label className="font-semibold text-[1.5rem]">
@@ -62,23 +137,42 @@ const RegisterEmployer = () => {
                         </label>
                         <input
                             type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            onBlur={() =>
+                                passwordValidator(
+                                    confirmPassword,
+                                    password,
+                                    setIsConfirmPasswordErr,
+                                    setConfirmPasswordErrMsg,
+                                )
+                            }
                             placeholder="Xác nhận mật khẩu"
-                            className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                isConfirmPasswordErr ? 'border-red-600' : ''
+                            }`}
                         />
+                        <p className="text-red-600 text-[1.3rem]">{confirmPasswordErrMsg.confirmPassword}</p>
                     </div>
                 </div>
                 <div className="space-y-7 mt-5">
                     <h2 className="text-[2rem] font-semibold">Thông tin nhà tuyển dụng</h2>
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="space-y-4">
                             <label className="font-semibold text-[1.5rem]">
                                 Họ và tên<span className="text-[1.8rem] text-red-600">*</span>
                             </label>
                             <input
                                 type="text"
+                                value={fullName}
+                                onChange={(e) => setFullName(e.target.value)}
+                                onBlur={() => fullNameValidator(fullName, setIsFullNameErr, setFullNameErrMsg)}
                                 placeholder="Han Nguyen"
-                                className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                                className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                    isFullNameErr ? 'border-red-600' : ''
+                                }`}
                             />
+                            <p className="text-red-600 text-[1.3rem]">{fullNameErrMsg.fullName}</p>
                         </div>
                         <div className="space-y-4">
                             <label className="font-semibold text-[1.5rem]">
@@ -86,9 +180,15 @@ const RegisterEmployer = () => {
                             </label>
                             <input
                                 type="number"
-                                placeholder="+84 123 456 789"
-                                className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                onBlur={() => phoneValidator(phone, setIsPhoneErr, setPhoneErrMsg)}
+                                placeholder="0123456789"
+                                className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                    isPhoneErr ? 'border-red-600' : ''
+                                }`}
                             />
+                            <p className="text-red-600 text-[1.3rem]">{phoneErrMsg.phone}</p>
                         </div>
                     </div>
                     <div className="space-y-4">
@@ -97,36 +197,56 @@ const RegisterEmployer = () => {
                         </label>
                         <input
                             type="text"
+                            value={companyName}
+                            onChange={(e) => setCompanyName(e.target.value)}
+                            onBlur={() => fullNameValidator(companyName, setIsCompanyNameErr, setCompanyNameErrMsg)}
                             placeholder="Công ty TNHH ABC"
-                            className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                isCompanyNameErr ? 'border-red-600' : ''
+                            }`}
                         />
+                        <p className="text-red-600 text-[1.3rem]">{companyNameErrMsg.companyName}</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="space-y-4">
                             <label className="font-semibold text-[1.5rem]">
                                 Quy mô<span className="text-[1.8rem] text-red-600">*</span>
                             </label>
                             <input
                                 type="number"
+                                value={companySize}
+                                onChange={(e) => setCompanySize(e.target.value)}
+                                onBlur={() => numberValidator(companySize, setIsCompanySizeErr, setCompanySizeErrMsg)}
                                 placeholder="1-9999"
-                                className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                                className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                    isCompanySizeErr ? 'border-red-600' : ''
+                                }`}
                             />
+                            <p className="text-red-600 text-[1.3rem]">{companySizeErrMsg.number}</p>
                         </div>
                         <div className="space-y-4">
                             <label className="font-semibold text-[1.5rem]">
                                 Vị trí công tác<span className="text-[1.8rem] text-red-600">*</span>
                             </label>
-                            <select className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg">
-                                <option>-- Chức vụ --</option>
-                                <option>Nhân viên</option>
-                                <option>Trưởng nhóm</option>
-                                <option>Trưởng phòng</option>
-                                <option>Phó giám đốc</option>
-                                <option>Giám đốc</option>
+                            <select
+                                value={position}
+                                onChange={(e) => setPosition(e.target.value)}
+                                onBlur={() => dropListValidator(position, setIsPositionErr, setPositionErrMsg)}
+                                className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                    isPositionErr ? 'border-red-600' : ''
+                                }`}
+                            >
+                                <option value="">-- Chức vụ --</option>
+                                <option value="Nhân viên">Nhân viên</option>
+                                <option value="Trưởng nhóm">Trưởng nhóm</option>
+                                <option value="Trưởng phòng">Trưởng phòng</option>
+                                <option value="Phó giám đốc">Phó giám đốc</option>
+                                <option value="Giám đốc">Giám đốc</option>
                             </select>
+                            <p className="text-red-600 text-[1.3rem]">{positionErrMsg.position}</p>
                         </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="space-y-4">
                             <label className="font-semibold text-[1.5rem]">
                                 Địa điểm làm việc<span className="text-[1.8rem] text-red-600">*</span>
@@ -134,7 +254,10 @@ const RegisterEmployer = () => {
                             <select
                                 value={province}
                                 onChange={(e) => setProvince(e.target.value)}
-                                className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                                onBlur={() => dropListValidator(province, setIsProvinceErr, setProvinceErrMsg)}
+                                className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                    isProvinceErr ? 'border-red-600' : ''
+                                }`}
                             >
                                 <option value="">-- Tỉnh/Thành phố --</option>
                                 {allProvinces?.map((p, index) => {
@@ -145,9 +268,10 @@ const RegisterEmployer = () => {
                                     );
                                 })}
                             </select>
+                            <p className="text-red-600 text-[1.3rem]">{provinceErrMsg.province}</p>
                         </div>
                         <div className="space-y-4">
-                            <label className="font-semibold text-[1.5rem]">Quận/huyện</label>
+                            <label className="block font-semibold text-[1.5rem] pb-0 md:pb-[3px]">Quận/huyện</label>
                             <select
                                 className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
                                     province ? '' : 'pointer-events-none opacity-70'
@@ -179,7 +303,10 @@ const RegisterEmployer = () => {
                         của TimViecNhanh
                     </label>
                 </div>
-                <button className="w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all">
+                <button
+                    onClick={handleRegister}
+                    className="w-full bg-[var(--primary-color)] text-white font-medium py-3 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
+                >
                     Hoàn tất
                 </button>
                 <div className="space-x-5 text-center mt-7">
