@@ -45,7 +45,7 @@ export const registerController = async (req, res) => {
         const html = `<p>Hãy nhấn vào <a href="${process.env.BASE_URL}/api/v1/auth/verify?token=${token}"> liên kết</a> để xác thực tài khoản của bạn</p>
         <p>Thời gian hiệu lực trong vòng 24 giờ</p>`;
         sendMail(newUser.email, subject, html);
-        res.status(200).json({ code: 200, message: 'Tạo tài khoản thành công và email xác thực đã được gửi' });
+        res.status(200).json({ code: 200, message: 'Vui lòng kiểm tra email' });
     } catch (err) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(err);
