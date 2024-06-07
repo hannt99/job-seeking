@@ -5,7 +5,9 @@ import {
     verifyController,
     forgotPasswordController,
     resetPasswordController,
+    getCurrentUserController,
 } from '../controllers/auth-controllers.js';
+import { verifyToken } from '../middlewares/verifyToken.js';
 
 const router = Router();
 
@@ -23,5 +25,8 @@ router.post('/forgot-password', forgotPasswordController);
 
 // Reset password route
 router.patch('/reset-password', resetPasswordController);
+
+// Get current user route
+router.get('/get-current-user', verifyToken, getCurrentUserController);
 
 export default router;

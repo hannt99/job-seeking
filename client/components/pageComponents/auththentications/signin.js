@@ -34,6 +34,7 @@ const Signin = () => {
             setEmail('');
             setPassword('');
             setIsLoading(false);
+            localStorage.setItem('accessToken', res?.data?.accessToken);
             return success(res?.data?.message);
         } else {
             setIsLoading(false);
