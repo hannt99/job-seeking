@@ -1,11 +1,22 @@
 'use client';
 
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Header from '@/components/appLayouts/header';
+import HeaderXSidebar from './headerXSidebar';
 import Footer from '@/components/appLayouts/footer';
+import Sidebar from './sidebar';
+import { FaBars } from 'react-icons/fa';
+import { FaXmark } from 'react-icons/fa6';
 
 const DefaultLayout = ({ main }) => {
+    const [toggleSidebar, setToggleSidebar] = useState(false);
+
     const pathname = usePathname();
+
+    const toggle = () => {
+        setToggleSidebar(!toggleSidebar);
+    };
 
     const checkPathname = () => {
         if (pathname?.includes('/signin')) {
@@ -29,15 +40,42 @@ const DefaultLayout = ({ main }) => {
                     <div className="fixed top-0 left-0 bottom-0 right-0 bg-gradient-to-b from-[#161c2d]/5 to-[#161c2d]/100"></div>
                 </div>
             ) : (
-                <div className="flex flex-col h-screen">
-                    <div className="flex justify-center">
-                        <Header />
+                // <div className="flex flex-col h-screen">
+                //     <div className="flex justify-center">
+                //         <Header />
+                //     </div>
+                //     <div className="flex flex-col flex-1 items-center">{main}</div>
+                //     <div className="flex justify-center">
+                //         <Footer />
+                //     </div>
+                // </div>
+                <>
+                    <div
+                        className={
+                            toggleSidebar
+                                ? 'fixed top-0 left-0 bottom-0 translate-x-0 lg:translate-x-0 w-full md:w-[260px] bg-[#f4f5f7] z-50 transition-all'
+                                : 'fixed top-0 left-0 bottom-0 translate-x-[-100%] lg:translate-x-0 w-full md:w-[260px] bg-[#f4f5f7] z-50 transition-all'
+                        }
+                    >
+                        <Sidebar />
+                        <div
+                            onClick={() => setToggleSidebar(false)}
+                            className="absolute top-0 right-0 w-[42px] h-[42px] flex lg:hidden items-center justify-center text-[24px] cursor-pointer"
+                        >
+                            <FaXmark />
+                        </div>
                     </div>
-                    <div className="flex flex-col flex-1 items-center">{main}</div>
-                    <div className="flex justify-center">
-                        <Footer />
+                    <div className="fixed top-0 left-0 lg:left-[260px] right-0 h-[60px] z-40 lg:z-50">
+                        <HeaderXSidebar />
+                        <div
+                            onClick={toggle}
+                            className="absolute top-[50%] translate-y-[-50%] left-0 w-[42px] h-[42px] flex lg:hidden items-center justify-center text-[18px] cursor-pointer"
+                        >
+                            <FaBars />
+                        </div>
                     </div>
-                </div>
+                    <div className="absolute top-[60px] left-0 pl-0 lg:pl-[260px] overflow-auto w-full">{main}</div>
+                </>
             )}
         </>
     );

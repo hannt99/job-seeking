@@ -133,7 +133,7 @@ const RegisterEmployer = () => {
     }, [province]);
 
     return (
-        <div className="relative grid grid-cols-1 xl:grid-cols-2 w-[360px] md:w-[690px] lg:w-[925px] xl:w-[1120px] z-50">
+        <div className="relative grid grid-cols-1 xl:grid-cols-2 w-[360px] md:w-[690px] lg:w-[925px] xl:w-[1120px] z-50 px-5 md:px-0">
             <div className="bg-white w-full h-fit px-9 py-8 rounded-lg">
                 <div className="font-bold text-center tracking-widest text-[2.4rem] text-[var(--primary-color)]">
                     TimViecNhanh
