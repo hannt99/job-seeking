@@ -9,7 +9,7 @@ const CheckRole = ({ setRegisterOpen }) => {
         >
             <div
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-[calc(100%-48px)] md:w-[700px] lg:w-[800px] bg-white border m-auto rounded-3xl"
+                className="relative w-[calc(100%-48px)] md:w-[700px] lg:w-[800px] bg-white border m-auto rounded-3xl animate-fadeIn"
             >
                 <div className="text-center pt-20 pb-8">
                     <p className="text-[2rem] font-semibold">Chào bạn,</p>

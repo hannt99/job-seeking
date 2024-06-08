@@ -67,7 +67,7 @@ const ChangePassword = ({ setShowChangePassword }) => {
         >
             <div
                 onClick={(e) => e.stopPropagation()}
-                className="bg-white w-full md:w-[450px] h-fit px-9 py-8 rounded-lg"
+                className="bg-white w-full md:w-[450px] h-fit px-9 py-8 rounded-lg animate-fadeIn"
             >
                 <div className="font-bold text-center tracking-widest text-[2.4rem] text-[var(--primary-color)]">
                     TimViecNhanh
