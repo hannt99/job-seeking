@@ -11,6 +11,7 @@ import { FaXmark } from 'react-icons/fa6';
 
 const DefaultLayout = ({ main }) => {
     const [toggleSidebar, setToggleSidebar] = useState(false);
+    const [loading, setLoading] = useState('true');
 
     const pathname = usePathname();
 
@@ -31,6 +32,12 @@ const DefaultLayout = ({ main }) => {
             return false;
         }
     };
+
+    useEffect(() => {
+        setLoading(false);
+    }, []);
+
+    if (loading) return <div className="h-screen"></div>;
 
     return (
         <>

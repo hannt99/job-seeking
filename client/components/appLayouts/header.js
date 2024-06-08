@@ -1,11 +1,51 @@
 'use client';
 
-import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill } from 'react-icons/ri';
+import axios from 'axios';
+import Link from 'next/link';
+import ChangePassword from '../pageComponents/auththentications/changePassword';
 import CheckRole from '../pageComponents/auththentications/checkRole';
+import { success, error } from '@/utils/toastMessage';
+import Auth from '@/utils/auth';
 
 const Header = () => {
     const [registerOpen, setRegisterOpen] = useState(false);
+    const [showChangePassword, setShowChangePassword] = useState(false);
+    const [currUser, setCurrUser] = useState({});
+
+    const router = useRouter();
+    const isAuth = Auth(typeof window !== 'undefined' && localStorage.getItem('accessToken'));
+
+    const handleLogout = async () => {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/signout`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            withCredentials: true,
+        });
+        if (res?.data?.code === 200) {
+            localStorage.clear();
+            router.push('/signin');
+            return success(res?.data?.message);
+        } else {
+            return error('Đã xảy ra lỗi');
+        }
+    };
+
+    useEffect(() => {
+        if (isAuth?.status === false) return;
+        const fetchUser = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/get-current-user`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            });
+            if (res?.data?.code === 200) {
+                return setCurrUser(res?.data?.currentUser);
+            } else {
+                return error(res?.data?.message);
+            }
+        };
+        fetchUser();
+    }, [isAuth]);
 
     useEffect(() => {
         registerOpen && (document.body.style.overflow = 'hidden');
@@ -16,16 +56,77 @@ const Header = () => {
         <>
             <div className="flex items-center justify-between border w-[360px] md:w-[690px] lg:w-[925px] xl:w-[1120px] min-h-[60px]">
                 <div className="text-[2rem] text-[var(--primary-color)] font-semibold">TimViecNhanh</div>
-                <div className="flex items-center gap-3">
-                    <Link href="/signin" className="block border px-5 py-3">
-                        Đăng nhập
-                    </Link>
-                    <div onClick={() => setRegisterOpen(true)} className="border px-5 py-3">
-                        Đăng ký
+                {isAuth?.status === false && (
+                    <div className="flex items-center gap-3">
+                        <Link href="/signin" className="block border px-5 py-3">
+                            Đăng nhập
+                        </Link>
+                        <div onClick={() => setRegisterOpen(true)} className="border px-5 py-3">
+                            Đăng ký
+                        </div>
                     </div>
-                </div>
+                )}
+                {isAuth?.status === true && (
+                    <div className="group relative flex items-center mr-4 cursor-pointer">
+                        <div className="w-[40px] h-[40px] border border-black rounded-full">
+                            <img
+                                className="w-full h-full object-cover rounded-full"
+                                src={currUser?.avatar}
+                                alt="user avatar"
+                            />
+                        </div>
+                        <div className="text-[2.4rem]">
+                            <RiArrowDropDownFill />
+                        </div>
+                        <div className="group-hover:block hidden absolute top-[100%] right-0 w-[300px] rounded-lg transition-all cursor-default">
+                            <ul className="bg-white shadow-md border border-[#cccccc]/30 rounded-lg pb-3">
+                                <li className="px-6 py-4 rounded-lg">
+                                    <Link
+                                        href="#"
+                                        className="block px-5 border border-[#cccccc]/30 shadow-md rounded-lg"
+                                    >
+                                        <div className="flex items-center gap-3 w-full py-3">
+                                            <div className="w-[36px] h-[36px]">
+                                                <img
+                                                    src={currUser?.avatar}
+                                                    alt="user avatar"
+                                                    className="w-full h-full border border-black object-cover rounded-full"
+                                                />
+                                            </div>
+                                            <span className="text-[1.3rem] font-semibold max-w-[156px] truncate">
+                                                {currUser?.fullName}
+                                            </span>
+                                        </div>
+                                        <div className="border-t text-[1.3rem] font-semibold py-3">
+                                            Xem thông tin cá nhân
+                                        </div>
+                                    </Link>
+                                </li>
+                                <li
+                                    onClick={() => setShowChangePassword(true)}
+                                    className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                                >
+                                    <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
+                                        <RiLockPasswordFill className="m-auto" />
+                                    </div>
+                                    <span className="whitespace-nowrap">Thay đối mật khẩu</span>
+                                </li>
+                                <li
+                                    onClick={handleLogout}
+                                    className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                                >
+                                    <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
+                                        <RiLogoutBoxLine className="m-auto" />
+                                    </div>
+                                    <span className="whitespace-nowrap">Đăng xuất</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                )}
             </div>
             {registerOpen && <CheckRole setRegisterOpen={setRegisterOpen} />}
+            {showChangePassword && <ChangePassword setShowChangePassword={setShowChangePassword} />}
         </>
     );
 };

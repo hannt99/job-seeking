@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { emailValidator, passwordValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
 import Loading from '@/components/loading';
@@ -17,6 +18,8 @@ const Signin = () => {
     const [passwordErrMsg, setPasswordErrMsg] = useState({});
     const [isPasswordErr, setIsPasswordErr] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    const router = useRouter();
 
     const handleSignin = async (e) => {
         e.preventDefault();
@@ -37,6 +40,7 @@ const Signin = () => {
             setPassword('');
             setIsLoading(false);
             localStorage.setItem('accessToken', res?.data?.accessToken);
+            router.push('/');
             return success(res?.data?.message);
         } else {
             setIsLoading(false);

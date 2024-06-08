@@ -1,7 +1,7 @@
 import { jwtDecode } from 'jwt-decode';
 
 const Auth = (token) => {
-    if (!token) return false;
+    if (!token) return { status: false };
     const decodedToken = jwtDecode(token);
     let currentDate = new Date();
     if (decodedToken.exp * 1000 < currentDate.getTime()) {
