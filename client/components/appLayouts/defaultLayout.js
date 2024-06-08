@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Header from '@/components/appLayouts/header';
 import HeaderXSidebar from './headerXSidebar';
@@ -39,16 +39,7 @@ const DefaultLayout = ({ main }) => {
                     <div className="py-5 m-auto">{main}</div>
                     <div className="fixed top-0 left-0 bottom-0 right-0 bg-gradient-to-b from-[#161c2d]/5 to-[#161c2d]/100"></div>
                 </div>
-            ) : (
-                // <div className="flex flex-col h-screen">
-                //     <div className="flex justify-center">
-                //         <Header />
-                //     </div>
-                //     <div className="flex flex-col flex-1 items-center">{main}</div>
-                //     <div className="flex justify-center">
-                //         <Footer />
-                //     </div>
-                // </div>
+            ) : pathname?.includes('/employer') ? (
                 <>
                     <div
                         className={
@@ -76,6 +67,16 @@ const DefaultLayout = ({ main }) => {
                     </div>
                     <div className="absolute top-[60px] left-0 pl-0 lg:pl-[260px] overflow-auto w-full">{main}</div>
                 </>
+            ) : (
+                <div className="flex flex-col h-screen">
+                    <div className="flex justify-center">
+                        <Header />
+                    </div>
+                    <div className="flex flex-col flex-1 items-center">{main}</div>
+                    <div className="flex justify-center">
+                        <Footer />
+                    </div>
+                </div>
             )}
         </>
     );

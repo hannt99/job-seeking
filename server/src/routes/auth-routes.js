@@ -6,6 +6,7 @@ import {
     forgotPasswordController,
     resetPasswordController,
     getCurrentUserController,
+    signOutController,
 } from '../controllers/auth-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 
@@ -28,5 +29,8 @@ router.patch('/reset-password', resetPasswordController);
 
 // Get current user route
 router.get('/get-current-user', verifyToken, getCurrentUserController);
+
+// Sign out route
+router.get('/signout', verifyToken, signOutController);
 
 export default router;

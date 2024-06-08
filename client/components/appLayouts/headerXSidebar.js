@@ -14,10 +14,18 @@ const HeaderXSidebar = () => {
 
     const router = useRouter();
 
-    const handleLogout = () => {
-        localStorage.clear();
-        router.push('/signin');
-        return success('Đăng xuất thành công');
+    const handleLogout = async () => {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/signout`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            withCredentials: true,
+        });
+        if (res?.data?.code === 200) {
+            localStorage.clear();
+            router.push('/signin');
+            return success(res?.data?.message);
+        } else {
+            return error('Đã xảy ra lỗi');
+        }
     };
 
     useEffect(() => {

@@ -29,7 +29,9 @@ const Signin = () => {
             password,
         };
         setIsLoading(true);
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, data);
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, data, {
+            withCredentials: true,
+        });
         if (res?.data?.code === 200) {
             setEmail('');
             setPassword('');

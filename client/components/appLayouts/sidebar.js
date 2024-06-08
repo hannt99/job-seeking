@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { IoCreateOutline } from 'react-icons/io5';
 import { AiOutlineHome } from 'react-icons/ai';
 import { CiBoxList } from 'react-icons/ci';
-import { IoPeopleSharp } from 'react-icons/io5';
+import { IoPeopleOutline } from 'react-icons/io5';
 import { MdOutlineRecommend, MdOutlineDelete } from 'react-icons/md';
 
 const Sidebar = () => {
@@ -74,7 +74,7 @@ const Sidebar = () => {
                             }
                         >
                             <span className="text-[2.4rem]">
-                                <IoPeopleSharp />
+                                <IoPeopleOutline />
                             </span>
                             <span>Tất cả ứng viên</span>
                         </Link>

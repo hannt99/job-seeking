@@ -17,7 +17,7 @@ export const signInController = async (req, res) => {
 
         const accessToken = generateAccessToken(user);
 
-        res.status(200).json({
+        res.cookie('accessToken', accessToken, { httpOnly: true }).status(200).json({
             code: 200,
             message: 'Đăng nhập thành công',
             accessToken: accessToken,
@@ -131,4 +131,14 @@ export const getCurrentUserController = async (req, res) => {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);
     }
+};
+
+// Sign out
+export const signOutController = (req, res) => {
+    res.clearCookie('accessToken', {
+        secure: true,
+        sameSite: 'none',
+    })
+        .status(200)
+        .json({ code: 200, message: 'Đăng xuất thành công' });
 };
