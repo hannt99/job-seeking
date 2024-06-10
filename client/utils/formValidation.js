@@ -128,6 +128,7 @@ export const dropListValidator = (value, setIsDropListErr, setDropListErrMsg) =>
     if (!value || value.length === 0) {
         msg.position = 'Chức vụ không được để trống';
         msg.province = 'Tỉnh/thành không được để trống';
+        msg.gender = 'Giới tính không được để trống';
         setIsDropListErr(true);
     } else {
         setIsDropListErr(false);

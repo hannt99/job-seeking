@@ -30,7 +30,7 @@ const UserSchema = new Schema(
             trim: true,
             default: '',
         },
-        phoneNumber: {
+        phone: {
             type: String,
             trim: true,
             default: '',

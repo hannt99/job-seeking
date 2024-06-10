@@ -60,7 +60,7 @@ const Header = () => {
                     <div className="flex items-center gap-3">
                         <Link
                             href="/signin"
-                            className="block text-[var(--primary-color)] text-[1.4rem] bg-[var(--second-color)] px-7 py-3 rounded-full hover:text-white hover:bg-[var(--primary-color)] transition-all"
+                            className="block text-[var(--primary-color)] text-[1.4rem] bg-[var(--secondary-color)] px-7 py-3 rounded-full hover:text-white hover:bg-[var(--primary-color)] transition-all"
                         >
                             Đăng nhập
                         </Link>
@@ -119,7 +119,7 @@ const Header = () => {
                                     </li>
                                     <li
                                         onClick={() => setShowChangePassword(true)}
-                                        className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                                        className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
                                     >
                                         <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
                                             <RiLockPasswordFill className="m-auto" />
@@ -128,7 +128,7 @@ const Header = () => {
                                     </li>
                                     <li
                                         onClick={handleLogout}
-                                        className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                                        className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
                                     >
                                         <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
                                             <RiLogoutBoxLine className="m-auto" />

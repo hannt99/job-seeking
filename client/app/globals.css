@@ -5,7 +5,7 @@
 :root {
     --primary-color: #059669;
     --primary-hover-color: #047857;
-    --second-color: rgba(4, 120, 87, 0.1);
+    --secondary-color: rgba(4, 120, 87, 0.1);
 }
 
 html {

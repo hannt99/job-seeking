@@ -6,6 +6,7 @@ const employerRoutes = [
     '/employer/all-applicants',
     '/employer/create-job',
     '/employer/manage-jobs',
+    '/employer/account/setting',
 ];
 const authRoutes = ['/signin', '/register/employer', '/register/candidate', '/forgot-password', '/reset-password'];
 
@@ -20,7 +21,7 @@ export default function middleware(request) {
         return NextResponse.redirect(absUrl.toString());
     }
     if (isAuth?.status && isAuth?.role === 1) {
-        if (employerRoutes.includes(request.nextUrl.pathname)) {
+        if (request.nextUrl.pathname?.includes('/employer')) {
             const absUrl = new URL('/', request.nextUrl.origin);
             return NextResponse.redirect(absUrl.toString());
         }

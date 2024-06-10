@@ -51,8 +51,8 @@ const DefaultLayout = ({ main }) => {
                     <div
                         className={
                             toggleSidebar
-                                ? 'fixed top-0 left-0 bottom-0 translate-x-0 lg:translate-x-0 w-full md:w-[260px] bg-[#f4f5f7] z-50 transition-all'
-                                : 'fixed top-0 left-0 bottom-0 translate-x-[-100%] lg:translate-x-0 w-full md:w-[260px] bg-[#f4f5f7] z-50 transition-all'
+                                ? 'fixed top-0 left-0 bottom-0 translate-x-0 lg:translate-x-0 w-full md:w-[260px] bg-white z-50 transition-all'
+                                : 'fixed top-0 left-0 bottom-0 translate-x-[-100%] lg:translate-x-0 w-full md:w-[260px] bg-white z-50 transition-all'
                         }
                     >
                         <Sidebar />
@@ -72,7 +72,9 @@ const DefaultLayout = ({ main }) => {
                             <FaBars />
                         </div>
                     </div>
-                    <div className="absolute top-[60px] left-0 pl-0 lg:pl-[260px] overflow-auto w-full">{main}</div>
+                    <div className="absolute top-0 left-0 pl-0 lg:pl-[260px] pt-[60px] w-full h-full bg-[#f4f6fb]">
+                        {main}
+                    </div>
                 </>
             ) : (
                 <div className="flex flex-col h-screen">

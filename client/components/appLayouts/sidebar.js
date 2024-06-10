@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { IoCreateOutline } from 'react-icons/io5';
+import { IoCreateOutline, IoSettingsOutline } from 'react-icons/io5';
 import { AiOutlineHome } from 'react-icons/ai';
 import { CiBoxList } from 'react-icons/ci';
 import { IoPeopleOutline } from 'react-icons/io5';
@@ -12,20 +12,20 @@ const Sidebar = () => {
     const pathName = usePathname();
 
     return (
-        <div className="flex flex-col w-full h-full shadow-md shadow-current select-none">
+        <div className="flex flex-col w-full h-full custom-shadow-v1 select-none">
             <div className="flex items-center justify-center w-full h-[60px] border-r border-[#f4f5f7]">
                 {/* <img src={'/logo_header.png'} alt="logo" className="w-full h-[60px] object-contain" /> */}
                 <h1 className="text-center text-[2rem] font-semibold text-[var(--primary-color)]">TimViecNhanh</h1>
             </div>
-            <div className="flex-1 shadow-md">
+            <div className="flex-1">
                 <ul className="flex flex-col gap-4 p-5 text-[1.4rem] font-medium text-[#888888]">
                     <li>
                         <Link
                             href={'/employer/dashboard'}
                             className={
                                 pathName === '/employer/dashboard'
-                                    ? 'flex items-center gap-5 bg-[var(--second-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
-                                    : 'flex items-center gap-5 px-5 py-5 rounded-lg hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    ? 'flex items-center gap-5 bg-[var(--secondary-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    : 'flex items-center gap-5 px-5 py-5 rounded-lg hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
                             }
                         >
                             <span className="text-[2.4rem]">
@@ -39,8 +39,8 @@ const Sidebar = () => {
                             href={'/employer/create-job'}
                             className={
                                 pathName === '/employer/create-job'
-                                    ? 'flex items-center gap-5 bg-[var(--second-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
-                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    ? 'flex items-center gap-5 bg-[var(--secondary-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
                             }
                         >
                             <span className="text-[2.4rem]">
@@ -54,8 +54,8 @@ const Sidebar = () => {
                             href={'/employer/manage-jobs'}
                             className={
                                 pathName === '/employer/manage-jobs'
-                                    ? 'flex items-center gap-5 bg-[var(--second-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
-                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    ? 'flex items-center gap-5 bg-[var(--secondary-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
                             }
                         >
                             <span className="text-[2.4rem]">
@@ -69,8 +69,8 @@ const Sidebar = () => {
                             href={'/employer/all-applicants'}
                             className={
                                 pathName === '/employer/all-applicants'
-                                    ? 'flex items-center gap-5 bg-[var(--second-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
-                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    ? 'flex items-center gap-5 bg-[var(--secondary-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
                             }
                         >
                             <span className="text-[2.4rem]">
@@ -84,8 +84,8 @@ const Sidebar = () => {
                             href={'/employer/recommendation'}
                             className={
                                 pathName === '/employer/recommendation'
-                                    ? 'flex items-center gap-5 bg-[var(--second-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
-                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    ? 'flex items-center gap-5 bg-[var(--secondary-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
                             }
                         >
                             <span className="text-[2.4rem]">
@@ -94,13 +94,28 @@ const Sidebar = () => {
                             <span>Gợi ý ứng viên</span>
                         </Link>
                     </li>
+                    <li>
+                        <Link
+                            href={'/employer/account/setting'}
+                            className={
+                                pathName === '/employer/recommendation'
+                                    ? 'flex items-center gap-5 bg-[var(--secondary-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                            }
+                        >
+                            <span className="text-[2.4rem]">
+                                <IoSettingsOutline />
+                            </span>
+                            <span>Cài đặt tài khoản</span>
+                        </Link>
+                    </li>
                     <li className="pointer-events-none opacity-45">
                         <Link
                             href={'/employer/recommendation'}
                             className={
                                 pathName === '/employer/recommendation'
-                                    ? 'flex items-center gap-5 bg-[var(--second-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
-                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--second-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    ? 'flex items-center gap-5 bg-[var(--secondary-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
+                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
                             }
                         >
                             <span className="text-[2.4rem]">

@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 
+// Change password controller
 export const changePasswordController = async (req, res) => {
     try {
         const currentUser = await User.findById(req.user._id);
@@ -36,5 +37,22 @@ export const changePasswordController = async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(400).json({ code: 400, message: 'Unexpected error' });
+    }
+};
+
+// Update user controller
+export const updateUserController = async (req, res) => {
+    try {
+        await User.findByIdAndUpdate(
+            req.user._id,
+            { $set: req.body },
+            {
+                new: true,
+            },
+        );
+        res.status(200).json({ code: 200, message: 'Cập nhật thành công' });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
     }
 };
