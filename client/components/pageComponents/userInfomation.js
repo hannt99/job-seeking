@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import axios from 'axios';
 import { fullNameValidator, dropListValidator, phoneValidator } from '@/utils/formValidation';
 import Loading from '@/components/loading';
@@ -21,6 +22,8 @@ const UserInfomation = () => {
     const [avatar, setAvatar] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [reRender, setReRender] = useState(false);
+
+    const pathname = usePathname();
 
     const handleUpdateInfo = async () => {
         const isFullNameValid = fullNameValidator(fullName, setIsFullNameErr, setFullNameErrMsg);
@@ -72,13 +75,15 @@ const UserInfomation = () => {
     return (
         <>
             <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem]">Thông tin cá nhân</h2>
-            <div className="grid grid-cols-2 gap-5 mt-7">
-                <div className="flex items-center gap-5">
-                    <div className="w-[45px] h-[45px] border border-black rounded-full">
-                        <img src={avatar} alt="user avatar" className="w-full h-full object-cover rounded-full" />
+            <div className={`${pathname?.includes('/employer') ? 'grid' : 'block'} grid-cols-2 gap-5 mt-7`}>
+                {pathname?.includes('/employer') && (
+                    <div className="flex items-center gap-5">
+                        <div className="w-[45px] h-[45px] border border-black rounded-full">
+                            <img src={avatar} alt="user avatar" className="w-full h-full object-cover rounded-full" />
+                        </div>
+                        <button className="font-medium hover:underline">Đổi avatar</button>
                     </div>
-                    <button className="font-medium hover:underline">Đổi avatar</button>
-                </div>
+                )}
                 <div className="space-y-4">
                     <label className="font-semibold text-[1.5rem]">
                         Địa chỉ Email<span className="text-[1.8rem] text-red-600">*</span>

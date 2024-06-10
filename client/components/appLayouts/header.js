@@ -3,16 +3,15 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill } from 'react-icons/ri';
+import { TbWorldUpload } from 'react-icons/tb';
 import axios from 'axios';
 import Link from 'next/link';
-import ChangePassword from '../pageComponents/auththentications/changePassword';
 import CheckRole from '../pageComponents/auththentications/checkRole';
 import { success, error } from '@/utils/toastMessage';
 import Auth from '@/utils/auth';
 
 const Header = () => {
     const [registerOpen, setRegisterOpen] = useState(false);
-    const [showChangePassword, setShowChangePassword] = useState(false);
     const [currUser, setCurrUser] = useState({});
 
     const router = useRouter();
@@ -77,7 +76,7 @@ const Header = () => {
                         {isAuth?.role === 0 && (
                             <Link
                                 href="/employer/dashboard"
-                                className="block font-semibold text-[1.4rem] hover:underline"
+                                className="hidden md:block font-semibold text-[1.4rem] hover:underline"
                             >
                                 Đăng tuyển ngay
                             </Link>
@@ -97,7 +96,7 @@ const Header = () => {
                                 <ul className="bg-white shadow-md border border-[#cccccc]/30 rounded-lg pb-3">
                                     <li className="px-6 py-4 rounded-lg">
                                         <Link
-                                            href="#"
+                                            href="/account/setting-user-information"
                                             className="block px-5 border border-[#cccccc]/30 shadow-md rounded-lg"
                                         >
                                             <div className="flex items-center gap-3 w-full py-3">
@@ -117,14 +116,29 @@ const Header = () => {
                                             </div>
                                         </Link>
                                     </li>
-                                    <li
-                                        onClick={() => setShowChangePassword(true)}
-                                        className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
-                                    >
-                                        <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
-                                            <RiLockPasswordFill className="m-auto" />
-                                        </div>
-                                        <span className="whitespace-nowrap">Thay đối mật khẩu</span>
+                                    {isAuth?.role === 0 && (
+                                        <li className="block md:hidden">
+                                            <Link
+                                                href="/employer/dashboard"
+                                                className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                                            >
+                                                <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
+                                                    <TbWorldUpload className="m-auto" />
+                                                </div>
+                                                <span className="whitespace-nowrap">Đăng tuyển ngay</span>
+                                            </Link>
+                                        </li>
+                                    )}
+                                    <li>
+                                        <Link
+                                            href="/account/change-password"
+                                            className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                                        >
+                                            <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
+                                                <RiLockPasswordFill className="m-auto" />
+                                            </div>
+                                            <span className="whitespace-nowrap">Đối mật khẩu</span>
+                                        </Link>
                                     </li>
                                     <li
                                         onClick={handleLogout}
@@ -142,7 +156,6 @@ const Header = () => {
                 )}
             </div>
             {registerOpen && <CheckRole setRegisterOpen={setRegisterOpen} />}
-            {showChangePassword && <ChangePassword setShowChangePassword={setShowChangePassword} />}
         </>
     );
 };

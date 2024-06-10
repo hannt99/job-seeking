@@ -2,14 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill } from 'react-icons/ri';
-import Link from 'next/link';
+import { RiLogoutBoxLine, RiArrowDropDownFill } from 'react-icons/ri';
 import axios from 'axios';
 import { success, error } from '@/utils/toastMessage';
-import ChangePassword from '../pageComponents/auththentications/changePassword';
 
 const HeaderXSidebar = () => {
-    const [showChangePassword, setShowChangePassword] = useState(false);
     const [currUser, setCurrUser] = useState({});
 
     const router = useRouter();
@@ -71,7 +68,6 @@ const HeaderXSidebar = () => {
                     </div>
                 </div>
             </div>
-            {showChangePassword && <ChangePassword setShowChangePassword={setShowChangePassword} />}
         </>
     );
 };
