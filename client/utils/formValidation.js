@@ -37,7 +37,7 @@ export const phoneValidator = (phone, setIsPhoneErr, setPhoneErrMsg) => {
 // Validate number
 export const numberValidator = (number, setIsNumberErr, setNumberErrMsg) => {
     const msg = {};
-    if (isEmpty(number)) {
+    if (isEmpty(String(number))) {
         msg.number = 'Quy mô không được để trống';
         setIsNumberErr(true);
     } else if (number <= 0 || number > 9999) {

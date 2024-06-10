@@ -42,7 +42,7 @@ const AccountSetting = () => {
                         <span className="text-[1.4rem] font-medium">Thông tin công ty</span>
                     </li>
                 </ul>
-                <div className="col-span-3 bg-white p-5">
+                <div className="col-span-3 bg-white p-7">
                     {tab === 'cp' && <ChangeEmployerPassword />}
                     {tab === 'ui' && <UserInfomation />}
                     {tab === 'ci' && <CompanyInfomation />}

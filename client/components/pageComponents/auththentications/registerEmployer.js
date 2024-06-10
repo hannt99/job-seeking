@@ -33,7 +33,7 @@ const RegisterEmployer = () => {
     const [companyName, setCompanyName] = useState('');
     const [companyNameErrMsg, setCompanyNameErrMsg] = useState({});
     const [isCompanyNameErr, setIsCompanyNameErr] = useState(false);
-    const [companySize, setCompanySize] = useState('');
+    const [companySize, setCompanySize] = useState(Number);
     const [companySizeErrMsg, setCompanySizeErrMsg] = useState({});
     const [isCompanySizeErr, setIsCompanySizeErr] = useState(false);
     const [position, setPosition] = useState('');
@@ -80,7 +80,6 @@ const RegisterEmployer = () => {
 
         setIsLoading(true);
         const jsonObject = new Function('return ' + province)();
-        const provinceName = jsonObject?.name;
 
         const data = {
             email,
@@ -90,7 +89,7 @@ const RegisterEmployer = () => {
             companyName,
             companySize,
             position,
-            companyAddress: `${district}, ${provinceName}`,
+            companyAddress: { district, jsonObject },
             role: 0,
         };
         const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, data);

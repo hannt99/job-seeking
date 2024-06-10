@@ -1,4 +1,5 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { fullNameValidator, dropListValidator, phoneValidator } from '@/utils/formValidation';
@@ -21,8 +22,13 @@ const UserInfomation = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [reRender, setReRender] = useState(false);
 
-    const handleUpdateInfo = async (e) => {
-        e.preventDefault();
+    const handleUpdateInfo = async () => {
+        const isFullNameValid = fullNameValidator(fullName, setIsFullNameErr, setFullNameErrMsg);
+        const isPhoneValid = phoneValidator(phone, setIsPhoneErr, setPhoneErrMsg);
+        const isGenderValid = dropListValidator(gender, setIsGenderErr, setGenderErrMsg);
+
+        if (!isFullNameValid || !isPhoneValid || !isGenderValid) return;
+
         setIsLoading(true);
         const data = {
             fullName,
@@ -64,7 +70,7 @@ const UserInfomation = () => {
     }, []);
 
     return (
-        <form>
+        <>
             <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem]">Thông tin cá nhân</h2>
             <div className="grid grid-cols-2 gap-5 mt-7">
                 <div className="flex items-center gap-5">
@@ -157,7 +163,7 @@ const UserInfomation = () => {
                     <span>Lưu</span>
                 </button>
             </div>
-        </form>
+        </>
     );
 };
 

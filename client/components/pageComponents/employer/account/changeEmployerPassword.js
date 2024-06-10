@@ -18,9 +18,7 @@ const ChangeEmployerPassword = () => {
     const [isConfirmPasswordErr, setIsConfirmPasswordErr] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleChangePassword = async (e) => {
-        e.preventDefault();
-
+    const handleChangePassword = async () => {
         const isOldPasswordValid = passwordValidator(
             oldPassword,
             oldPassword,
@@ -61,7 +59,7 @@ const ChangeEmployerPassword = () => {
     };
 
     return (
-        <form>
+        <>
             <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem]">Đổi mật khẩu</h2>
             <div className="p-5 border mt-6">
                 <div className="grid grid-cols-3 mt-3">
@@ -139,7 +137,7 @@ const ChangeEmployerPassword = () => {
                     </button>
                 </div>
             </div>
-        </form>
+        </>
     );
 };
 export default ChangeEmployerPassword;

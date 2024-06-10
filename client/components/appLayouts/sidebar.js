@@ -98,7 +98,7 @@ const Sidebar = () => {
                         <Link
                             href={'/employer/account/setting'}
                             className={
-                                pathName === '/employer/recommendation'
+                                pathName === '/employer/account/setting'
                                     ? 'flex items-center gap-5 bg-[var(--secondary-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
                                     : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
                             }
