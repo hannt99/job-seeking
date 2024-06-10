@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import Company from '../models/Company.js';
 import bcrypt from 'bcryptjs';
 import { generateVerifyEmailToken, generateAccessToken, generateResetPasswordToken } from '../utils/tokenGenerator.js';
 import sendMail from '../utils/email.js';
@@ -31,15 +32,27 @@ export const signInController = async (req, res) => {
 // Register controller
 export const registerController = async (req, res) => {
     try {
+        const userBody = {};
         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         const isEmailExist = await User.findOne({ email: req.body.email });
         if (!emailRegex.test(req.body.email)) return res.status(200).json({ code: 403, message: 'Email không hợp lệ' });
         if (isEmailExist) return res.status(200).json({ code: 403, message: 'Email đã được sử dụng' });
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
-        const newUser = new User({ ...req.body, password: hash });
 
+        const newUser = new User({ ...req.body, password: hash });
         await newUser.save();
+
+        if (req.body.role === 0) {
+            const company = await Company.findOne({ companyName: req.body.companyName });
+            if (company) {
+                await User.findByIdAndDelete(newUser?._id);
+                return res.status(200).json({ code: 403, message: 'Tên công ty đã được sử dụng' });
+            }
+            const newCompany = new Company({ ...req.body, userId: newUser?._id });
+            await newCompany.save();
+        }
+
         const subject = 'TimViecNhanh - Xác thực tài khoản người dùng';
         const token = generateVerifyEmailToken(newUser);
         const html = `<p>Hãy nhấn vào <a href="${process.env.BASE_URL}/api/v1/auth/verify?token=${token}"> liên kết</a> để xác thực tài khoản của bạn</p>

@@ -35,26 +35,6 @@ const UserSchema = new Schema(
             trim: true,
             default: '',
         },
-        introduction: {
-            type: String,
-            trim: true,
-            default: '',
-        },
-        companyName: {
-            type: String,
-            trim: true,
-        },
-        companyAddress: {
-            type: Object,
-            trim: true,
-        },
-        companySize: {
-            type: Number,
-        },
-        position: {
-            type: String,
-            trim: true,
-        },
         avatar: {
             type: String,
             trim: true,

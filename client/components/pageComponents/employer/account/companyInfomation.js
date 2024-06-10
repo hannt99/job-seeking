@@ -45,7 +45,7 @@ const CompanyInfomation = () => {
             companyAddress: { district, jsonObject },
             introduction,
         };
-        const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/user/update`, data, {
+        const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/company/update`, data, {
             headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
         });
         if (res?.data?.code === 200) {
@@ -78,25 +78,26 @@ const CompanyInfomation = () => {
     }, [province]);
 
     useEffect(() => {
-        const fetchUser = async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/get-current-user`, {
+        const fetchCompany = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/company/get`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
             });
 
+            console.log(res);
             if (res?.data?.code === 200) {
-                setCompanyName(res?.data?.currentUser?.companyName);
-                setCompanySize(res?.data?.currentUser?.companySize);
-                setPosition(res?.data?.currentUser?.position);
-                setProvince(JSON.stringify(res?.data?.currentUser?.companyAddress?.jsonObject));
-                setDistrict(res?.data?.currentUser?.companyAddress?.district);
-                setIntroduction(res?.data?.currentUser?.introduction);
+                setCompanyName(res?.data?.company?.companyName);
+                setCompanySize(res?.data?.company?.companySize);
+                setPosition(res?.data?.company?.position);
+                setProvince(JSON.stringify(res?.data?.company?.companyAddress?.jsonObject));
+                setDistrict(res?.data?.company?.companyAddress?.district);
+                setIntroduction(res?.data?.company?.introduction);
 
                 return;
             } else {
                 return;
             }
         };
-        fetchUser();
+        fetchCompany();
     }, [reRender]);
 
     return (

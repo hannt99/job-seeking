@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import {
     fullNameValidator,
     emailValidator,
@@ -47,6 +48,8 @@ const RegisterEmployer = () => {
     const [district, setDistrict] = useState('');
     const [isChecked, setIsChecked] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    const router = useRouter();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -105,6 +108,7 @@ const RegisterEmployer = () => {
             setProvince('');
             setDistrict('');
             setIsLoading(false);
+            router.push('/signin');
             return success(res?.data?.message);
         } else {
             setIsLoading(false);

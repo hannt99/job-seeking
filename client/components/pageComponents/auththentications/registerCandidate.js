@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { fullNameValidator, emailValidator, passwordValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
 import Loading from '@/components/loading';
@@ -22,6 +23,8 @@ const RegisterCandidate = () => {
     const [isConfirmPasswordErr, setIsConfirmPasswordErr] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    const router = useRouter();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -50,6 +53,7 @@ const RegisterCandidate = () => {
             setPassword('');
             setConfirmPassword('');
             setIsLoading(false);
+            router.push('/signin');
             return success(res?.data?.message);
         } else {
             setIsLoading(false);
