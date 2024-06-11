@@ -9,7 +9,7 @@ import Loading from '@/components/loading';
 import { success, error } from '@/utils/toastMessage';
 import { UserAvatarContext } from '../appLayouts/defaultLayout';
 
-const UserInfomation = () => {
+const UserInfomationForm = () => {
     const [email, setEmail] = useState('');
     const [fullName, setFullName] = useState('');
     const [fullNameErrMsg, setFullNameErrMsg] = useState({});
@@ -207,4 +207,4 @@ const UserInfomation = () => {
     );
 };
 
-export default UserInfomation;
+export default UserInfomationForm;

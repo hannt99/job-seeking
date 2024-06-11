@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { dropListValidator } from '@/utils/formValidation';
 import DropListMulti from '../dropListMulti';
+import Loading from '../loading';
 
 const careers = [
     { value: 'Kinh doang/Bán hàng', label: 'Kinh doanh/Bán hàng' },
@@ -17,7 +18,7 @@ const skills = [
     { value: 'React', label: 'React' },
 ];
 
-const UserResume = () => {
+const UserResumeForm = () => {
     const [position, setPosition] = useState('');
     const [positionErrMsg, setPositionErrMsg] = useState({});
     const [isPositionErr, setIsPositionErr] = useState(false);
@@ -37,6 +38,35 @@ const UserResume = () => {
     const [workingLocationErrMsg, setWorkingLocationErrMsg] = useState({});
     const [isWorkingLocationErr, setIsWorkingLocationErr] = useState(false);
     const [allProvinces, setAllProvinces] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleUpdateResume = async () => {
+        // const isCompanyNameValid = fullNameValidator(companyName, setIsCompanyNameErr, setCompanyNameErrMsg);
+        // const isCompanySizeValid = numberValidator(companySize, setIsCompanySizeErr, setCompanySizeErrMsg);
+        // const isPositionValid = dropListValidator(position, setIsPositionErr, setPositionErrMsg);
+        // const isProvinceValid = dropListValidator(province, setIsProvinceErr, setProvinceErrMsg);
+        // if (!isCompanyNameValid || !isCompanySizeValid || !isPositionValid || !isProvinceValid) return;
+        // setIsLoading(true);
+        // const jsonObject = new Function('return ' + province)();
+        // const data = {
+        //     companyName,
+        //     companySize,
+        //     position,
+        //     companyAddress: { district, jsonObject },
+        //     introduction,
+        // };
+        // const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/company/update`, data, {
+        //     headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+        // });
+        // if (res?.data?.code === 200) {
+        //     setIsLoading(false);
+        //     setReRender(!reRender);
+        //     return success(res?.data?.message);
+        // } else {
+        //     setIsLoading(false);
+        //     return error(res?.data?.message);
+        // }
+    };
 
     useEffect(() => {
         const fetchProvinces = async () => {
@@ -93,7 +123,7 @@ const UserResume = () => {
                 </select>
                 <p className="text-red-600 text-[1.3rem]">{positionErrMsg.jobPosition}</p>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 mt-3">
                 <label className="font-semibold text-[1.5rem]">
                     Ngành nghề<span className="text-[1.8rem] text-red-600">*</span>
                 </label>
@@ -107,7 +137,7 @@ const UserResume = () => {
                     isErr={isCareerErr}
                 />
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 mt-3">
                 <label className="font-semibold text-[1.5rem]">
                     Kỹ năng<span className="text-[1.8rem] text-red-600">*</span>
                 </label>
@@ -121,7 +151,7 @@ const UserResume = () => {
                     isErr={isSkillErr}
                 />
             </div>
-            <div className="space-y-4 mt-7">
+            <div className="space-y-4 mt-3">
                 <label className="font-semibold text-[1.5rem]">
                     Kinh nghiệm<span className="text-[1.8rem] text-red-600">*</span>
                 </label>
@@ -145,7 +175,7 @@ const UserResume = () => {
                 </select>
                 <p className="text-red-600 text-[1.3rem]">{expErrMsg.jobExp}</p>
             </div>
-            <div className="space-y-4 mt-7">
+            <div className="space-y-4 mt-3">
                 <label className="font-semibold text-[1.5rem]">
                     Mức lương<span className="text-[1.8rem] text-red-600">*</span>
                 </label>
@@ -168,7 +198,7 @@ const UserResume = () => {
                 </select>
                 <p className="text-red-600 text-[1.3rem]">{salaryRangeErrMsg.jobSalaryRange}</p>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 mt-3">
                 <label className="font-semibold text-[1.5rem]">
                     Địa điểm làm việc<span className="text-[1.8rem] text-red-600">*</span>
                 </label>
@@ -182,8 +212,17 @@ const UserResume = () => {
                     isErr={isWorkingLocationErr}
                 />
             </div>
+            <div className="flex justify-end">
+                <button
+                    onClick={handleUpdateResume}
+                    className="flex items-center justify-center gap-3 w-fit bg-[var(--primary-color)] text-white font-medium px-7 py-3 mt-7 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
+                >
+                    {isLoading && <Loading />}
+                    <span>Lưu</span>
+                </button>
+            </div>
         </div>
     );
 };
 
-export default UserResume;
+export default UserResumeForm;

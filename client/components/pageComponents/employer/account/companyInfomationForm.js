@@ -7,7 +7,7 @@ import axios from 'axios';
 import Loading from '@/components/loading';
 import { success, error } from '@/utils/toastMessage';
 
-const CompanyInfomation = () => {
+const CompanyInfomationForm = () => {
     const [companyName, setCompanyName] = useState('');
     const [companyNameErrMsg, setCompanyNameErrMsg] = useState({});
     const [isCompanyNameErr, setIsCompanyNameErr] = useState(false);
@@ -267,4 +267,4 @@ const CompanyInfomation = () => {
     );
 };
 
-export default CompanyInfomation;
+export default CompanyInfomationForm;

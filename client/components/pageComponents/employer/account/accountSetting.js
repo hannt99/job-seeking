@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import { FaLock, FaUser, FaBuilding } from 'react-icons/fa6';
 import ChangePasswordForm from '../../changePasswordForm';
-import UserInfomation from '../../userInfomation';
-import CompanyInfomation from './companyInfomation';
+import UserInfomationForm from '../../userInfomationForm';
+import CompanyInfomationForm from './companyInfomationForm';
 
 const AccountSetting = () => {
     const [tab, setTab] = useState('cp');
@@ -49,8 +49,8 @@ const AccountSetting = () => {
                 </ul>
                 <div className="md:col-span-3 bg-white">
                     {tab === 'cp' && <ChangePasswordForm />}
-                    {tab === 'ui' && <UserInfomation />}
-                    {tab === 'ci' && <CompanyInfomation />}
+                    {tab === 'ui' && <UserInfomationForm />}
+                    {tab === 'ci' && <CompanyInfomationForm />}
                 </div>
             </div>
         </div>
