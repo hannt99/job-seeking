@@ -18,7 +18,7 @@ connectDb();
 // Middlewares
 app.use(
     cors({
-        origin: '*',
+        origin: process.env.REACT_APP_BASE_URL,
         credentials: true,
     }),
 );
