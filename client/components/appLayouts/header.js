@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill } from 'react-icons/ri';
 import { TbWorldUpload } from 'react-icons/tb';
@@ -8,12 +8,14 @@ import axios from 'axios';
 import Link from 'next/link';
 import CheckRole from '../pageComponents/auththentications/checkRole';
 import { success, error } from '@/utils/toastMessage';
+import { UserAvatarContext } from './defaultLayout';
 import Auth from '@/utils/auth';
 
 const Header = () => {
     const [registerOpen, setRegisterOpen] = useState(false);
     const [currUser, setCurrUser] = useState({});
 
+    const { isChangeUserAvatar } = useContext(UserAvatarContext);
     const router = useRouter();
     const isAuth = Auth(typeof window !== 'undefined' && localStorage.getItem('accessToken'));
 
@@ -44,7 +46,7 @@ const Header = () => {
             }
         };
         fetchUser();
-    }, [isAuth]);
+    }, [isAuth, isChangeUserAvatar]);
 
     useEffect(() => {
         registerOpen && (document.body.style.overflow = 'hidden');

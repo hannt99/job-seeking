@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import { usePathname } from 'next/navigation';
 import axios from 'axios';
 import FormData from 'form-data';
 import { fullNameValidator, dropListValidator, phoneValidator } from '@/utils/formValidation';
 import Loading from '@/components/loading';
 import { success, error } from '@/utils/toastMessage';
+import { UserAvatarContext } from '../appLayouts/defaultLayout';
 
 const UserInfomation = () => {
     const [email, setEmail] = useState('');
@@ -23,6 +24,8 @@ const UserInfomation = () => {
     const [avatar, setAvatar] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [reRender, setReRender] = useState(false);
+
+    const { isChangeUserAvatar, setIsChangeUserAvatar } = useContext(UserAvatarContext);
 
     const ref = useRef();
     const pathname = usePathname();
@@ -47,7 +50,6 @@ const UserInfomation = () => {
         if (res?.data?.code === 200) {
             setIsLoading(false);
             setReRender(!reRender);
-            ref.current.value = '';
             return success(res?.data?.message);
         } else {
             setIsLoading(false);
@@ -65,6 +67,8 @@ const UserInfomation = () => {
         });
         if (res?.data?.code === 200) {
             setReRender(!reRender);
+            ref.current.value = '';
+            setIsChangeUserAvatar(!isChangeUserAvatar);
             return success(res?.data?.message);
         } else {
             return error(res?.data?.message);

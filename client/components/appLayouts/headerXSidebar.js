@@ -1,15 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { RiLogoutBoxLine, RiArrowDropDownFill } from 'react-icons/ri';
 import axios from 'axios';
 import { success, error } from '@/utils/toastMessage';
+import { UserAvatarContext } from './defaultLayout';
 
 const HeaderXSidebar = () => {
     const [currUser, setCurrUser] = useState({});
 
     const router = useRouter();
+    const { isChangeUserAvatar } = useContext(UserAvatarContext);
 
     const handleLogout = async () => {
         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/signout`, {
@@ -37,7 +39,7 @@ const HeaderXSidebar = () => {
             }
         };
         fetchUser();
-    }, []);
+    }, [isChangeUserAvatar]);
 
     return (
         <>

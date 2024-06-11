@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import { usePathname } from 'next/navigation';
 import Header from '@/components/appLayouts/header';
 import HeaderXSidebar from './headerXSidebar';
@@ -9,9 +9,12 @@ import Sidebar from './sidebar';
 import { FaBars } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
 
+export const UserAvatarContext = createContext();
+
 const DefaultLayout = ({ main }) => {
     const [toggleSidebar, setToggleSidebar] = useState(false);
-    const [loading, setLoading] = useState('true');
+    const [loading, setLoading] = useState(true);
+    const [isChangeUserAvatar, setIsChangeUserAvatar] = useState(false);
 
     const pathname = usePathname();
 
@@ -40,7 +43,7 @@ const DefaultLayout = ({ main }) => {
     if (loading) return <div className="h-screen"></div>;
 
     return (
-        <>
+        <UserAvatarContext.Provider value={{ isChangeUserAvatar, setIsChangeUserAvatar }}>
             {checkPathname() ? (
                 <div className="relative flex w-full h-screen overflow-auto bg-multiply">
                     <div className="py-5 m-auto">{main}</div>
@@ -87,7 +90,7 @@ const DefaultLayout = ({ main }) => {
                     </div>
                 </div>
             )}
-        </>
+        </UserAvatarContext.Provider>
     );
 };
 
