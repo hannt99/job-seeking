@@ -10,7 +10,7 @@ const ResumeSchema = new Schema(
             require: true,
             unique: true,
         },
-        position: {
+        jobPosition: {
             type: String,
             trim: true,
             require: true,
@@ -41,7 +41,7 @@ const ResumeSchema = new Schema(
             default: '',
         },
         workingLocation: {
-            type: String,
+            type: Array,
             trim: true,
             require: true,
             default: '',

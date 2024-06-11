@@ -103,7 +103,6 @@ const CompanyInfomation = () => {
                 headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
             });
 
-            console.log(res);
             if (res?.data?.code === 200) {
                 setCompanyName(res?.data?.company?.companyName);
                 setCompanySize(res?.data?.company?.companySize);
