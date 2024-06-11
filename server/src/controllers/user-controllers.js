@@ -72,3 +72,27 @@ export const changeAvatarController = async (req, res) => {
         console.log(error);
     }
 };
+
+// Change user appearance controller
+export const changeAppearanceController = async (req, res) => {
+    try {
+        const isAppeared = req.body.isAppeared;
+        await User.findByIdAndUpdate(req.user._id, { isAppeared });
+        res.status(200).json({ code: 200, message: !isAppeared ? 'Đã ẩn hồ sơ' : 'Hồ sơ đã hiển thị' });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Change user seeking status controller
+export const changeSeekingStatusController = async (req, res) => {
+    try {
+        const isSeeking = req.body.isSeeking;
+        await User.findByIdAndUpdate(req.user._id, { isSeeking });
+        res.status(200).json({ code: 200, message: isSeeking ? 'Đã bật tìm việc' : 'Đã tắt tìm việc' });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};

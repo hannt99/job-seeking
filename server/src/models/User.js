@@ -41,6 +41,14 @@ const UserSchema = new Schema(
             default:
                 'https://png.pngtree.com/png-vector/20220608/ourmid/pngtree-man-avatar-isolated-on-white-background-png-image_4891418.png',
         },
+        isAppeared: {
+            type: Boolean,
+            default: false,
+        },
+        isSeeking: {
+            type: Boolean,
+            default: false,
+        },
         isActived: {
             type: Boolean,
             default: false,

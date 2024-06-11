@@ -3,6 +3,8 @@ import {
     changePasswordController,
     updateUserController,
     changeAvatarController,
+    changeAppearanceController,
+    changeSeekingStatusController,
 } from '../controllers/user-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 import upload from '../utils/uploadFile.js';
@@ -17,5 +19,11 @@ router.patch('/update', verifyToken, updateUserController);
 
 // Change avatar route
 router.post('/change-avatar', verifyToken, upload.single('avatar'), changeAvatarController);
+
+// Change user appearance route
+router.patch('/change-appearance', verifyToken, changeAppearanceController);
+
+// Change user seeking status route
+router.patch('/change-seeking-status', verifyToken, changeSeekingStatusController);
 
 export default router;
