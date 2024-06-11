@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { dropListValidator } from '@/utils/formValidation';
-import DropListMulti from '../dropListMulti';
-import Loading from '../loading';
+import DropListMulti from '@/components/dropListMulti';
+import Loading from '@/components/loading';
 import { success, error } from '@/utils/toastMessage';
 
 const careers = [
@@ -230,7 +230,7 @@ const UserResumeForm = () => {
             <div className="flex justify-end">
                 <button
                     onClick={handleUpdateResume}
-                    className="flex items-center justify-center gap-3 w-fit bg-[var(--primary-color)] text-white font-medium px-7 py-3 mt-7 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
+                    className="flex items-center justify-center gap-3 w-fit bg-[var(--primary-color)] text-white font-medium px-16 py-3 mt-7 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
                 >
                     {isLoading && <Loading />}
                     <span>Lưu</span>

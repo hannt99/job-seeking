@@ -130,7 +130,7 @@ const ChangePasswordForm = () => {
                 <div className="flex justify-end">
                     <button
                         onClick={handleChangePassword}
-                        className="flex items-center justify-center gap-3 w-fit bg-[var(--primary-color)] text-white font-medium px-7 py-3 mt-7 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
+                        className="flex items-center justify-center gap-3 w-fit bg-[var(--primary-color)] text-white font-medium px-16 py-3 mt-7 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
                     >
                         {isLoading && <Loading />}
                         <span>Lưu</span>

@@ -1,4 +1,5 @@
 import ChangePasswordForm from '../../changePasswordForm';
+import RightSide from './rightSide';
 
 const ChangePassword = () => {
     return (
@@ -6,7 +7,9 @@ const ChangePassword = () => {
             <div className="md:col-span-4 bg-white">
                 <ChangePasswordForm />
             </div>
-            <div className="md:col-span-2 bg-red-600 w-full h-[100px]"></div>
+            <div className="md:col-span-2 w-full h-fit">
+                <RightSide />
+            </div>
         </div>
     );
 };
