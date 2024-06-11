@@ -8,6 +8,6 @@ const router = Router();
 router.get('/get', verifyToken, getResumeController);
 
 // Get resume route
-router.get('/update', verifyToken, updateResumeController);
+router.patch('/update', verifyToken, updateResumeController);
 
 export default router;

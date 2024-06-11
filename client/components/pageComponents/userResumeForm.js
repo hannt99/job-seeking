@@ -5,6 +5,7 @@ import axios from 'axios';
 import { dropListValidator } from '@/utils/formValidation';
 import DropListMulti from '../dropListMulti';
 import Loading from '../loading';
+import { success, error } from '@/utils/toastMessage';
 
 const careers = [
     { value: 'Kinh doang/Bán hàng', label: 'Kinh doanh/Bán hàng' },
@@ -41,31 +42,45 @@ const UserResumeForm = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleUpdateResume = async () => {
-        // const isCompanyNameValid = fullNameValidator(companyName, setIsCompanyNameErr, setCompanyNameErrMsg);
-        // const isCompanySizeValid = numberValidator(companySize, setIsCompanySizeErr, setCompanySizeErrMsg);
-        // const isPositionValid = dropListValidator(position, setIsPositionErr, setPositionErrMsg);
-        // const isProvinceValid = dropListValidator(province, setIsProvinceErr, setProvinceErrMsg);
-        // if (!isCompanyNameValid || !isCompanySizeValid || !isPositionValid || !isProvinceValid) return;
-        // setIsLoading(true);
-        // const jsonObject = new Function('return ' + province)();
-        // const data = {
-        //     companyName,
-        //     companySize,
-        //     position,
-        //     companyAddress: { district, jsonObject },
-        //     introduction,
-        // };
-        // const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/company/update`, data, {
-        //     headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-        // });
-        // if (res?.data?.code === 200) {
-        //     setIsLoading(false);
-        //     setReRender(!reRender);
-        //     return success(res?.data?.message);
-        // } else {
-        //     setIsLoading(false);
-        //     return error(res?.data?.message);
-        // }
+        const isPositionValid = dropListValidator(position, setIsPositionErr, setPositionErrMsg);
+        const isCareerValid = dropListValidator(career, setIsCareerErr, setCareerErrMsg);
+        const isSkillValid = dropListValidator(skill, setIsSkillErr, setSkillErrMsg);
+        const isExpValid = dropListValidator(exp, setIsExpErr, setExpErrMsg);
+        const isSalaryRangeValid = dropListValidator(salaryRange, setIsSalaryRangeErr, setSalaryRangeErrMsg);
+        const isWorkingLocationValid = dropListValidator(
+            workingLocation,
+            setIsWorkingLocationErr,
+            setWorkingLocationErrMsg,
+        );
+        if (
+            !isCareerValid ||
+            !isSkillValid ||
+            !isPositionValid ||
+            !isExpValid ||
+            !isSalaryRangeValid ||
+            !isWorkingLocationValid
+        )
+            return;
+        setIsLoading(true);
+
+        const data = {
+            jobPosition: position,
+            careers: career,
+            skills: skill,
+            experience: exp,
+            salaryRange,
+            workingLocation,
+        };
+        const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/resume/update`, data, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+        });
+        if (res?.data?.code === 200) {
+            setIsLoading(false);
+            return success(res?.data?.message);
+        } else {
+            setIsLoading(false);
+            return error(res?.data?.message);
+        }
     };
 
     useEffect(() => {

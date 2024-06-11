@@ -46,7 +46,7 @@ const Header = () => {
             }
         };
         fetchUser();
-    }, [isAuth, isChangeUserAvatar]);
+    }, [isChangeUserAvatar]);
 
     useEffect(() => {
         registerOpen && (document.body.style.overflow = 'hidden');
