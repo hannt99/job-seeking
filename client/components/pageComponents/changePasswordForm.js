@@ -59,7 +59,7 @@ const ChangePasswordForm = () => {
     };
 
     return (
-        <>
+        <div className="p-7">
             <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem]">Đổi mật khẩu</h2>
             <div className="p-5 border mt-6">
                 <div className="grid grid-cols-3 mt-3">
@@ -137,7 +137,7 @@ const ChangePasswordForm = () => {
                     </button>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 export default ChangePasswordForm;

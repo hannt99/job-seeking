@@ -122,7 +122,7 @@ const CompanyInfomation = () => {
     }, [reRender]);
 
     return (
-        <>
+        <div className="p-7">
             <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem]">Thông tin công ty</h2>
             <div className="grid grid-cols-2 gap-5 mt-7">
                 <div className="flex items-center gap-5">
@@ -264,7 +264,7 @@ const CompanyInfomation = () => {
                     <span>Lưu</span>
                 </button>
             </div>
-        </>
+        </div>
     );
 };
 

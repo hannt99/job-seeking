@@ -1,6 +1,6 @@
 import Company from '../models/Company.js';
 
-// Get current user controller
+// Get company controller
 export const getCompanyController = async (req, res) => {
     try {
         const company = await Company.findOne({ userId: req.user._id });

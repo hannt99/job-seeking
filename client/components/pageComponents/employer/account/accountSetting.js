@@ -47,7 +47,7 @@ const AccountSetting = () => {
                         <span className="hidden md:block text-[1.4rem] font-medium">Thông tin công ty</span>
                     </li>
                 </ul>
-                <div className="md:col-span-3 bg-white p-7">
+                <div className="md:col-span-3 bg-white">
                     {tab === 'cp' && <ChangePasswordForm />}
                     {tab === 'ui' && <UserInfomation />}
                     {tab === 'ci' && <CompanyInfomation />}

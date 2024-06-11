@@ -96,7 +96,7 @@ const UserInfomation = () => {
     }, [reRender]);
 
     return (
-        <>
+        <div className="bg-white p-7">
             <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem]">Thông tin cá nhân</h2>
             <div className={`${pathname?.includes('/employer') ? 'grid' : 'block'} grid-cols-2 gap-5 mt-7`}>
                 {pathname?.includes('/employer') && (
@@ -203,7 +203,7 @@ const UserInfomation = () => {
                     <span>Lưu</span>
                 </button>
             </div>
-        </>
+        </div>
     );
 };
 

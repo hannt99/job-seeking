@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs';
 import { generateVerifyEmailToken, generateAccessToken, generateResetPasswordToken } from '../utils/tokenGenerator.js';
 import sendMail from '../utils/email.js';
 import jwt from 'jsonwebtoken';
+import Resume from '../models/Resume.js';
 
 // Sigin controller
 export const signInController = async (req, res) => {
@@ -43,10 +44,14 @@ export const registerController = async (req, res) => {
         const newUser = new User({ ...req.body, password: hash });
         await newUser.save();
 
+        const newResume = new Resume({ ...req.body, userId: newUser?._id });
+        await newResume.save();
+
         if (req.body.role === 0) {
             const company = await Company.findOne({ companyName: req.body.companyName });
             if (company) {
                 await User.findByIdAndDelete(newUser?._id);
+                await Resume.findOneAndDelete({ userId: newUser?._id });
                 return res.status(200).json({ code: 403, message: 'Tên công ty đã được sử dụng' });
             }
             const newCompany = new Company({ ...req.body, userId: newUser?._id });
