@@ -35,6 +35,12 @@ const CompanySchema = new Schema(
             trim: true,
             default: '',
         },
+        avatar: {
+            type: String,
+            trim: true,
+            default:
+                'https://png.pngtree.com/png-vector/20220608/ourmid/pngtree-man-avatar-isolated-on-white-background-png-image_4891418.png',
+        },
     },
     {
         timestamps: true,

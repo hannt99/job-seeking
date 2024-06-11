@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import FormData from 'form-data';
 import { fullNameValidator, numberValidator, dropListValidator } from '@/utils/formValidation';
 import axios from 'axios';
 import Loading from '@/components/loading';
@@ -23,9 +24,11 @@ const CompanyInfomation = () => {
     const [allDistricts, setAllDistricts] = useState([]);
     const [district, setDistrict] = useState('');
     const [introduction, setIntroduction] = useState('');
+    const [avatar, setAvatar] = useState('');
     const [reRender, setReRender] = useState(false);
-
     const [isLoading, setIsLoading] = useState(false);
+
+    const ref = useRef();
 
     const handleUpdateInfo = async () => {
         const isCompanyNameValid = fullNameValidator(companyName, setIsCompanyNameErr, setCompanyNameErrMsg);
@@ -54,6 +57,23 @@ const CompanyInfomation = () => {
             return success(res?.data?.message);
         } else {
             setIsLoading(false);
+            return error(res?.data?.message);
+        }
+    };
+
+    const handleChangeAvatar = async (e) => {
+        const data = new FormData();
+        const file = e.target.files[0];
+        data.append('companyAvatar', file);
+        if (!file) return;
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/company/change-avatar`, data, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+        });
+        if (res?.data?.code === 200) {
+            setReRender(!reRender);
+            ref.current.value = '';
+            return success(res?.data?.message);
+        } else {
             return error(res?.data?.message);
         }
     };
@@ -91,6 +111,7 @@ const CompanyInfomation = () => {
                 setProvince(JSON.stringify(res?.data?.company?.companyAddress?.jsonObject));
                 setDistrict(res?.data?.company?.companyAddress?.district);
                 setIntroduction(res?.data?.company?.introduction);
+                setAvatar(res?.data?.company?.avatar);
 
                 return;
             } else {
@@ -106,9 +127,21 @@ const CompanyInfomation = () => {
             <div className="grid grid-cols-2 gap-5 mt-7">
                 <div className="flex items-center gap-5">
                     <div className="w-[45px] h-[45px] border border-black rounded-full">
-                        {/* <img src={avatar} alt="user avatar" className="w-full h-full object-cover rounded-full" /> */}
+                        <img src={avatar} alt="user avatar" className="w-full h-full object-cover rounded-full" />
                     </div>
-                    <button className="font-medium hover:underline">Đổi avatar</button>
+                    <div>
+                        <input
+                            ref={ref}
+                            type="file"
+                            name="companyAvatar"
+                            id="companyAvatar"
+                            class="inputfile"
+                            onChange={(e) => handleChangeAvatar(e)}
+                        />
+                        <label for="companyAvatar" className="font-medium text-[1.5rem] cursor-pointer hover:underline">
+                            Đổi avatar
+                        </label>
+                    </div>
                 </div>
             </div>
             <div className="space-y-4 mt-3">

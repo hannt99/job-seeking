@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import axios from 'axios';
+import FormData from 'form-data';
 import { fullNameValidator, dropListValidator, phoneValidator } from '@/utils/formValidation';
 import Loading from '@/components/loading';
 import { success, error } from '@/utils/toastMessage';
@@ -23,6 +24,7 @@ const UserInfomation = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [reRender, setReRender] = useState(false);
 
+    const ref = useRef();
     const pathname = usePathname();
 
     const handleUpdateInfo = async () => {
@@ -45,9 +47,26 @@ const UserInfomation = () => {
         if (res?.data?.code === 200) {
             setIsLoading(false);
             setReRender(!reRender);
+            ref.current.value = '';
             return success(res?.data?.message);
         } else {
             setIsLoading(false);
+            return error(res?.data?.message);
+        }
+    };
+
+    const handleChangeAvatar = async (e) => {
+        const data = new FormData();
+        const file = e.target.files[0];
+        data.append('avatar', file);
+        if (!file) return;
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/user/change-avatar`, data, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+        });
+        if (res?.data?.code === 200) {
+            setReRender(!reRender);
+            return success(res?.data?.message);
+        } else {
             return error(res?.data?.message);
         }
     };
@@ -70,7 +89,7 @@ const UserInfomation = () => {
             }
         };
         fetchUser();
-    }, []);
+    }, [reRender]);
 
     return (
         <>
@@ -81,7 +100,19 @@ const UserInfomation = () => {
                         <div className="w-[45px] h-[45px] border border-black rounded-full">
                             <img src={avatar} alt="user avatar" className="w-full h-full object-cover rounded-full" />
                         </div>
-                        <button className="font-medium hover:underline">Đổi avatar</button>
+                        <div>
+                            <input
+                                ref={ref}
+                                type="file"
+                                name="avatar"
+                                id="avatar"
+                                class="inputfile"
+                                onChange={(e) => handleChangeAvatar(e)}
+                            />
+                            <label for="avatar" className="font-medium text-[1.5rem] cursor-pointer hover:underline">
+                                Đổi avatar
+                            </label>
+                        </div>
                     </div>
                 )}
                 <div className="space-y-4">
