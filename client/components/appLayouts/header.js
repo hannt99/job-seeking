@@ -4,6 +4,8 @@ import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill } from 'react-icons/ri';
 import { TbWorldUpload } from 'react-icons/tb';
+import { IoSearchOutline, IoHeartOutline } from 'react-icons/io5';
+import { BsSuitcaseLg, BsFire } from 'react-icons/bs';
 import axios from 'axios';
 import Link from 'next/link';
 import CheckRoleRegister from '../common/checkRoleRegister';
@@ -55,8 +57,66 @@ const Header = () => {
 
     return (
         <>
-            <div className="flex items-center justify-between w-[360px] md:w-[690px] lg:w-[960px] xl:w-[1120px] min-h-[60px]">
-                <div className="text-[2rem] text-[var(--primary-color)] font-semibold">TimViecNhanh</div>
+            <div className="flex items-center justify-between w-[360px] md:w-[690px] lg:w-[960px] xl:w-[1120px] h-[60px]">
+                <div className="flex items-center gap-20 h-full">
+                    <div className="text-[2rem] text-[var(--primary-color)] font-semibold">TimViecNhanh</div>
+                    <ul className="flex items-center font-semibold text-[1.5rem] tracking-wide h-full">
+                        <li className="group relative h-full">
+                            <div className="flex items-center px-4 h-full cursor-pointer hover:text-[var(--primary-color)] transition-all text-[var(--primary-color)]">
+                                Việc làm
+                            </div>
+                            <ul className="hidden group-hover:block absolute top-[calc(100%-8px)] left-0 w-[400px] bg-white text-[1.5rem] border-t-4 border-[var(--primary-hover-color)] arrow-top p-6 custom-shadow-v1 space-y-3 rounded-lg">
+                                <li>
+                                    <Link
+                                        href="#"
+                                        className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                    >
+                                        <IoSearchOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                        <span>Tìm việc làm</span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <hr></hr>
+                                </li>
+                                <li>
+                                    <Link
+                                        href="#"
+                                        className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                    >
+                                        <BsSuitcaseLg className="text-[2rem] text-[var(--primary-color)]" />
+                                        <span>Việc làm đã ứng tuyển</span>
+                                        <BsFire className="text-[2rem] text-orange-600" />
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href="#"
+                                        className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                    >
+                                        <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                        <span>Việc làm đã lưu</span>
+                                    </Link>
+                                </li>
+                            </ul>
+                        </li>
+                        <li className="h-full">
+                            <Link
+                                href="#"
+                                className="flex items-center px-4 h-full hover:text-[var(--primary-color)] transition-all"
+                            >
+                                Công ty
+                            </Link>
+                        </li>
+                        <li className="h-full">
+                            <Link
+                                href="#"
+                                className="flex items-center px-4 h-full hover:text-[var(--primary-color)] transition-all"
+                            >
+                                Công cụ
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
                 {isAuth?.status === false && (
                     <div className="flex items-center gap-3">
                         <Link

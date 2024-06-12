@@ -84,3 +84,14 @@ select {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
 }
+
+.arrow-top::after {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 3px);
+    left: 10%;
+    margin-left: -6px;
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent var(--primary-hover-color) transparent;
+}

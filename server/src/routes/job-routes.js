@@ -5,6 +5,7 @@ import {
     getJobController,
     getAllJobByEmployerController,
     deleteJobByEmployerController,
+    getAllJobController,
 } from '../controllers/job-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 import { isEmployer } from '../middlewares/role.js';
@@ -25,5 +26,8 @@ router.get('/get-all-by-employer', verifyToken, isEmployer, getAllJobByEmployerC
 
 // Delete job by employer route
 router.delete('/delete/:jobId', verifyToken, isEmployer, deleteJobByEmployerController);
+
+// Get all job route
+router.delete('/get-all', getAllJobController);
 
 export default router;

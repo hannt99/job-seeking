@@ -81,10 +81,10 @@ const DefaultLayout = ({ main }) => {
                 </>
             ) : (
                 <div className="flex flex-col h-screen">
-                    <div className="flex justify-center">
+                    <div className="fixed top-0 left-0 right-0 flex justify-center bg-white shadow-md">
                         <Header />
                     </div>
-                    <div className="flex flex-col flex-1 items-center bg-[#f4f6fb]">{main}</div>
+                    <div className="flex flex-col flex-1 items-center bg-[#f4f6fb] pt-[60px]">{main}</div>
                     <div className="flex justify-center">
                         <Footer />
                     </div>

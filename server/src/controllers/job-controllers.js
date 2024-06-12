@@ -86,3 +86,14 @@ export const deleteJobByEmployerController = async (req, res) => {
         console.log(error);
     }
 };
+
+// Get all job controller
+export const getAllJobController = async (req, res) => {
+    try {
+        const jobs = await Job.find();
+        res.status(200).json({ code: 200, message: 'Thành công', jobs });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
