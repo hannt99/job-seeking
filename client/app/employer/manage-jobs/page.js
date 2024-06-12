@@ -1,5 +1,7 @@
+import ManageJobs from '@/components/pageComponents/employer/job/manageJobs';
+
 const page = () => {
-    return <div>Manage jobs</div>;
+    return <ManageJobs />;
 };
 
 export default page;

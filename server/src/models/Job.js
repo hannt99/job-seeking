@@ -71,6 +71,10 @@ const JobSchema = new Schema(
             trim: true,
             default: 'Đang tuyển',
         },
+        companyAvatar: {
+            type: String,
+            trim: true,
+        },
     },
     {
         timestamps: true,

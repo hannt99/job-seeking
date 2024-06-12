@@ -61,7 +61,7 @@ const Sidebar = () => {
                             <span className="text-[2.4rem]">
                                 <CiBoxList />
                             </span>
-                            <span>Quản lý việc làm</span>
+                            <span>Quản lý công việc</span>
                         </Link>
                     </li>
                     <li>

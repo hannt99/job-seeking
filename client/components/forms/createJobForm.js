@@ -24,7 +24,7 @@ const skills = [
     { value: 'React', label: 'React' },
 ];
 
-const CreateJobForm = () => {
+const CreateJobForm = ({ formTitle }) => {
     const [jobTitle, setJobTitle] = useState('');
     const [jobTitleErrMsg, setJobTitleErrMsg] = useState({});
     const [isJobTitleErr, setIsJobTitleErr] = useState(false);
@@ -117,7 +117,7 @@ const CreateJobForm = () => {
     return (
         <div className="p-10">
             <div className="bg-white p-7">
-                <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem]">Hồ sơ việc làm</h2>
+                <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem] mb-5">{formTitle}</h2>
                 <div className="block md:grid grid-cols-2 gap-5">
                     <div className="space-y-4 mt-7">
                         <label className="font-semibold text-[1.5rem]">
