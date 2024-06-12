@@ -5,7 +5,7 @@ import Link from 'next/link';
 import axios from 'axios';
 import { passwordValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
-import Loading from '@/components/loading';
+import Loading from '@/components/common/loading';
 
 const ResetPassword = () => {
     const [password, setPassword] = useState('');

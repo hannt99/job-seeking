@@ -1,6 +1,6 @@
-import UserInfomationForm from '../../userInfomationForm';
+import UserInfomationForm from '@/components/forms/userInfomationForm';
 import RightSide from './rightSide';
-import UserResumeForm from './userResumeForm';
+import UserResumeForm from '@/components/forms/userResumeForm';
 
 const SettingUserInfomation = () => {
     return (

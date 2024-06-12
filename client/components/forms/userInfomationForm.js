@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import axios from 'axios';
 import FormData from 'form-data';
 import { fullNameValidator, dropListValidator, phoneValidator } from '@/utils/formValidation';
-import Loading from '@/components/loading';
+import Loading from '@/components/common/loading';
 import { success, error } from '@/utils/toastMessage';
 import { UserAvatarContext } from '../appLayouts/defaultLayout';
 
@@ -49,6 +49,7 @@ const UserInfomationForm = () => {
         });
         if (res?.data?.code === 200) {
             setIsLoading(false);
+            setIsChangeUserAvatar(!isChangeUserAvatar);
             setReRender(!reRender);
             return success(res?.data?.message);
         } else {

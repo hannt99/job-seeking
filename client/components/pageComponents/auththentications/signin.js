@@ -6,8 +6,8 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { emailValidator, passwordValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
-import Loading from '@/components/loading';
-import CheckRole from './checkRole';
+import Loading from '@/components/common/loading';
+import CheckRoleRegister from '@/components/common/checkRoleRegister';
 
 const Signin = () => {
     const [registerOpen, setRegisterOpen] = useState(false);
@@ -124,7 +124,7 @@ const Signin = () => {
                     </div>
                 </div>
             </div>
-            {registerOpen && <CheckRole setRegisterOpen={setRegisterOpen} />}
+            {registerOpen && <CheckRoleRegister setRegisterOpen={setRegisterOpen} />}
         </>
     );
 };

@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import FormData from 'form-data';
 import { fullNameValidator, numberValidator, dropListValidator } from '@/utils/formValidation';
 import axios from 'axios';
-import Loading from '@/components/loading';
+import Loading from '@/components/common/loading';
 import { success, error } from '@/utils/toastMessage';
 
 const CompanyInfomationForm = () => {

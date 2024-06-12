@@ -6,7 +6,7 @@ import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill } from 'react-
 import { TbWorldUpload } from 'react-icons/tb';
 import axios from 'axios';
 import Link from 'next/link';
-import CheckRole from '../pageComponents/auththentications/checkRole';
+import CheckRoleRegister from '../common/checkRoleRegister';
 import { success, error } from '@/utils/toastMessage';
 import { UserAvatarContext } from './defaultLayout';
 import Auth from '@/utils/auth';
@@ -157,7 +157,7 @@ const Header = () => {
                     </div>
                 )}
             </div>
-            {registerOpen && <CheckRole setRegisterOpen={setRegisterOpen} />}
+            {registerOpen && <CheckRoleRegister setRegisterOpen={setRegisterOpen} />}
         </>
     );
 };

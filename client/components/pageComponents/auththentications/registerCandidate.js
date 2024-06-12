@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { fullNameValidator, emailValidator, passwordValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
-import Loading from '@/components/loading';
+import Loading from '@/components/common/loading';
 
 const RegisterCandidate = () => {
     const [fullName, setFullName] = useState('');

@@ -13,7 +13,7 @@ import {
     dropListValidator,
 } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
-import Loading from '@/components/loading';
+import Loading from '@/components/common/loading';
 
 const RegisterEmployer = () => {
     const [fullName, setFullName] = useState('');

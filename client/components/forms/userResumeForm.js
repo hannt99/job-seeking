@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { dropListValidator } from '@/utils/formValidation';
-import DropListMulti from '@/components/dropListMulti';
-import Loading from '@/components/loading';
+import DropListMulti from '@/components/common/dropListMulti';
+import Loading from '@/components/common/loading';
 import { success, error } from '@/utils/toastMessage';
 
 const careers = [

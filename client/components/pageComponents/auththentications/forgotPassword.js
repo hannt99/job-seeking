@@ -5,7 +5,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { emailValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
-import Loading from '@/components/loading';
+import Loading from '@/components/common/loading';
 
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');

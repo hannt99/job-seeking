@@ -1,7 +1,7 @@
 import { FaXmark } from 'react-icons/fa6';
 import Link from 'next/link';
 
-const CheckRole = ({ setRegisterOpen }) => {
+const CheckRoleRegister = ({ setRegisterOpen }) => {
     return (
         <div
             onClick={() => setRegisterOpen(false)}
@@ -66,4 +66,4 @@ const CheckRole = ({ setRegisterOpen }) => {
     );
 };
 
-export default CheckRole;
+export default CheckRoleRegister;

@@ -84,7 +84,7 @@ const RightSide = () => {
             }
         };
         fetchUser();
-    }, [reRender]);
+    }, [reRender, isChangeUserAvatar]);
 
     return (
         <div className="w-full bg-white custom-shadow-v1 p-7 space-y-5">

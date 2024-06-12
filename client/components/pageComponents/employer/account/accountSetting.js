@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import { FaLock, FaUser, FaBuilding } from 'react-icons/fa6';
-import ChangePasswordForm from '../../changePasswordForm';
-import UserInfomationForm from '../../userInfomationForm';
-import CompanyInfomationForm from './companyInfomationForm';
+import ChangePasswordForm from '@/components/forms/changePasswordForm';
+import UserInfomationForm from '@/components/forms/userInfomationForm';
+import CompanyInfomationForm from '@/components/forms/companyInfomationForm';
 
 const AccountSetting = () => {
     const [tab, setTab] = useState('cp');

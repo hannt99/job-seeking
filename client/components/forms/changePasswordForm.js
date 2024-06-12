@@ -4,7 +4,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import { passwordValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
-import Loading from '@/components/loading';
+import Loading from '@/components/common/loading';
 
 const ChangePasswordForm = () => {
     const [oldPassword, setOldPassword] = useState('');
