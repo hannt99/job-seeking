@@ -94,7 +94,7 @@ const Header = () => {
                             <div className="text-[2.4rem]">
                                 <RiArrowDropDownFill />
                             </div>
-                            <div className="group-hover:block hidden absolute top-[100%] right-0 w-[300px] rounded-lg transition-all cursor-default">
+                            <div className="group-hover:block hidden absolute top-[100%] right-0 w-[300px] rounded-lg transition-all cursor-default z-[999]">
                                 <ul className="bg-white shadow-md border border-[#cccccc]/30 rounded-lg pb-3">
                                     <li className="px-6 py-4 rounded-lg">
                                         <Link

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const ResumeSchema = new Schema(
+const JobSchema = new Schema(
     {
         userId: {
             type: String,
@@ -10,37 +10,49 @@ const ResumeSchema = new Schema(
             require: true,
             unique: true,
         },
+        jobTitle: {
+            type: String,
+            trim: true,
+            require: true,
+            default: '',
+        },
+        jobDesc: {
+            type: String,
+            trim: true,
+            require: true,
+            default: '',
+        },
         jobPosition: {
             type: String,
             trim: true,
             require: true,
             default: '',
         },
-        careers: {
+        jobCareer: {
             type: Array,
             trim: true,
             require: true,
             default: [],
         },
-        skills: {
+        jobSkill: {
             type: Array,
             trim: true,
             require: true,
             default: [],
         },
-        experience: {
+        jobExp: {
             type: String,
             trim: true,
             require: true,
             default: '',
         },
-        salaryRange: {
+        jobSalaryRange: {
             type: String,
             trim: true,
             require: true,
             default: '',
         },
-        workingLocation: {
+        jobWorkingLocation: {
             type: Array,
             trim: true,
             require: true,
@@ -52,4 +64,4 @@ const ResumeSchema = new Schema(
     },
 );
 
-export default mongoose.model('Resume', ResumeSchema);
+export default mongoose.model('Job', JobSchema);
