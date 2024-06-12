@@ -29,23 +29,25 @@ body {
 /* Pagination */
 .pagination {
     width: fit-content;
-    background: #3a3a3a;
+    background: var(--secondary-color);
     padding-left: 1rem;
     margin: 1rem 0;
     border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
 .pagination button {
     margin-right: 0.5rem;
     cursor: pointer;
     padding: 4px 8px;
+    font-weight: 600;
 }
 
 .pagination button:disabled {
-    background-color: #333;
     border: 1px solid var(--primary-color);
     color: var(--primary-color);
     cursor: not-allowed;
+    font-weight: 600;
 }
 
 /* Input file */

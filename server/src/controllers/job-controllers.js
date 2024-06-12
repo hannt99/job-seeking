@@ -20,7 +20,7 @@ export const createJobController = async (req, res) => {
 export const updateJobController = async (req, res) => {
     try {
         await Job.findOneAndUpdate(
-            { userId: req.user._id },
+            { _id: req.params.jobId },
             { $set: req.body },
             {
                 new: true,
@@ -33,19 +33,54 @@ export const updateJobController = async (req, res) => {
     }
 };
 
-// Get all job by specific employer controller
-export const getAllJobBySpecificEmployerController = async (req, res) => {
+// Get job controller
+export const getJobController = async (req, res) => {
     try {
-        let { page, limit, userId } = req.query;
+        const job = await Job.findById(req.params.jobId);
+        res.status(200).json({ code: 200, message: 'Success', job });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
 
-        const queryFilters = {};
+// Get all job by specific employer controller
+export const getAllJobByEmployerController = async (req, res) => {
+    try {
+        let { page, limit, search } = req.query;
 
-        if (userId) {
-            queryFilters.userId = userId;
+        let queryFilters = {};
+
+        if (search) {
+            queryFilters = { jobTitle: { $regex: search, $options: 'i' } };
         }
 
-        const jobs = Job.find(queryFilters);
-        res.status(200).json({ code: 200, message: 'Cập nhật thành công', jobs });
+        if (!page) page = 1;
+        if (!limit) limit = 5;
+        const skip = (page - 1) * limit;
+
+        const jobs = await Job.find({ ...queryFilters, userId: req.user._id })
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+        const totalJobs = await Job.countDocuments({ ...queryFilters, userId: req.user._id });
+        const totalPages = Math.ceil(totalJobs / limit);
+        res.status(200).json({ code: 200, message: 'Thành công', jobs, totalPages });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Delete job by employer controller
+export const deleteJobByEmployerController = async (req, res) => {
+    try {
+        const jobId = req.params.jobId;
+        const job = await Job.findById(jobId);
+        if (!job) return res.status(200).json({ code: 404, message: 'Không tìm thấy công việc' });
+
+        await Job.findByIdAndDelete(jobId);
+        res.status(200).json({ code: 200, message: 'Xóa thành công' });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);

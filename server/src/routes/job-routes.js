@@ -2,7 +2,9 @@ import { Router } from 'express';
 import {
     createJobController,
     updateJobController,
-    getAllJobBySpecificEmployerController,
+    getJobController,
+    getAllJobByEmployerController,
+    deleteJobByEmployerController,
 } from '../controllers/job-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 import { isEmployer } from '../middlewares/role.js';
@@ -13,9 +15,15 @@ const router = Router();
 router.post('/create', verifyToken, isEmployer, createJobController);
 
 // Update job route
-router.put('/update', verifyToken, isEmployer, updateJobController);
+router.put('/update/:jobId', verifyToken, isEmployer, updateJobController);
 
-// Get all job by specific employer route
-router.put('/get-all', verifyToken, isEmployer, getAllJobBySpecificEmployerController);
+// Get job route
+router.get('/get/:jobId', getJobController);
+
+// Get all job by employer route
+router.get('/get-all-by-employer', verifyToken, isEmployer, getAllJobByEmployerController);
+
+// Delete job by employer route
+router.delete('/delete/:jobId', verifyToken, isEmployer, deleteJobByEmployerController);
 
 export default router;

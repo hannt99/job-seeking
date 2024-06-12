@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 const JoditEditor = dynamic(() => import('jodit-react'), {
@@ -54,6 +55,7 @@ const CreateJobForm = ({ formTitle }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const handleCreateJob = async () => {
         const isTitleValid = fullNameValidator(jobTitle, setIsJobTitleErr, setJobTitleErrMsg);
@@ -70,6 +72,7 @@ const CreateJobForm = ({ formTitle }) => {
         );
         if (
             !isTitleValid ||
+            !isDeadlineValid ||
             !isCareerValid ||
             !isSkillValid ||
             !isPositionValid ||
@@ -82,6 +85,7 @@ const CreateJobForm = ({ formTitle }) => {
 
         const data = {
             jobTitle,
+            jobDeadline,
             jobDesc,
             jobPosition: position,
             jobCareers: career,
@@ -90,9 +94,22 @@ const CreateJobForm = ({ formTitle }) => {
             jobSalaryRange: salaryRange,
             jobWorkingLocation: workingLocation,
         };
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/job/create`, data, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
-        });
+
+        let res;
+
+        if (searchParams.get('requestId')) {
+            res = await axios.put(
+                `${process.env.NEXT_PUBLIC_API_URL}/job/update/${searchParams.get('requestId')}`,
+                data,
+                {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+                },
+            );
+        } else {
+            res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/job/create`, data, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            });
+        }
         if (res?.data?.code === 200) {
             setIsLoading(false);
             router.push('/employer/manage-jobs');
@@ -113,6 +130,28 @@ const CreateJobForm = ({ formTitle }) => {
         };
         fetchProvinces();
     }, []);
+
+    useEffect(() => {
+        if (!searchParams.get('requestId')) return;
+        const fetchJob = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get/${searchParams.get('requestId')}`);
+            if (res?.data?.code === 200) {
+                setJobTitle(res?.data?.job?.jobTitle);
+                setJobDeadline(res?.data?.job?.jobDeadline);
+                setPosition(res?.data?.job?.jobPosition);
+                setCareer(res?.data?.job?.jobCareers);
+                setExp(res?.data?.job?.jobExp);
+                setSkill(res?.data?.job?.jobSkills);
+                setSalaryRange(res?.data?.job?.jobSalaryRange);
+                setWorkingLocation(res?.data?.job?.jobWorkingLocation);
+                setJobDesc(res?.data?.job?.jobDesc);
+                return;
+            } else {
+                return;
+            }
+        };
+        fetchJob();
+    }, [searchParams.get('requestId')]);
 
     return (
         <div className="p-10">
