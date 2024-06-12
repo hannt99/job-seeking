@@ -65,7 +65,7 @@ const Header = () => {
                             <div className="flex items-center px-4 h-full cursor-pointer hover:text-[var(--primary-color)] transition-all text-[var(--primary-color)]">
                                 Việc làm
                             </div>
-                            <ul className="hidden group-hover:block absolute top-[calc(100%-8px)] left-0 w-[400px] bg-white text-[1.5rem] border-t-4 border-[var(--primary-hover-color)] arrow-top p-6 custom-shadow-v1 space-y-3 rounded-lg">
+                            <ul className="hidden group-hover:block absolute top-[calc(100%-8px)] left-0 w-[400px] bg-white text-[1.5rem] border-t-4 border-[var(--primary-hover-color)] arrow-top p-6 custom-shadow-v1 space-y-3 rounded-lg z-[999]">
                                 <li>
                                     <Link
                                         href="#"

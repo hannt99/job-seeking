@@ -13,6 +13,7 @@ export const UserAvatarContext = createContext();
 
 const DefaultLayout = ({ main }) => {
     const [toggleSidebar, setToggleSidebar] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
     const [loading, setLoading] = useState(true);
     const [isChangeUserAvatar, setIsChangeUserAvatar] = useState(false);
 
@@ -35,6 +36,20 @@ const DefaultLayout = ({ main }) => {
             return false;
         }
     };
+
+    useEffect(() => {
+        const scrollPage = () => {
+            const windowHeight = window.scrollY;
+            if (windowHeight > 60) {
+                setScrolled(true);
+            } else {
+                setScrolled(false);
+            }
+        };
+        window.addEventListener('scroll', scrollPage);
+
+        return () => window.removeEventListener('scroll', scrollPage);
+    }, []);
 
     useEffect(() => {
         setLoading(false);
@@ -81,10 +96,14 @@ const DefaultLayout = ({ main }) => {
                 </>
             ) : (
                 <div className="flex flex-col h-screen">
-                    <div className="fixed top-0 left-0 right-0 flex justify-center bg-white shadow-md">
+                    <div
+                        className={`flex justify-center shadow-md bg-[#f8ede8] ${
+                            scrolled ? 'fixed top-0 left-0 right-0 z-[999] animate-fadeIn bg-white' : ''
+                        }`}
+                    >
                         <Header />
                     </div>
-                    <div className="flex flex-col flex-1 items-center bg-[#f4f6fb] pt-[60px]">{main}</div>
+                    <div className="flex flex-col flex-1 items-center bg-[#f4f6fb]">{main}</div>
                     <div className="flex justify-center">
                         <Footer />
                     </div>
