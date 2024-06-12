@@ -8,7 +8,6 @@ const JobSchema = new Schema(
             type: String,
             trim: true,
             require: true,
-            unique: true,
         },
         jobTitle: {
             type: String,
@@ -28,13 +27,13 @@ const JobSchema = new Schema(
             require: true,
             default: '',
         },
-        jobCareer: {
+        jobCareers: {
             type: Array,
             trim: true,
             require: true,
             default: [],
         },
-        jobSkill: {
+        jobSkills: {
             type: Array,
             trim: true,
             require: true,
@@ -57,6 +56,20 @@ const JobSchema = new Schema(
             trim: true,
             require: true,
             default: [],
+        },
+        jobApplicants: {
+            type: Array,
+            default: [],
+        },
+        jobDeadline: {
+            type: String,
+            trim: true,
+            default: '',
+        },
+        jobStatus: {
+            type: String,
+            trim: true,
+            default: 'Đang tuyển',
         },
     },
     {

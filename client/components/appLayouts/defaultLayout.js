@@ -70,7 +70,7 @@ const DefaultLayout = ({ main }) => {
                         <HeaderXSidebar />
                         <div
                             onClick={toggle}
-                            className="absolute top-[50%] translate-y-[-50%] left-0 w-[42px] h-[42px] flex lg:hidden items-center justify-center text-[18px] cursor-pointer"
+                            className="absolute top-[50%] translate-y-[-50%] left-[12px] w-[42px] h-[42px] flex lg:hidden items-center justify-center text-[18px] cursor-pointer"
                         >
                             <FaBars />
                         </div>

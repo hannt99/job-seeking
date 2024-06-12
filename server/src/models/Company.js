@@ -8,7 +8,6 @@ const CompanySchema = new Schema(
             type: String,
             trim: true,
             require: true,
-            unique: true,
         },
         companyName: {
             type: String,

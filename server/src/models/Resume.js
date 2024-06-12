@@ -8,7 +8,6 @@ const ResumeSchema = new Schema(
             type: String,
             trim: true,
             require: true,
-            unique: true,
         },
         jobPosition: {
             type: String,

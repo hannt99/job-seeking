@@ -55,7 +55,7 @@ const Header = () => {
 
     return (
         <>
-            <div className="flex items-center justify-between w-[360px] md:w-[690px] lg:w-[925px] xl:w-[1120px] min-h-[60px]">
+            <div className="flex items-center justify-between w-[360px] md:w-[690px] lg:w-[960px] xl:w-[1120px] min-h-[60px]">
                 <div className="text-[2rem] text-[var(--primary-color)] font-semibold">TimViecNhanh</div>
                 {isAuth?.status === false && (
                     <div className="flex items-center gap-3">
