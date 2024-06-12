@@ -71,6 +71,13 @@ select {
     padding: 8px 45px 8px 16px;
 }
 
+.truncate-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
 .truncate-2 {
     overflow: hidden;
     display: -webkit-box;
