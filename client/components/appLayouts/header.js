@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill } from 'react-icons/ri';
 import { TbWorldUpload } from 'react-icons/tb';
-import { FaBars, FaXmark } from 'react-icons/fa6';
+import { FaBars, FaXmark, FaAngleDown, FaAngleUp } from 'react-icons/fa6';
 import { IoSearchOutline, IoHeartOutline } from 'react-icons/io5';
 import { BsSuitcaseLg, BsFire } from 'react-icons/bs';
 import axios from 'axios';
@@ -18,6 +18,8 @@ const Header = () => {
     const [registerOpen, setRegisterOpen] = useState(false);
     const [currUser, setCurrUser] = useState({});
     const [navOpen, setNavOpen] = useState(false);
+    const [navJobOpen, setNavJobOpen] = useState(false);
+    const [navUserOpen, setNavUserOpen] = useState(false);
 
     const { isChangeUserAvatar } = useContext(UserAvatarContext);
     const router = useRouter();
@@ -141,7 +143,7 @@ const Header = () => {
                         </div>
                     )}
                     {isAuth?.status === true && (
-                        <div className="flex items-center gap-10">
+                        <div className="hidden lg:flex items-center gap-10">
                             {isAuth?.role === 0 && (
                                 <Link
                                     href="/employer/dashboard"
@@ -245,31 +247,132 @@ const Header = () => {
                             : 'absolute top-0 left-[-100%] h-screen w-[70%] md:w-[35%] bg-white uppercase font-semibold text-[#808080] tracking-wider text-[1.4rem] pt-10 shadow-md transition-all duration-700 opacity-0 overflow-auto'
                     }
                 >
-                    <li className="block md:hidden">
-                        <div className="flex items-center justify-center gap-3">
-                            <Link
-                                href="/signin"
-                                className="block text-[var(--primary-color)] text-[1.4rem] bg-[var(--secondary-color)] px-7 py-3 rounded-full hover:text-white hover:bg-[var(--primary-color)] transition-all"
-                            >
-                                Đăng nhập
-                            </Link>
-                            <div
-                                onClick={() => setRegisterOpen(true)}
-                                className="text-white text-[1.4rem] bg-[var(--primary-color)] px-7 py-3 rounded-full cursor-pointer hover:bg-[var(--primary-hover-color)] transition-all"
-                            >
-                                Đăng ký
+                    <li className="block lg:hidden">
+                        {isAuth?.status === false && (
+                            <div className="flex items-center justify-center gap-3">
+                                <Link
+                                    href="/signin"
+                                    className="block text-[var(--primary-color)] text-[1.4rem] bg-[var(--secondary-color)] px-7 py-3 rounded-full hover:text-white hover:bg-[var(--primary-color)] transition-all"
+                                >
+                                    Đăng nhập
+                                </Link>
+                                <div
+                                    onClick={() => setRegisterOpen(true)}
+                                    className="text-white text-[1.4rem] bg-[var(--primary-color)] px-7 py-3 rounded-full cursor-pointer hover:bg-[var(--primary-hover-color)] transition-all"
+                                >
+                                    Đăng ký
+                                </div>
                             </div>
-                        </div>
+                        )}
+                        {isAuth?.status === true && (
+                            <div
+                                onClick={() => setNavUserOpen(!navUserOpen)}
+                                className="flex items-center justify-between cursor-pointer"
+                            >
+                                <div className="flex items-center gap-3 pl-10 py-7">
+                                    <div className="w-[40px] h-[40px] border border-black rounded-full">
+                                        <img
+                                            className="w-full h-full object-cover rounded-full"
+                                            src={currUser?.avatar}
+                                            alt="user avatar"
+                                        />
+                                    </div>
+                                    <p>
+                                        <span className="block text-[var(--primary-color)]">{currUser?.fullName}</span>
+                                        <span className="block lowercase font-medium text-[#808080] text-[1.4rem]">
+                                            {currUser?.email}
+                                        </span>
+                                    </p>
+                                </div>
+                                <div className="text-[2rem] px-10 cursor-pointer">
+                                    {!navUserOpen ? <FaAngleDown /> : <FaAngleUp />}
+                                </div>
+                            </div>
+                        )}
+                        <ul className={navUserOpen ? 'block' : 'hidden'}>
+                            {isAuth?.role === 0 && (
+                                <li className="block md:hidden">
+                                    <Link
+                                        href="/employer/dashboard"
+                                        className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                                    >
+                                        <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
+                                            <TbWorldUpload className="m-auto" />
+                                        </div>
+                                        <span className="whitespace-nowrap">Đăng tuyển ngay</span>
+                                    </Link>
+                                </li>
+                            )}
+                            <li>
+                                <Link
+                                    href="/account/change-password"
+                                    className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                                >
+                                    <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
+                                        <RiLockPasswordFill className="m-auto" />
+                                    </div>
+                                    <span className="whitespace-nowrap">Đối mật khẩu</span>
+                                </Link>
+                            </li>
+                            <li
+                                onClick={handleLogout}
+                                className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                            >
+                                <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
+                                    <RiLogoutBoxLine className="m-auto" />
+                                </div>
+                                <span className="whitespace-nowrap">Đăng xuất</span>
+                            </li>
+                        </ul>
                     </li>
                     <li>
-                        <Link href="/" className="block px-10 py-7 hover:text-red-500 transition-all">
-                            Việc làm
-                        </Link>
+                        <div
+                            onClick={() => setNavJobOpen(!navJobOpen)}
+                            className="flex items-center justify-between hover:text-[var(--primary-color)] border-t border-[#cccccc]/[0.3]"
+                        >
+                            <div className="flex-1 pl-10 py-7 transition-all cursor-pointer">Việc làm</div>
+                            <div className="text-[2rem] px-10 cursor-pointer">
+                                {!navJobOpen ? <FaAngleDown /> : <FaAngleUp />}
+                            </div>
+                        </div>
+                        <ul className={navJobOpen ? 'block' : 'hidden'}>
+                            <li className="p-3">
+                                <Link
+                                    href="#"
+                                    className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                >
+                                    <IoSearchOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                    <span>Tìm việc làm</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <hr></hr>
+                            </li>
+                            <li className="p-3">
+                                <Link
+                                    href="#"
+                                    className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                >
+                                    <BsSuitcaseLg className="text-[2rem] text-[var(--primary-color)]" />
+                                    <span>Việc làm đã ứng tuyển</span>
+                                    <BsFire className="text-[2rem] text-orange-600" />
+                                </Link>
+                            </li>
+                            <li className="p-3">
+                                <Link
+                                    href="#"
+                                    className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                >
+                                    <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                    <span>Việc làm đã lưu</span>
+                                </Link>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <Link
                             href="/gioi-thieu"
-                            className="block px-10 py-7 hover:text-red-500 border-t border-[#cccccc]/[0.3] transition-all"
+                            className="block px-10 py-7 hover:text-[var(--primary-color)] border-t border-[#cccccc]/[0.3] transition-all"
                         >
                             Công ty
                         </Link>
