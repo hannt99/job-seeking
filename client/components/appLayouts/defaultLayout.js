@@ -8,6 +8,10 @@ import Footer from '@/components/appLayouts/footer';
 import Sidebar from './sidebar';
 import { FaBars } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
+import TimeAgo from 'javascript-time-ago';
+import vi from 'javascript-time-ago/locale/vi';
+
+TimeAgo.addDefaultLocale(vi);
 
 export const UserAvatarContext = createContext();
 

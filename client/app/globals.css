@@ -26,6 +26,10 @@ body {
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
+.custom-shadow-v2 {
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
 /* Pagination */
 .pagination {
     width: fit-content;
@@ -94,4 +98,21 @@ select {
     border-width: 6px;
     border-style: solid;
     border-color: transparent transparent var(--primary-hover-color) transparent;
+}
+
+/* Swiper */
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    padding-top: 10px;
+    padding-bottom: 35px;
+    padding-left: 1px;
+    padding-right: 1px;
+}
+
+.bg-home {
+    background: url('/assets/images/home-bg2.png') center / cover no-repeat;
 }
