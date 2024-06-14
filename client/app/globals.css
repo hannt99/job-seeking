@@ -116,3 +116,7 @@ select {
 .bg-home {
     background: url('/assets/images/home-bg2.png') center / cover no-repeat;
 }
+
+.bg-ads {
+    background: url('/assets/images/ads-bg-1.png') left / cover no-repeat;
+}

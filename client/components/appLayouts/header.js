@@ -96,9 +96,13 @@ const Header = () => {
                                 <li>
                                     <hr></hr>
                                 </li>
-                                <li className="hover:text-[var(--primary-color)]">
+                                <li
+                                    className={`hover:text-[var(--primary-color)] ${
+                                        pathname?.includes('/applied-job') ? 'text-[var(--primary-color)]' : ''
+                                    }`}
+                                >
                                     <Link
-                                        href="#"
+                                        href="/job/applied-job"
                                         className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
                                     >
                                         <BsSuitcaseLg className="text-[2rem] text-[var(--primary-color)]" />
@@ -106,9 +110,13 @@ const Header = () => {
                                         <BsFire className="text-[2rem] text-orange-600" />
                                     </Link>
                                 </li>
-                                <li className="hover:text-[var(--primary-color)]">
+                                <li
+                                    className={`hover:text-[var(--primary-color)] ${
+                                        pathname?.includes('/saved-job') ? 'text-[var(--primary-color)]' : ''
+                                    }`}
+                                >
                                     <Link
-                                        href="#"
+                                        href="/job/saved-job"
                                         className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
                                     >
                                         <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
@@ -364,9 +372,13 @@ const Header = () => {
                             <li>
                                 <hr></hr>
                             </li>
-                            <li className="p-3 hover:text-[var(--primary-color)]">
+                            <li
+                                className={`p-3 hover:text-[var(--primary-color)] ${
+                                    pathname?.includes('/applied-job') ? 'text-[var(--primary-color)]' : ''
+                                }`}
+                            >
                                 <Link
-                                    href="#"
+                                    href="/job/applied-job"
                                     className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
                                 >
                                     <BsSuitcaseLg className="text-[2rem] text-[var(--primary-color)]" />
@@ -374,9 +386,13 @@ const Header = () => {
                                     <BsFire className="text-[2rem] text-orange-600" />
                                 </Link>
                             </li>
-                            <li className="p-3 hover:text-[var(--primary-color)]">
+                            <li
+                                className={`p-3 hover:text-[var(--primary-color)] ${
+                                    pathname?.includes('/saved-job') ? 'text-[var(--primary-color)]' : ''
+                                }`}
+                            >
                                 <Link
-                                    href="#"
+                                    href="/job/saved-job"
                                     className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
                                 >
                                     <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
