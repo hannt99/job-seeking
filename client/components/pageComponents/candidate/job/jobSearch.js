@@ -1,9 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { AiOutlineDollar } from 'react-icons/ai';
 import { IoSearchOutline } from 'react-icons/io5';
 import { CiLocationOn } from 'react-icons/ci';
 import { BsSuitcaseLg } from 'react-icons/bs';
+import { FaFilter, FaWpforms } from 'react-icons/fa';
+import { CgTimelapse } from 'react-icons/cg';
 import Link from 'next/link';
 import axios from 'axios';
 import JobCard from '@/components/common/jobCard';
@@ -24,6 +27,7 @@ const JobSearch = () => {
     const [jobSalaryRange, setJobSalaryRange] = useState('');
     const [sort, setSort] = useState('');
     const [allJobWorkingLocation, setAllJobWorkingLocation] = useState([]);
+    const [openFilter, setOpenFilter] = useState(false);
 
     const jobTypes = ['Freelancer', 'Part time', 'Full time', 'Thời vụ'];
     const exps = ['Chưa có kinh nghiệm', 'Dưới 1 năm', '1 năm', '2 năm', '3 năm', '4 năm', '5 năm', 'Trên 5 năm'];
@@ -69,9 +73,211 @@ const JobSearch = () => {
                 </div>
             </div>
             <div className="flex justify-center w-full bg-white">
-                <div className="grid grid-cols-3 gap-8 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-20">
-                    <div className="col-span-1 space-y-8">
-                        <div className="bg-[#f4f6fb] rounded-3xl p-10 space-y-10">
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-20">
+                    <div className="xl:col-span-1 space-y-8">
+                        {openFilter && (
+                            <div
+                                onClick={() => setOpenFilter(!openFilter)}
+                                className="flex xl:hidden items-center justify-center gap-2 w-[120px] bg-red-500 text-white font-medium px-8 py-5 rounded-lg cursor-pointer"
+                            >
+                                <FaFilter />
+                                <span>Bộ lọc</span>
+                            </div>
+                        )}
+                        {openFilter && (
+                            <div className="block xl:hidden bg-[#f4f6fb] rounded-3xl p-10 space-y-10">
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-x-5 gap-y-10">
+                                    <div className="space-y-4">
+                                        <label className="font-semibold text-[1.8rem]">Từ khóa</label>
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                value={jobKeyword}
+                                                onChange={(e) => setJobKeyword(e.target.value)}
+                                                placeholder="Tên việc làm hoặc công ty"
+                                                className="block w-full text-[1.5rem] outline-none border pl-20 pr-8 py-5 rounded-lg"
+                                            />
+                                            <IoSearchOutline className="absolute top-[50%] translate-y-[-50%] left-[18px] text-[2.2rem]" />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <label className="font-semibold text-[1.8rem]">Địa điểm làm việc</label>
+                                        <div className="relative">
+                                            <select
+                                                value={jobWorkingLocation}
+                                                onChange={(e) => setJobWorkingLocation(e.target.value)}
+                                                className="block w-full text-[1.5rem] outline-none border pl-20 pr-8 py-5 bg-white rounded-lg"
+                                            >
+                                                <option value="">Tất cả tỉnh/thành phố</option>
+                                                {allJobWorkingLocation?.map((p, index) => {
+                                                    return (
+                                                        <option
+                                                            key={index}
+                                                            value={JSON.stringify({ id: p?.id, name: p?.full_name })}
+                                                        >
+                                                            {p?.full_name}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </select>
+                                            <CiLocationOn className="absolute top-[50%] translate-y-[-50%] left-[18px] text-[2.2rem]" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-x-5 gap-y-10">
+                                    <div className="space-y-4">
+                                        <label className="font-semibold text-[1.8rem]">Ngành nghề</label>
+                                        <div className="relative">
+                                            <select
+                                                value={jobCareer}
+                                                onChange={(e) => setJobCareer(e.target.value)}
+                                                className="block w-full text-[1.5rem] outline-none border pl-20 pr-8 py-5 bg-white rounded-lg"
+                                            >
+                                                {careers?.map((c, index) => {
+                                                    return (
+                                                        <option key={index} value={c?.value}>
+                                                            {c?.label}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </select>
+                                            <BsSuitcaseLg className="absolute top-[50%] translate-y-[-50%] left-[18px] text-[2.2rem]" />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <label className="font-semibold text-[1.8rem]">Hình thức</label>
+                                        <div className="hidden xl:block space-y-4">
+                                            {jobTypes?.map((jt, index) => {
+                                                return (
+                                                    <div key={index} className="flex item gap-3">
+                                                        <input
+                                                            type="radio"
+                                                            checked={jobType === jt}
+                                                            onChange={() => setJobType(jt)}
+                                                        />
+                                                        <label
+                                                            className={`text-[1.5rem] ${
+                                                                jobType === jt ? 'text-black' : 'text-[#808080]'
+                                                            }`}
+                                                        >
+                                                            {jt}
+                                                        </label>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                        <div className="block xl:hidden relative">
+                                            <select
+                                                value={jobType}
+                                                onChange={(e) => setJobType(e.target.value)}
+                                                className="block w-full text-[1.5rem] outline-none border pl-20 pr-8 py-5 bg-white rounded-lg"
+                                            >
+                                                <option value="">Tất cả hình thức</option>
+                                                {jobTypes?.map((jt, index) => {
+                                                    return (
+                                                        <option key={index} value={jt}>
+                                                            {jt}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </select>
+                                            <FaWpforms className="absolute top-[50%] translate-y-[-50%] left-[18px] text-[2.2rem]" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-x-5 gap-y-10">
+                                    <div className="space-y-4">
+                                        <label className="font-semibold text-[1.8rem]">Kinh nghiệm</label>
+                                        <div className="hidden xl:block space-y-4">
+                                            {exps?.map((ex, index) => {
+                                                return (
+                                                    <div key={index} className="flex item gap-3">
+                                                        <input
+                                                            type="radio"
+                                                            checked={jobExp === ex}
+                                                            onChange={() => setJobExp(ex)}
+                                                        />
+                                                        <label
+                                                            className={`text-[1.5rem] ${
+                                                                jobExp === ex ? 'text-black' : 'text-[#808080]'
+                                                            }`}
+                                                        >
+                                                            {ex}
+                                                        </label>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                        <div className="block xl:hidden relative">
+                                            <select
+                                                value={jobExp}
+                                                onChange={(e) => setJobExp(e.target.value)}
+                                                className="block w-full text-[1.5rem] outline-none border pl-20 pr-8 py-5 bg-white rounded-lg"
+                                            >
+                                                <option value="">Tất cả kinh nghiệm</option>
+                                                {exps?.map((je, index) => {
+                                                    return (
+                                                        <option key={index} value={je}>
+                                                            {je}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </select>
+                                            <CgTimelapse className="absolute top-[50%] translate-y-[-50%] left-[18px] text-[2.2rem]" />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <label className="font-semibold text-[1.8rem]">Mức lương</label>
+                                        <div className="hidden xl:block space-y-4">
+                                            {salaryRanges?.map((sr, index) => {
+                                                return (
+                                                    <div key={index} className="flex item gap-3">
+                                                        <input
+                                                            type="radio"
+                                                            checked={jobSalaryRange === sr}
+                                                            onChange={() => setJobSalaryRange(sr)}
+                                                        />
+                                                        <label
+                                                            className={`text-[1.5rem] ${
+                                                                jobSalaryRange === sr ? 'text-black' : 'text-[#808080]'
+                                                            }`}
+                                                        >
+                                                            {sr}
+                                                        </label>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                        <div className="block xl:hidden relative">
+                                            <select
+                                                value={jobSalaryRange}
+                                                onChange={(e) => setJobSalaryRange(e.target.value)}
+                                                className="block w-full text-[1.5rem] outline-none border pl-20 pr-8 py-5 bg-white rounded-lg"
+                                            >
+                                                <option value="">Tất cả mức lương</option>
+                                                {salaryRanges?.map((jsr, index) => {
+                                                    return (
+                                                        <option key={index} value={jsr}>
+                                                            {jsr}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </select>
+                                            <AiOutlineDollar className="absolute top-[50%] translate-y-[-50%] left-[18px] text-[2.2rem]" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 py-5">
+                                    <button className="block w-full font-medium text-center bg-[var(--primary-color)] text-white py-3 rounded-lg hover:bg-[var(--primary-hover-color)]">
+                                        Áp dụng
+                                    </button>
+                                    <button className="block w-full font-medium text-center bg-red-600 text-white py-3 rounded-lg hover:bg-red-700">
+                                        Xóa bộ lọc
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                        <div className="hidden xl:block bg-[#f4f6fb] rounded-3xl p-10 space-y-10">
                             <div className="space-y-4">
                                 <label className="font-semibold text-[1.8rem]">Từ khóa</label>
                                 <div className="relative">
@@ -190,7 +396,7 @@ const JobSearch = () => {
                                     );
                                 })}
                             </div>
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-3 py-5">
                                 <button className="block w-full font-medium text-center bg-[var(--primary-color)] text-white py-3 rounded-lg hover:bg-[var(--primary-hover-color)]">
                                     Áp dụng
                                 </button>
@@ -215,12 +421,22 @@ const JobSearch = () => {
                             <div className="w-full h-full bg-ads"></div>
                         </div>
                     </div>
-                    <div className="col-span-2">
-                        <div className="flex justify-end mb-14">
+                    <div className="xl:col-span-2">
+                        <div className="flex justify-between mb-14">
+                            {!openFilter && (
+                                <div
+                                    onClick={() => setOpenFilter(!openFilter)}
+                                    className="flex xl:hidden items-center justify-center gap-2 w-[120px] bg-red-500 text-white font-medium px-8 py-5 rounded-lg cursor-pointer"
+                                >
+                                    <FaFilter />
+                                    <span>Bộ lọc</span>
+                                </div>
+                            )}
+                            <div></div>
                             <select
                                 value={sort}
                                 onChange={(e) => setSort(e.target.value)}
-                                className="block w-1/6 bg-[#f4f6fb] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
+                                className="block w-[120px] bg-[#f4f6fb] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
                             >
                                 <option value="">Mặc định</option>
                                 <option value="newest">Mới nhất</option>
