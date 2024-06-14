@@ -46,7 +46,7 @@ export default function Home() {
                     />
                 </div>
                 <div className="absolute top-0 left-0 bottom-0 right-0 flex justify-center items-center">
-                    <div className="px-5 w-full md:w-[690px] lg:w-[960px] xl:w-[1120px]">
+                    <div className="px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px]">
                         <div className="w-full lg:w-[55%] animate-fadeInFromB">
                             <h1 className="text-[2.4rem] md:text-[4.5rem] font-semibold tracking-wide">
                                 Join us & Explore Thousands of Jobs
@@ -94,7 +94,7 @@ export default function Home() {
                 </div>
             </div>
             <div className="w-full flex justify-center bg-white">
-                <div className="px-5 w-full md:w-[690px] lg:w-[960px] xl:w-[1120px] py-20">
+                <div className="px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-20">
                     <h2 className="flex items-center gap-6 w-full">
                         <span className="block flex-1 h-[2px] bg-[#f71616] opacity-30"></span>
                         <span className="text-[2rem] md:text-[2.4rem] tracking-wider font-semibold">
@@ -148,7 +148,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <div className="px-5 w-full md:w-[690px] lg:w-[960px] xl:w-[1120px] py-20">
+            <div className="px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-20">
                 <h2 className="flex items-center gap-6 w-full">
                     <span className="block flex-1 h-[2px] bg-[#f71616] opacity-30"></span>
                     <span className="text-[2rem] md:text-[2.4rem] tracking-wider font-semibold">VIỆC LÀM NỔI BẬT</span>
@@ -210,7 +210,7 @@ export default function Home() {
                 </div>
             </div>
             <div className="flex justify-center w-full bg-white">
-                <div className="px-5 w-full md:w-[690px] lg:w-[960px] xl:w-[1120px] py-20">
+                <div className="px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-20">
                     <h2 className="flex items-center gap-6 w-full">
                         <span className="block flex-1 h-[2px] bg-[#f71616] opacity-30"></span>
                         <span className="text-[2rem] md:text-[2.4rem] tracking-wider font-semibold">
@@ -224,29 +224,41 @@ export default function Home() {
                                 <LiaPencilRulerSolid className="m-auto text-[5rem]" />
                             </div>
                             <h2 className="font-semibold">Đăng ký tài khoản</h2>
+                            <p className="text-[1.3rem] text-center text-[#808080]">
+                                The latest design trends meet hand-crafted templates in Sassio Collection.
+                            </p>
                         </div>
                         <div className="flex flex-col items-center gap-10 w-full">
                             <div className="flex w-[120px] h-[120px] text-[var(--primary-color)] custom-shadow-v2 rounded-full hover:bg-[var(--primary-color)] hover:text-white">
                                 <CiViewList className="m-auto text-[5rem]" />
                             </div>
                             <h2 className="font-semibold">Tạo hồ sơ việc làm</h2>
+                            <p className="text-[1.3rem] text-center text-[#808080]">
+                                The latest design trends meet hand-crafted templates in Sassio Collection.
+                            </p>
                         </div>
                         <div className="flex flex-col items-center gap-10 w-full">
                             <div className="flex w-[120px] h-[120px] text-[var(--primary-color)] custom-shadow-v2 rounded-full hover:bg-[var(--primary-color)] hover:text-white">
                                 <CiDesktop className="m-auto text-[5rem]" />
                             </div>
                             <h2 className="font-semibold">Đăng tải CV của bạn</h2>
+                            <p className="text-[1.3rem] text-center text-[#808080]">
+                                The latest design trends meet hand-crafted templates in Sassio Collection.
+                            </p>
                         </div>
                         <div className="flex flex-col items-center gap-10 w-full">
                             <div className="flex w-[120px] h-[120px] text-[var(--primary-color)] custom-shadow-v2 rounded-full hover:bg-[var(--primary-color)] hover:text-white">
                                 <LiaHandPointer className="m-auto text-[5rem]" />
                             </div>
                             <h2 className="font-semibold">Tìm cơ hội việc làm</h2>
+                            <p className="text-[1.3rem] text-center text-[#808080]">
+                                The latest design trends meet hand-crafted templates in Sassio Collection.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="w-full md:w-[690px] lg:w-[960px] xl:w-[1120px] py-20">
+            <div className="px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-20">
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 w-full min-h-[460px] bg-home rounded-[3rem]">
                     <div className="space-y-10 flex flex-col justify-center p-20" data-aos="fade-right">
                         <div className="space-y-10">

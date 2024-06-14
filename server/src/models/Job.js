@@ -27,6 +27,12 @@ const JobSchema = new Schema(
             require: true,
             default: '',
         },
+        jobType: {
+            type: String,
+            trim: true,
+            require: true,
+            default: '',
+        },
         jobCareers: {
             type: Array,
             trim: true,

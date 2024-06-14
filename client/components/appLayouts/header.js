@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useContext } from 'react';
+import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill } from 'react-icons/ri';
 import { TbWorldUpload } from 'react-icons/tb';
@@ -23,6 +24,7 @@ const Header = () => {
 
     const { isChangeUserAvatar } = useContext(UserAvatarContext);
     const router = useRouter();
+    const pathname = usePathname();
     const isAuth = Auth(typeof window !== 'undefined' && localStorage.getItem('accessToken'));
 
     const handleLogout = async () => {
@@ -65,18 +67,26 @@ const Header = () => {
 
     return (
         <>
-            <div className="flex items-center justify-between px-5 w-full md:w-[690px] lg:w-[960px] xl:w-[1120px] h-[60px]">
+            <div className="flex items-center justify-between px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] h-[60px]">
                 <div className="flex items-center gap-20 h-full">
                     <div className="text-[2rem] text-[var(--primary-color)] font-semibold">TimViecNhanh</div>
                     <ul className="hidden lg:flex items-center font-semibold text-[1.5rem] tracking-wide h-full">
                         <li className="group relative h-full">
-                            <div className="flex items-center px-4 h-full cursor-pointer hover:text-[var(--primary-color)] transition-all text-[var(--primary-color)]">
+                            <div
+                                className={`flex items-center px-4 h-full cursor-pointer hover:text-[var(--primary-color)] transition-all ${
+                                    pathname?.includes('/job') ? 'text-[var(--primary-color)]' : ''
+                                }`}
+                            >
                                 Việc làm
                             </div>
                             <ul className="hidden group-hover:block absolute top-[calc(100%-8px)] left-0 w-[400px] bg-white text-[1.5rem] border-t-4 border-[var(--primary-hover-color)] arrow-top p-6 custom-shadow-v1 space-y-3 rounded-lg z-[999]">
-                                <li>
+                                <li
+                                    className={`hover:text-[var(--primary-color)] ${
+                                        pathname?.includes('/search-job') ? 'text-[var(--primary-color)]' : ''
+                                    }`}
+                                >
                                     <Link
-                                        href="#"
+                                        href="/job/search-job"
                                         className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
                                     >
                                         <IoSearchOutline className="text-[2rem] text-[var(--primary-color)]" />
@@ -86,7 +96,7 @@ const Header = () => {
                                 <li>
                                     <hr></hr>
                                 </li>
-                                <li>
+                                <li className="hover:text-[var(--primary-color)]">
                                     <Link
                                         href="#"
                                         className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
@@ -96,7 +106,7 @@ const Header = () => {
                                         <BsFire className="text-[2rem] text-orange-600" />
                                     </Link>
                                 </li>
-                                <li>
+                                <li className="hover:text-[var(--primary-color)]">
                                     <Link
                                         href="#"
                                         className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
@@ -249,7 +259,7 @@ const Header = () => {
                 >
                     <li className="block lg:hidden">
                         {isAuth?.status === false && (
-                            <div className="flex items-center justify-center gap-3">
+                            <div className="flex items-center justify-center gap-3 mb-5">
                                 <Link
                                     href="/signin"
                                     className="block text-[var(--primary-color)] text-[1.4rem] bg-[var(--secondary-color)] px-7 py-3 rounded-full hover:text-white hover:bg-[var(--primary-color)] transition-all"
@@ -328,7 +338,9 @@ const Header = () => {
                     <li>
                         <div
                             onClick={() => setNavJobOpen(!navJobOpen)}
-                            className="flex items-center justify-between hover:text-[var(--primary-color)] border-t border-[#cccccc]/[0.3]"
+                            className={`flex items-center justify-between hover:text-[var(--primary-color)] border-t border-[#cccccc]/[0.3] ${
+                                pathname?.includes('/job') ? 'text-[var(--primary-color)]' : ''
+                            }`}
                         >
                             <div className="flex-1 pl-10 py-7 transition-all cursor-pointer">Việc làm</div>
                             <div className="text-[2rem] px-10 cursor-pointer">
@@ -336,9 +348,13 @@ const Header = () => {
                             </div>
                         </div>
                         <ul className={navJobOpen ? 'block' : 'hidden'}>
-                            <li className="p-3">
+                            <li
+                                className={`p-3 hover:text-[var(--primary-color)] ${
+                                    pathname?.includes('/search-job') ? 'text-[var(--primary-color)]' : ''
+                                }`}
+                            >
                                 <Link
-                                    href="#"
+                                    href="/job/search-job"
                                     className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
                                 >
                                     <IoSearchOutline className="text-[2rem] text-[var(--primary-color)]" />
@@ -348,7 +364,7 @@ const Header = () => {
                             <li>
                                 <hr></hr>
                             </li>
-                            <li className="p-3">
+                            <li className="p-3 hover:text-[var(--primary-color)]">
                                 <Link
                                     href="#"
                                     className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
@@ -358,7 +374,7 @@ const Header = () => {
                                     <BsFire className="text-[2rem] text-orange-600" />
                                 </Link>
                             </li>
-                            <li className="p-3">
+                            <li className="p-3 hover:text-[var(--primary-color)]">
                                 <Link
                                     href="#"
                                     className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"

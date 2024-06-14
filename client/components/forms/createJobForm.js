@@ -29,6 +29,9 @@ const CreateJobForm = ({ formTitle }) => {
     const [jobTitle, setJobTitle] = useState('');
     const [jobTitleErrMsg, setJobTitleErrMsg] = useState({});
     const [isJobTitleErr, setIsJobTitleErr] = useState(false);
+    const [jobType, setJobType] = useState('');
+    const [jobTypeErrMsg, setJobTypeErrMsg] = useState({});
+    const [isJobTypeErr, setIsJobTypeErr] = useState(false);
     const [jobDeadline, setJobDeadline] = useState('');
     const [jobDeadlineErrMsg, setJobDeadlineErrMsg] = useState({});
     const [isJobDeadlineErr, setIsJobDeadlineErr] = useState(false);
@@ -85,6 +88,7 @@ const CreateJobForm = ({ formTitle }) => {
 
         const data = {
             jobTitle,
+            jobType,
             jobDeadline,
             jobDesc,
             jobPosition: position,
@@ -137,6 +141,7 @@ const CreateJobForm = ({ formTitle }) => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get/${searchParams.get('requestId')}`);
             if (res?.data?.code === 200) {
                 setJobTitle(res?.data?.job?.jobTitle);
+                setJobType(res?.data?.job?.jobType);
                 setJobDeadline(res?.data?.job?.jobDeadline);
                 setPosition(res?.data?.job?.jobPosition);
                 setCareer(res?.data?.job?.jobCareers);
@@ -213,18 +218,38 @@ const CreateJobForm = ({ formTitle }) => {
                     </div>
                     <div className="space-y-4 mt-7">
                         <label className="font-semibold text-[1.5rem]">
-                            Ngành nghề<span className="text-[1.8rem] text-red-600">*</span>
+                            Hình thức<span className="text-[1.8rem] text-red-600">*</span>
                         </label>
-                        <DropListMulti
-                            value={career}
-                            onChange={setCareer}
-                            onBlur={() => dropListValidator(career, setIsCareerErr, setCareerErrMsg)}
-                            options={careers}
-                            placeholder="-- Ngành nghề --"
-                            msg={careerErrMsg.jobCareer}
-                            isErr={isCareerErr}
-                        />
+                        <select
+                            value={jobType}
+                            onChange={(e) => setJobType(e.target.value)}
+                            onBlur={() => dropListValidator(jobType, setIsJobTypeErr, setJobTypeErrMsg)}
+                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                isJobTypeErr ? 'border-red-600' : ''
+                            }`}
+                        >
+                            <option value="">-- Hình thức --</option>
+                            <option value="Freelancer">Freelancer</option>
+                            <option value="Part time">Part time</option>
+                            <option value="Full time">Full time</option>
+                            <option value="Thời vụ">Thời vụ</option>
+                        </select>
+                        <p className="text-red-600 text-[1.3rem]">{jobTypeErrMsg.jobType}</p>
                     </div>
+                </div>
+                <div className="space-y-4 mt-7">
+                    <label className="font-semibold text-[1.5rem]">
+                        Ngành nghề<span className="text-[1.8rem] text-red-600">*</span>
+                    </label>
+                    <DropListMulti
+                        value={career}
+                        onChange={setCareer}
+                        onBlur={() => dropListValidator(career, setIsCareerErr, setCareerErrMsg)}
+                        options={careers}
+                        placeholder="-- Ngành nghề --"
+                        msg={careerErrMsg.jobCareer}
+                        isErr={isCareerErr}
+                    />
                 </div>
                 <div className="block md:grid grid-cols-2 gap-5">
                     <div className="space-y-4 mt-7">

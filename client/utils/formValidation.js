@@ -132,6 +132,7 @@ export const dropListValidator = (value, setIsDropListErr, setDropListErrMsg) =>
         msg.jobExp = 'Kinh nghiệm không được để trống';
         msg.jobSalaryRange = 'Mức lương không được để trống';
         msg.jobLocation = 'Địa điểm làm việc không được để trống';
+        msg.jobType = 'Hình thức không được để trống';
         setIsDropListErr(true);
     } else {
         setIsDropListErr(false);

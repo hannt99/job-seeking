@@ -101,7 +101,7 @@ const DefaultLayout = ({ main }) => {
             ) : (
                 <div className="flex flex-col h-screen">
                     <div
-                        className={`flex justify-center shadow-md bg-[#f8ede8] ${
+                        className={`flex justify-center shadow-md ${pathname === '/' ? 'bg-[#f8ede8]' : 'bg-white'} ${
                             scrolled ? 'fixed top-0 left-0 right-0 z-[999] animate-fadeIn bg-white' : ''
                         }`}
                     >
