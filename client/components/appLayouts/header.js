@@ -3,7 +3,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill } from 'react-icons/ri';
+import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill, RiShieldUserFill } from 'react-icons/ri';
 import { TbWorldUpload } from 'react-icons/tb';
 import { FaBars, FaXmark, FaAngleDown, FaAngleUp } from 'react-icons/fa6';
 import { IoSearchOutline, IoHeartOutline } from 'react-icons/io5';
@@ -308,6 +308,17 @@ const Header = () => {
                             </div>
                         )}
                         <ul className={navUserOpen ? 'block' : 'hidden'}>
+                            <li>
+                                <Link
+                                    href="/account/setting-user-information"
+                                    className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                                >
+                                    <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
+                                        <RiShieldUserFill className="m-auto" />
+                                    </div>
+                                    <span className="whitespace-nowrap">Xem thông tin cá nhân</span>
+                                </Link>
+                            </li>
                             {isAuth?.role === 0 && (
                                 <li className="block md:hidden">
                                     <Link

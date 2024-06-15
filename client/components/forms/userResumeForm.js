@@ -117,7 +117,7 @@ const UserResumeForm = () => {
     }, []);
 
     return (
-        <div className="bg-white p-7">
+        <div className="bg-white p-7 rounded-lg">
             <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem]">Hồ sơ việc làm</h2>
             <div className="space-y-4 mt-7">
                 <label className="font-semibold text-[1.5rem]">

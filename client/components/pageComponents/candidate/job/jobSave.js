@@ -1,6 +1,13 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
+import SaveJobCard from './saveJobCard';
+import RightSide from './rightSide';
 
 const JobSave = () => {
+    const [sort, setSort] = useState('');
+
     return (
         <>
             <div className="w-full flex justify-center px-5 md:px-0">
@@ -51,9 +58,52 @@ const JobSave = () => {
                     </ol>
                 </nav>
             </div>
-            <div className="grid grid-cols-7 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-14">
-                <div className="col-span-5">Left</div>
-                <div className="col-span-2">Right</div>
+            <div className="grid grid-cols-1 lg:grid-cols-6 gap-y-10 lg:gap-x-10 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-14">
+                <div className="col-span-4 bg-white p-7 rounded-lg custom-shadow-v1 h-fit">
+                    <div className="flex items-center justify-between">
+                        <h2>
+                            <b>300</b> việc làm đã lưu
+                        </h2>
+                        <select
+                            value={sort}
+                            onChange={(e) => setSort(e.target.value)}
+                            className="block w-[120px] bg-[#f1f1f1] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
+                        >
+                            <option value="">Mặc định</option>
+                            <option value="newest">Mới nhất</option>
+                            <option value="oldest">Cũ nhất</option>
+                        </select>
+                    </div>
+                    <div className="py-5 space-y-8">
+                        <SaveJobCard
+                            jobTitle="Thuc tap sinh IT"
+                            jobStatus="Dang  tuyen"
+                            jobSalaryRange="Thoa thuan"
+                            jobWorkingLocation={[
+                                { label: 'Thanh pho Ha Noi' },
+                                { label: 'Thanh pho Ha Noi' },
+                                { label: 'Thanh pho Ha Noi' },
+                            ]}
+                            updatedAt="2024-06-12T13:04:50.539+00:00"
+                            company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
+                        />
+                        <SaveJobCard
+                            jobTitle="Thuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh IT"
+                            jobStatus="Dang  tuyen"
+                            jobSalaryRange="Thoa thuan"
+                            jobWorkingLocation={[
+                                { label: 'Thanh pho Ha Noi' },
+                                { label: 'Thanh pho Ha Noi' },
+                                { label: 'Thanh pho Ha Noi' },
+                            ]}
+                            updatedAt="2024-06-12T13:04:50.539+00:00"
+                            company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
+                        />
+                    </div>
+                </div>
+                <div className="col-span-2 space-y-10">
+                    <RightSide />
+                </div>
             </div>
         </>
     );

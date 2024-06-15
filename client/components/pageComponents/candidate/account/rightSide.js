@@ -87,7 +87,7 @@ const RightSide = () => {
     }, [reRender, isChangeUserAvatar]);
 
     return (
-        <div className="w-full bg-white custom-shadow-v1 p-7 space-y-5">
+        <div className="w-full bg-white custom-shadow-v1 p-7 space-y-5 rounded-lg">
             <div className="flex items-center gap-7">
                 <div className="relative w-[85px] h-[85px] rounded-full border border-black">
                     <img src={avatar} alt="avatar" className="w-full h-full object-cover rounded-full" />
