@@ -8,6 +8,7 @@ import Loading from '@/components/common/loading';
 import { success, error } from '@/utils/toastMessage';
 
 const CompanyInfomationForm = () => {
+    const [website, setWebsite] = useState('');
     const [companyName, setCompanyName] = useState('');
     const [companyNameErrMsg, setCompanyNameErrMsg] = useState({});
     const [isCompanyNameErr, setIsCompanyNameErr] = useState(false);
@@ -47,6 +48,7 @@ const CompanyInfomationForm = () => {
             position,
             companyAddress: { district, jsonObject },
             introduction,
+            website,
         };
         const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/company/update`, data, {
             headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
@@ -105,6 +107,7 @@ const CompanyInfomationForm = () => {
 
             if (res?.data?.code === 200) {
                 setCompanyName(res?.data?.company?.companyName);
+                setWebsite(res?.data?.company?.website);
                 setCompanySize(res?.data?.company?.companySize);
                 setPosition(res?.data?.company?.position);
                 setProvince(JSON.stringify(res?.data?.company?.companyAddress?.jsonObject));
@@ -158,6 +161,16 @@ const CompanyInfomationForm = () => {
                     }`}
                 />
                 <p className="text-red-600 text-[1.3rem]">{companyNameErrMsg.companyName}</p>
+            </div>
+            <div className="space-y-4 mt-3">
+                <label className="font-semibold text-[1.5rem]">Website</label>
+                <input
+                    type="text"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    placeholder="https://www.companyname.com"
+                    className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                />
             </div>
             <div className="grid grid-cols-2 gap-5 mt-3">
                 <div className="space-y-4">

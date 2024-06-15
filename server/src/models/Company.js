@@ -34,6 +34,11 @@ const CompanySchema = new Schema(
             trim: true,
             default: '',
         },
+        website: {
+            type: String,
+            trim: true,
+            default: '',
+        },
         avatar: {
             type: String,
             trim: true,
