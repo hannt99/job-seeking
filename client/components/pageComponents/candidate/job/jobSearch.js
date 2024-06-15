@@ -51,28 +51,56 @@ const JobSearch = () => {
     }, []);
 
     return (
-        <div className="w-full">
-            <div className="text-center space-y-3 py-16">
-                <h1 className="text-[2.4rem] font-semibold tracking-wider">TÌM VIỆC LÀM</h1>
-                <div className="flex items-center justify-center text-[1.4rem]">
-                    <Link href="/" className="font-medium hover:text-[var(--primary-color)]">
-                        Trang chủ
-                    </Link>
-                    <svg
-                        className="flex-shrink-0 size-7 text-gray-400 mx-1"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        aria-hidden="true"
-                    >
-                        <path d="M6 13L10 3" stroke="currentColor" strokeLinecap="round"></path>
-                    </svg>
-                    <span>Việc làm</span>
-                </div>
+        <>
+            <div className="w-full flex justify-center px-5 md:px-0">
+                <nav
+                    className="flex bg-[var(--secondary-color)] px-7 py-5 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] rounded-lg custom-shadow-v1 mt-5"
+                    aria-label="Breadcrumb"
+                >
+                    <ol className="inline-flex flex-wrap items-center space-x-1 md:space-x-3">
+                        <li className="inline-flex items-center">
+                            <Link
+                                href="/"
+                                className="inline-flex items-center text-[1.5rem] font-normal text-[var(--primary-color)]"
+                            >
+                                <svg
+                                    className="w-5 h-5 mr-2.5"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                                </svg>
+                                Trang chủ
+                            </Link>
+                        </li>
+                        <li aria-current="page">
+                            <div className="flex items-center">
+                                <svg
+                                    className="w-3 h-3 text-gray-400 mx-1"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 6 10"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="m1 9 4-4-4-4"
+                                    />
+                                </svg>
+                                <span className="ml-1 text-[1.5rem] font-normal text-[#808080] md:ml-2">
+                                    Việc làm đã lưu
+                                </span>
+                            </div>
+                        </li>
+                    </ol>
+                </nav>
             </div>
-            <div className="flex justify-center w-full bg-white">
+            <div className="flex justify-center w-full">
                 <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-20">
                     <div className="xl:col-span-1 space-y-8">
                         {openFilter && (
@@ -85,7 +113,7 @@ const JobSearch = () => {
                             </div>
                         )}
                         {openFilter && (
-                            <div className="block xl:hidden bg-[#f4f6fb] rounded-3xl p-10 space-y-10">
+                            <div className="block xl:hidden bg-[var(--secondary-color)] rounded-3xl p-10 space-y-10 border">
                                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-x-5 gap-y-10">
                                     <div className="space-y-4">
                                         <label className="font-semibold text-[1.8rem]">Từ khóa</label>
@@ -146,27 +174,7 @@ const JobSearch = () => {
                                     </div>
                                     <div className="space-y-4">
                                         <label className="font-semibold text-[1.8rem]">Hình thức</label>
-                                        <div className="hidden xl:block space-y-4">
-                                            {jobTypes?.map((jt, index) => {
-                                                return (
-                                                    <div key={index} className="flex item gap-3">
-                                                        <input
-                                                            type="radio"
-                                                            checked={jobType === jt}
-                                                            onChange={() => setJobType(jt)}
-                                                        />
-                                                        <label
-                                                            className={`text-[1.5rem] ${
-                                                                jobType === jt ? 'text-black' : 'text-[#808080]'
-                                                            }`}
-                                                        >
-                                                            {jt}
-                                                        </label>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                        <div className="block xl:hidden relative">
+                                        <div className="relative">
                                             <select
                                                 value={jobType}
                                                 onChange={(e) => setJobType(e.target.value)}
@@ -188,27 +196,7 @@ const JobSearch = () => {
                                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-x-5 gap-y-10">
                                     <div className="space-y-4">
                                         <label className="font-semibold text-[1.8rem]">Kinh nghiệm</label>
-                                        <div className="hidden xl:block space-y-4">
-                                            {exps?.map((ex, index) => {
-                                                return (
-                                                    <div key={index} className="flex item gap-3">
-                                                        <input
-                                                            type="radio"
-                                                            checked={jobExp === ex}
-                                                            onChange={() => setJobExp(ex)}
-                                                        />
-                                                        <label
-                                                            className={`text-[1.5rem] ${
-                                                                jobExp === ex ? 'text-black' : 'text-[#808080]'
-                                                            }`}
-                                                        >
-                                                            {ex}
-                                                        </label>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                        <div className="block xl:hidden relative">
+                                        <div className="relative">
                                             <select
                                                 value={jobExp}
                                                 onChange={(e) => setJobExp(e.target.value)}
@@ -228,27 +216,7 @@ const JobSearch = () => {
                                     </div>
                                     <div className="space-y-4">
                                         <label className="font-semibold text-[1.8rem]">Mức lương</label>
-                                        <div className="hidden xl:block space-y-4">
-                                            {salaryRanges?.map((sr, index) => {
-                                                return (
-                                                    <div key={index} className="flex item gap-3">
-                                                        <input
-                                                            type="radio"
-                                                            checked={jobSalaryRange === sr}
-                                                            onChange={() => setJobSalaryRange(sr)}
-                                                        />
-                                                        <label
-                                                            className={`text-[1.5rem] ${
-                                                                jobSalaryRange === sr ? 'text-black' : 'text-[#808080]'
-                                                            }`}
-                                                        >
-                                                            {sr}
-                                                        </label>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                        <div className="block xl:hidden relative">
+                                        <div className="relative">
                                             <select
                                                 value={jobSalaryRange}
                                                 onChange={(e) => setJobSalaryRange(e.target.value)}
@@ -277,7 +245,7 @@ const JobSearch = () => {
                                 </div>
                             </div>
                         )}
-                        <div className="hidden xl:block bg-[#f4f6fb] rounded-3xl p-10 space-y-10">
+                        <div className="hidden xl:block bg-[var(--secondary-color)] rounded-3xl p-10 space-y-10 border">
                             <div className="space-y-4">
                                 <label className="font-semibold text-[1.8rem]">Từ khóa</label>
                                 <div className="relative">
@@ -405,7 +373,7 @@ const JobSearch = () => {
                                 </button>
                             </div>
                         </div>
-                        <div className="hidden xl:grid grid-cols-3 bg-[#f4f6fb] rounded-3xl">
+                        <div className="hidden xl:grid grid-cols-3 bg-[var(--secondary-color)] rounded-3xl border">
                             <div className="col-span-2 p-10 space-y-7">
                                 <h2 className="text-[1.8rem] font-semibold">Bạn là nhà tuyển dụng?</h2>
                                 <p className="text-[1.4rem] text-[#808080]">
@@ -436,7 +404,7 @@ const JobSearch = () => {
                             <select
                                 value={sort}
                                 onChange={(e) => setSort(e.target.value)}
-                                className="block w-[120px] bg-[#f4f6fb] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
+                                className="block w-[120px] bg-[#f1f1f1] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
                             >
                                 <option value="">Mặc định</option>
                                 <option value="newest">Mới nhất</option>
@@ -568,7 +536,7 @@ const JobSearch = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 
