@@ -101,7 +101,7 @@ const JobSearch = () => {
                 </nav>
             </div>
             <div className="flex justify-center w-full">
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-20">
+                <div className="grid grid-cols-1 xl:grid-cols-3 gap-10 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-20">
                     <div className="xl:col-span-1 space-y-8">
                         {openFilter && (
                             <div

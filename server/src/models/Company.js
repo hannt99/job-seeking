@@ -20,6 +20,11 @@ const CompanySchema = new Schema(
             trim: true,
             default: '',
         },
+        companyPhone: {
+            type: String,
+            trim: true,
+            default: '',
+        },
         companyCareer: {
             type: String,
             trim: true,

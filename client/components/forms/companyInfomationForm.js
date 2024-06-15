@@ -14,12 +14,12 @@ const careers = [
 ];
 
 const CompanyInfomationForm = () => {
+    const [companyPhone, setCompanyPhone] = useState('');
     const [website, setWebsite] = useState('');
     const [companyEmail, setCompanyEmail] = useState('');
     const [companyCareer, setCompanyCareer] = useState('');
     const [companyCareerErrMsg, setCompanyCareerErrMsg] = useState({});
     const [isCompanyCareerErr, setIsCompanyCareerErr] = useState(false);
-
     const [companyName, setCompanyName] = useState('');
     const [companyNameErrMsg, setCompanyNameErrMsg] = useState({});
     const [isCompanyNameErr, setIsCompanyNameErr] = useState(false);
@@ -58,6 +58,7 @@ const CompanyInfomationForm = () => {
         const data = {
             companyName,
             companyEmail,
+            companyPhone,
             companyCareer,
             companySize,
             position,
@@ -131,6 +132,7 @@ const CompanyInfomationForm = () => {
                 setAvatar(res?.data?.company?.avatar);
                 setCompanyCareer(res?.data?.company?.companyCareer);
                 setCompanyEmail(res?.data?.company?.companyEmail);
+                setCompanyPhone(res?.data?.company?.companyPhone);
 
                 return;
             } else {
@@ -191,15 +193,25 @@ const CompanyInfomationForm = () => {
                     />
                 </div>
                 <div className="space-y-4">
-                    <label className="font-semibold text-[1.5rem]">Website</label>
+                    <label className="font-semibold text-[1.5rem]">Số điện thoại</label>
                     <input
                         type="text"
-                        value={website}
-                        onChange={(e) => setWebsite(e.target.value)}
-                        placeholder="https://www.companyname.com"
+                        value={companyPhone}
+                        onChange={(e) => setCompanyPhone(e.target.value)}
+                        placeholder="0123456789"
                         className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
                     />
                 </div>
+            </div>
+            <div className="space-y-4 mt-5">
+                <label className="font-semibold text-[1.5rem]">Website</label>
+                <input
+                    type="text"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    placeholder="https://www.companyname.com"
+                    className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                />
             </div>
             <div className="space-y-4 mt-5">
                 <label className="font-semibold text-[1.5rem]">

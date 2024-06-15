@@ -94,7 +94,7 @@ const DefaultLayout = ({ main }) => {
                             <FaBars />
                         </div>
                     </div>
-                    <div className="absolute top-0 left-0 pl-0 lg:pl-[260px] pt-[60px] w-full h-full bg-[#f4f6fb]">
+                    <div className="absolute top-0 left-0 pl-0 lg:pl-[260px] pt-[60px] w-full min-h-screen bg-[#f4f6fb]">
                         {main}
                     </div>
                 </>
