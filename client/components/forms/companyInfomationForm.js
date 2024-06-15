@@ -7,8 +7,19 @@ import axios from 'axios';
 import Loading from '@/components/common/loading';
 import { success, error } from '@/utils/toastMessage';
 
+const careers = [
+    { value: 'Kinh doang/Bán hàng', label: 'Kinh doanh/Bán hàng' },
+    { value: 'Biên/Phiên dịch', label: 'Biên / Phiên dịch' },
+    { value: 'Bảo hiểm', label: 'Bảo hiểm' },
+];
+
 const CompanyInfomationForm = () => {
     const [website, setWebsite] = useState('');
+    const [companyEmail, setCompanyEmail] = useState('');
+    const [companyCareer, setCompanyCareer] = useState('');
+    const [companyCareerErrMsg, setCompanyCareerErrMsg] = useState({});
+    const [isCompanyCareerErr, setIsCompanyCareerErr] = useState(false);
+
     const [companyName, setCompanyName] = useState('');
     const [companyNameErrMsg, setCompanyNameErrMsg] = useState({});
     const [isCompanyNameErr, setIsCompanyNameErr] = useState(false);
@@ -33,17 +44,21 @@ const CompanyInfomationForm = () => {
 
     const handleUpdateInfo = async () => {
         const isCompanyNameValid = fullNameValidator(companyName, setIsCompanyNameErr, setCompanyNameErrMsg);
+        const isCompanyCareerValid = fullNameValidator(companyCareer, setIsCompanyCareerErr, setCompanyCareerErrMsg);
         const isCompanySizeValid = numberValidator(companySize, setIsCompanySizeErr, setCompanySizeErrMsg);
         const isPositionValid = dropListValidator(position, setIsPositionErr, setPositionErrMsg);
         const isProvinceValid = dropListValidator(province, setIsProvinceErr, setProvinceErrMsg);
 
-        if (!isCompanyNameValid || !isCompanySizeValid || !isPositionValid || !isProvinceValid) return;
+        if (!isCompanyNameValid || !isCompanyCareerValid || !isCompanySizeValid || !isPositionValid || !isProvinceValid)
+            return;
 
         setIsLoading(true);
         const jsonObject = new Function('return ' + province)();
 
         const data = {
             companyName,
+            companyEmail,
+            companyCareer,
             companySize,
             position,
             companyAddress: { district, jsonObject },
@@ -114,6 +129,8 @@ const CompanyInfomationForm = () => {
                 setDistrict(res?.data?.company?.companyAddress?.district);
                 setIntroduction(res?.data?.company?.introduction);
                 setAvatar(res?.data?.company?.avatar);
+                setCompanyCareer(res?.data?.company?.companyCareer);
+                setCompanyEmail(res?.data?.company?.companyEmail);
 
                 return;
             } else {
@@ -162,15 +179,50 @@ const CompanyInfomationForm = () => {
                 />
                 <p className="text-red-600 text-[1.3rem]">{companyNameErrMsg.companyName}</p>
             </div>
+            <div className="grid grid-cols-2 gap-5 mt-3">
+                <div className="space-y-4">
+                    <label className="font-semibold text-[1.5rem]">Email</label>
+                    <input
+                        type="email"
+                        value={companyEmail}
+                        onChange={(e) => setCompanyEmail(e.target.value)}
+                        placeholder="name@example.com"
+                        className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                    />
+                </div>
+                <div className="space-y-4">
+                    <label className="font-semibold text-[1.5rem]">Website</label>
+                    <input
+                        type="text"
+                        value={website}
+                        onChange={(e) => setWebsite(e.target.value)}
+                        placeholder="https://www.companyname.com"
+                        className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
+                    />
+                </div>
+            </div>
             <div className="space-y-4 mt-3">
-                <label className="font-semibold text-[1.5rem]">Website</label>
-                <input
-                    type="text"
-                    value={website}
-                    onChange={(e) => setWebsite(e.target.value)}
-                    placeholder="https://www.companyname.com"
-                    className="block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
-                />
+                <label className="font-semibold text-[1.5rem]">
+                    Ngành nghề<span className="text-[1.8rem] text-red-600">*</span>
+                </label>
+                <select
+                    value={companyCareer}
+                    onChange={(e) => setCompanyCareer(e.target.value)}
+                    onBlur={() => dropListValidator(companyCareer, setIsCompanyCareerErr, setCompanyCareerErrMsg)}
+                    className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                        isCompanyCareerErr ? 'border-red-600' : ''
+                    }`}
+                >
+                    <option value="">-- Ngành/nghề --</option>
+                    {careers?.map((c, index) => {
+                        return (
+                            <option key={index} value={c?.value}>
+                                {c?.label}
+                            </option>
+                        );
+                    })}
+                </select>
+                <p className="text-red-600 text-[1.3rem]">{companyCareerErrMsg.jobCareer}</p>
             </div>
             <div className="grid grid-cols-2 gap-5 mt-3">
                 <div className="space-y-4">

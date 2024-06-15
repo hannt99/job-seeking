@@ -15,6 +15,16 @@ const CompanySchema = new Schema(
             require: true,
             unique: true,
         },
+        companyEmail: {
+            type: String,
+            trim: true,
+            default: '',
+        },
+        companyCareer: {
+            type: String,
+            trim: true,
+            default: '',
+        },
         companyAddress: {
             type: Object,
             trim: true,
