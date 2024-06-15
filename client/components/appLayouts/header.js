@@ -255,14 +255,14 @@ const Header = () => {
             {/* Mobile nav */}
             <div
                 onClick={() => setNavOpen(false)}
-                className={!navOpen ? 'invisible' : 'fixed top-0 left-0 bottom-0 right-0 bg-black/45 z-50'}
+                className={!navOpen ? 'invisible' : 'fixed top-0 left-0 bottom-0 right-0 bg-black/45 z-[999]'}
             >
                 <ul
                     onClick={(e) => e.stopPropagation()}
                     className={
                         navOpen
-                            ? 'absolute top-0 left-0 h-screen w-[80%] md:w-[65%] bg-white uppercase font-semibold text-[#808080] tracking-wider text-[1.4rem] pt-10 shadow-md opacity-100 transition-all duration-700 overflow-auto'
-                            : 'absolute top-0 left-[-100%] h-screen w-[80%] md:w-[65%] bg-white uppercase font-semibold text-[#808080] tracking-wider text-[1.4rem] pt-10 shadow-md transition-all duration-700 opacity-0 overflow-auto'
+                            ? 'absolute top-0 left-0 h-screen w-[80%] md:w-[65%] bg-white uppercase font-semibold text-[#808080] tracking-wider text-[1.4rem] pt-10 shadow-md opacity-100 transition-all duration-700 overflow-auto z-[999]'
+                            : 'absolute top-0 left-[-100%] h-screen w-[80%] md:w-[65%] bg-white uppercase font-semibold text-[#808080] tracking-wider text-[1.4rem] pt-10 shadow-md transition-all duration-700 opacity-0 overflow-auto z-[999]'
                     }
                 >
                     <li className="block lg:hidden">

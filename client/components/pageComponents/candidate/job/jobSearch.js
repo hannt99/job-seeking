@@ -93,7 +93,7 @@ const JobSearch = () => {
                                     />
                                 </svg>
                                 <span className="ml-1 text-[1.5rem] font-normal text-[#808080] md:ml-2">
-                                    Việc làm đã lưu
+                                    Tìm việc làm
                                 </span>
                             </div>
                         </li>
@@ -428,11 +428,7 @@ const JobSearch = () => {
                                 jobTitle="Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT"
                                 jobStatus="Dang  tuyen"
                                 jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
+                                jobWorkingLocation={[{ label: 'Ho Chi Minh' }]}
                                 updatedAt="2024-06-12T13:04:50.539+00:00"
                                 company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
                             />
