@@ -62,11 +62,11 @@ const ChangePasswordForm = () => {
         <div className="p-7">
             <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem]">Đổi mật khẩu</h2>
             <div className="p-5 border mt-6">
-                <div className="grid grid-cols-3 mt-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 mt-3">
                     <label className="font-semibold text-[1.5rem] whitespace-nowrap">
                         Mật khẩu cũ<span className="text-[1.8rem] text-red-600">*</span>
                     </label>
-                    <div className="col-span-2">
+                    <div className="md:col-span-2">
                         <input
                             type="password"
                             value={oldPassword}
@@ -82,11 +82,11 @@ const ChangePasswordForm = () => {
                         <p className="text-red-600 text-[1.3rem]">{oldPasswordErrMsg.oldPassword}</p>
                     </div>
                 </div>
-                <div className="grid grid-cols-3 mt-7">
+                <div className="grid grid-cols-2 md:grid-cols-3 mt-7">
                     <label className="font-semibold text-[1.5rem] whitespace-nowrap">
                         Mật khẩu mới<span className="text-[1.8rem] text-red-600">*</span>
                     </label>
-                    <div className="col-span-2">
+                    <div className="md:col-span-2">
                         <input
                             type="password"
                             value={newPassword}
@@ -102,11 +102,11 @@ const ChangePasswordForm = () => {
                         <p className="text-red-600 text-[1.3rem]">{newPasswordErrMsg.newPassword}</p>
                     </div>
                 </div>
-                <div className="grid grid-cols-3 mt-7">
+                <div className="grid grid-cols-2 md:grid-cols-3 mt-7">
                     <label className="font-semibold text-[1.5rem] whitespace-nowrap">
                         Xác nhận mật khẩu<span className="text-[1.8rem] text-red-600">*</span>
                     </label>
-                    <div className="col-span-2 ">
+                    <div className="md:col-span-2">
                         <input
                             type="password"
                             value={confirmPassword}

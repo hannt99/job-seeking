@@ -143,7 +143,7 @@ const CompanyInfomationForm = () => {
     return (
         <div className="p-7">
             <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem]">Thông tin công ty</h2>
-            <div className="grid grid-cols-2 gap-5 mt-7">
+            <div className="grid grid-cols-2 gap-5 mt-10">
                 <div className="flex items-center gap-5">
                     <div className="w-[45px] h-[45px] border border-black rounded-full">
                         <img src={avatar} alt="user avatar" className="w-full h-full object-cover rounded-full" />
@@ -163,7 +163,7 @@ const CompanyInfomationForm = () => {
                     </div>
                 </div>
             </div>
-            <div className="space-y-4 mt-3">
+            <div className="space-y-4 mt-5">
                 <label className="font-semibold text-[1.5rem]">
                     Tên công ty<span className="text-[1.8rem] text-red-600">*</span>
                 </label>
@@ -179,7 +179,7 @@ const CompanyInfomationForm = () => {
                 />
                 <p className="text-red-600 text-[1.3rem]">{companyNameErrMsg.companyName}</p>
             </div>
-            <div className="grid grid-cols-2 gap-5 mt-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                 <div className="space-y-4">
                     <label className="font-semibold text-[1.5rem]">Email</label>
                     <input
@@ -201,7 +201,7 @@ const CompanyInfomationForm = () => {
                     />
                 </div>
             </div>
-            <div className="space-y-4 mt-3">
+            <div className="space-y-4 mt-5">
                 <label className="font-semibold text-[1.5rem]">
                     Ngành nghề<span className="text-[1.8rem] text-red-600">*</span>
                 </label>
@@ -224,7 +224,7 @@ const CompanyInfomationForm = () => {
                 </select>
                 <p className="text-red-600 text-[1.3rem]">{companyCareerErrMsg.jobCareer}</p>
             </div>
-            <div className="grid grid-cols-2 gap-5 mt-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                 <div className="space-y-4">
                     <label className="font-semibold text-[1.5rem]">
                         Quy mô<span className="text-[1.8rem] text-red-600">*</span>
@@ -263,7 +263,7 @@ const CompanyInfomationForm = () => {
                     <p className="text-red-600 text-[1.3rem]">{positionErrMsg.position}</p>
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                 <div className="space-y-4">
                     <label className="font-semibold text-[1.5rem]">
                         Địa điểm làm việc<span className="text-[1.8rem] text-red-600">*</span>
@@ -307,7 +307,7 @@ const CompanyInfomationForm = () => {
                     </select>
                 </div>
             </div>
-            <div className="space-y-4 mt-3">
+            <div className="space-y-4 mt-5">
                 <label className="font-semibold text-[1.5rem]">Giới thiệu công ty</label>
                 <textarea
                     type="text"
@@ -322,7 +322,7 @@ const CompanyInfomationForm = () => {
             <div className="flex justify-end">
                 <button
                     onClick={handleUpdateInfo}
-                    className="flex items-center justify-center gap-3 w-fit bg-[var(--primary-color)] text-white font-medium px-7 py-3 mt-7 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
+                    className="flex items-center justify-center gap-3 w-fit bg-[var(--primary-color)] text-white font-medium px-16 py-3 mt-7 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
                 >
                     {isLoading && <Loading />}
                     <span>Lưu</span>

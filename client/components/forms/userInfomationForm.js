@@ -99,7 +99,11 @@ const UserInfomationForm = () => {
     return (
         <div className="bg-white p-7 rounded-lg">
             <h2 className="pl-4 border-l-4 border-red-600 font-semibold text-[1.8rem]">Thông tin cá nhân</h2>
-            <div className={`${pathname?.includes('/employer') ? 'grid' : 'block'} grid-cols-2 gap-5 mt-7`}>
+            <div
+                className={`${
+                    pathname?.includes('/employer') ? 'grid' : 'block'
+                } grid-cols-1 md:grid-cols-2 gap-5 mt-10`}
+            >
                 {pathname?.includes('/employer') && (
                     <div className="flex items-center gap-5">
                         <div className="w-[45px] h-[45px] border border-black rounded-full">
@@ -134,7 +138,7 @@ const UserInfomationForm = () => {
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-5 mt-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                 <div className="space-y-4">
                     <label className="font-semibold text-[1.5rem]">
                         Họ và tên<span className="text-[1.8rem] text-red-600">*</span>
@@ -170,7 +174,7 @@ const UserInfomationForm = () => {
                     <p className="text-red-600 text-[1.3rem]">{genderErrMsg.gender}</p>
                 </div>
             </div>
-            <div className="grid grid-cols-2 gap-5 mt-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                 <div className="space-y-4">
                     <label className="font-semibold text-[1.5rem]">Ngày sinh</label>
                     <input
