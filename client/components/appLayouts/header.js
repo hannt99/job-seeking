@@ -127,7 +127,7 @@ const Header = () => {
                         </li>
                         <li className="h-full">
                             <Link
-                                href="#"
+                                href="/company/company-list"
                                 className="flex items-center px-4 h-full hover:text-[var(--primary-color)] transition-all"
                             >
                                 Công ty
@@ -414,7 +414,7 @@ const Header = () => {
                     </li>
                     <li>
                         <Link
-                            href="/gioi-thieu"
+                            href="/company/company-list"
                             className="block px-10 py-7 hover:text-[var(--primary-color)] border-t border-[#cccccc]/[0.3] transition-all"
                         >
                             Công ty

@@ -124,12 +124,14 @@ const UserInfomationForm = () => {
                     <label className="font-semibold text-[1.5rem]">
                         Địa chỉ Email<span className="text-[1.8rem] text-red-600">*</span>
                     </label>
-                    <input
-                        type="email"
-                        value={email}
-                        placeholder="name@example.com"
-                        className="block w-full text-[1.5rem] bg-slate-200 border px-5 py-3 rounded-lg pointer-events-none"
-                    />
+                    <div className="cursor-not-allowed">
+                        <input
+                            type="email"
+                            value={email}
+                            placeholder="name@example.com"
+                            className="block w-full text-[1.5rem] bg-slate-200 border px-5 py-3 rounded-lg pointer-events-none"
+                        />
+                    </div>
                 </div>
             </div>
             <div className="grid grid-cols-2 gap-5 mt-3">

@@ -52,7 +52,7 @@ const SaveJobCard = (props) => {
             <div className="flex justify-end">
                 <Link
                     href="#"
-                    className="block text-[1.4rem] text-white bg-[var(--primary-color)] hover:bg-[var(--primary-hover-color)] px-7 py-2.5 rounded-lg mt-5 md:mt-0"
+                    className="block text-[1.4rem] text-white font-medium bg-[var(--primary-color)] hover:bg-[var(--primary-hover-color)] px-7 py-2.5 rounded-lg mt-5 md:mt-0"
                 >
                     Ứng tuyển
                 </Link>
