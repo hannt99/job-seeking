@@ -90,8 +90,25 @@ export const deleteJobByEmployerController = async (req, res) => {
 // Get all job controller
 export const getAllJobController = async (req, res) => {
     try {
-        const jobs = await Job.find();
-        res.status(200).json({ code: 200, message: 'Thành công', jobs });
+        let { page, limit, userId, search } = req.query;
+        let queryFilters = {};
+
+        if (search) {
+            queryFilters = { companyName: { $regex: search, $options: 'i' } };
+        }
+
+        if (userId) {
+            queryFilters.userId = userId;
+        }
+
+        if (!page) page = 1;
+        if (!limit) limit = 5;
+        const skip = (page - 1) * limit;
+
+        const jobs = await Job.find(queryFilters).sort({ createdAt: -1 }).skip(skip).limit(limit);
+        const totalJobs = await Job.countDocuments(queryFilters);
+        const totalPages = Math.ceil(totalJobs / limit);
+        res.status(200).json({ code: 200, message: 'Thành công', jobs, totalPages });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);

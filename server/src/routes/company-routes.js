@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {
-    getCompanyByOwnerController,
+    getCompanyByEmployerController,
     updateCompanyController,
     changeAvatarController,
     getAllCompanyController,
@@ -12,8 +12,8 @@ import upload from '../utils/uploadFile.js';
 
 const router = Router();
 
-// Get company by owner route
-router.get('/get-by-owner', verifyToken, isEmployer, getCompanyByOwnerController);
+// Get company by employer route
+router.get('/get-by-employer', verifyToken, isEmployer, getCompanyByEmployerController);
 
 // Update company route
 router.patch('/update', verifyToken, isEmployer, updateCompanyController);
@@ -25,6 +25,6 @@ router.post('/change-avatar', verifyToken, isEmployer, upload.single('companyAva
 router.get('/get-all', getAllCompanyController);
 
 // Get company by employer route
-router.get('/get/:id', getCompanyController);
+router.get('/get/:companyId', getCompanyController);
 
 export default router;

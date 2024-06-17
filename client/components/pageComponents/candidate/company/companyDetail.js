@@ -7,9 +7,13 @@ import axios from 'axios';
 import { FaMap, FaLocationDot, FaEnvelope, FaPhone, FaPeopleGroup } from 'react-icons/fa6';
 import { BiSolidCategory } from 'react-icons/bi';
 import JobCard from '@/components/common/jobCard';
+import Pagination from '@/components/common/pagination';
 
 const CompanyDetail = () => {
     const [company, setCompany] = useState({});
+    const [jobs, setJobs] = useState([]);
+    const [page, setPage] = useState(1);
+    const [pages, setPages] = useState(1);
 
     const searchParams = useSearchParams();
 
@@ -19,13 +23,21 @@ const CompanyDetail = () => {
                 `${process.env.NEXT_PUBLIC_API_URL}/company/get/${searchParams.get('requestId')}`,
             );
             if (res?.data?.code === 200) {
-                setCompany(res?.data?.company);
+                const res2 = await axios.get(
+                    `${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=${page}&limit=5&userId=${res?.data?.company?.userId}`,
+                );
+                if (res2?.data?.code === 200) {
+                    setJobs(res2?.data?.jobs);
+                    setPages(res2?.data?.totalPages);
+                    setCompany(res?.data?.company);
+                    return;
+                }
             } else {
                 return;
             }
         };
         fetchCompany();
-    }, []);
+    }, [page]);
 
     return (
         <>
@@ -118,18 +130,24 @@ const CompanyDetail = () => {
                             Việc làm đang tuyển
                         </h2>
                         <div className="space-y-5 p-7">
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
+                            {jobs?.map((j, index) => {
+                                return (
+                                    <JobCard
+                                        key={index}
+                                        id={j?._id}
+                                        jobTitle={j?.jobTitle}
+                                        jobSalaryRange={j?.jobSalaryRange}
+                                        jobWorkingLocation={j?.jobWorkingLocation}
+                                        updatedAt={j?.updatedAt}
+                                        companyId={company?._id}
+                                        companyName={company?.companyName}
+                                        companyAvatar={company?.avatar}
+                                    />
+                                );
+                            })}
+                            <div className="flex justify-center">
+                                <Pagination page={page} pages={pages} changePage={setPage} />
+                            </div>
                         </div>
                     </div>
                 </div>

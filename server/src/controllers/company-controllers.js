@@ -1,7 +1,7 @@
 import Company from '../models/Company.js';
 
-// Get company by owner controller
-export const getCompanyByOwnerController = async (req, res) => {
+// Get company by employer controller
+export const getCompanyByEmployerController = async (req, res) => {
     try {
         const company = await Company.findOne({ userId: req.user._id });
         res.status(200).json({ code: 200, message: 'Success', company });
@@ -73,7 +73,7 @@ export const getAllCompanyController = async (req, res) => {
 // Get company controller
 export const getCompanyController = async (req, res) => {
     try {
-        const company = await Company.findById(req.params.id);
+        const company = await Company.findById(req.params.companyId);
         res.status(200).json({ code: 200, message: 'Success', company });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
