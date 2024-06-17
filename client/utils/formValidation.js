@@ -37,13 +37,16 @@ export const phoneValidator = (phone, setIsPhoneErr, setPhoneErrMsg) => {
 };
 
 // Validate number
-export const numberValidator = (number, setIsNumberErr, setNumberErrMsg) => {
+export const numberValidator = (from, to, setIsNumberErr, setNumberErrMsg) => {
     const msg = {};
-    if (isEmpty(String(number))) {
+    if (isEmpty(String(from)) || isEmpty(String(to))) {
         msg.number = 'Quy mô không được để trống';
         setIsNumberErr(true);
-    } else if (number <= 0 || number > 9999) {
+    } else if (from <= 0 || from > 9999 || to <= 0 || to > 9999) {
         msg.number = 'Quy mô không hợp lệ';
+        setIsNumberErr(true);
+    } else if (to <= from) {
+        msg.number = 'Số sau phải lớn hơn số trước';
         setIsNumberErr(true);
     } else {
         setIsNumberErr(false);

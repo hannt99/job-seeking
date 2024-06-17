@@ -34,7 +34,8 @@ const RegisterEmployer = () => {
     const [companyName, setCompanyName] = useState('');
     const [companyNameErrMsg, setCompanyNameErrMsg] = useState({});
     const [isCompanyNameErr, setIsCompanyNameErr] = useState(false);
-    const [companySize, setCompanySize] = useState(Number);
+    const [companySizeFrom, setCompanySizeFrom] = useState(Number);
+    const [companySizeTo, setCompanySizeTo] = useState(Number);
     const [companySizeErrMsg, setCompanySizeErrMsg] = useState({});
     const [isCompanySizeErr, setIsCompanySizeErr] = useState(false);
     const [position, setPosition] = useState('');
@@ -64,7 +65,18 @@ const RegisterEmployer = () => {
         );
         const isPhoneValid = phoneValidator(phone, setIsPhoneErr, setPhoneErrMsg);
         const isCompanyNameValid = fullNameValidator(companyName, setIsCompanyNameErr, setCompanyNameErrMsg);
-        const isCompanySizeValid = numberValidator(companySize, setIsCompanySizeErr, setCompanySizeErrMsg);
+        const isCompanySizeFromValid = numberValidator(
+            companySizeFrom,
+            companySizeFrom,
+            setIsCompanySizeErr,
+            setCompanySizeErrMsg,
+        );
+        const isCompanySizeToValid = numberValidator(
+            companySizeFrom,
+            companySizeTo,
+            setIsCompanySizeErr,
+            setCompanySizeErrMsg,
+        );
         const isPositionValid = dropListValidator(position, setIsPositionErr, setPositionErrMsg);
         const isProvinceValid = dropListValidator(province, setIsProvinceErr, setProvinceErrMsg);
         if (
@@ -74,7 +86,8 @@ const RegisterEmployer = () => {
             !isFullNameValid ||
             !isPhoneValid ||
             !isCompanyNameValid ||
-            !isCompanySizeValid ||
+            !isCompanySizeFromValid ||
+            !isCompanySizeToValid ||
             !isPositionValid ||
             !isProvinceValid ||
             !isChecked
@@ -90,7 +103,7 @@ const RegisterEmployer = () => {
             fullName,
             phone,
             companyName,
-            companySize,
+            companySize: { from: companySizeFrom, to: companySizeTo },
             position,
             companyAddress: { district, jsonObject },
             role: 0,
@@ -103,7 +116,8 @@ const RegisterEmployer = () => {
             setConfirmPassword('');
             setPhone('');
             setCompanyName('');
-            setCompanySize('');
+            setCompanySizeFrom('');
+            setCompanySizeTo('');
             setPosition('');
             setProvince('');
             setDistrict('');
@@ -259,18 +273,42 @@ const RegisterEmployer = () => {
                                 <label className="font-semibold text-[1.5rem]">
                                     Quy mô<span className="text-[1.8rem] text-red-600">*</span>
                                 </label>
-                                <input
-                                    type="number"
-                                    value={companySize}
-                                    onChange={(e) => setCompanySize(e.target.value)}
-                                    onBlur={() =>
-                                        numberValidator(companySize, setIsCompanySizeErr, setCompanySizeErrMsg)
-                                    }
-                                    placeholder="1-9999"
-                                    className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
-                                        isCompanySizeErr ? 'border-red-600' : ''
-                                    }`}
-                                />
+                                <div className="flex items-center gap-5">
+                                    <input
+                                        type="number"
+                                        value={companySizeFrom}
+                                        onChange={(e) => setCompanySizeFrom(e.target.value)}
+                                        onBlur={() =>
+                                            numberValidator(
+                                                companySizeFrom,
+                                                companySizeFrom,
+                                                setIsCompanySizeErr,
+                                                setCompanySizeErrMsg,
+                                            )
+                                        }
+                                        placeholder="1-9999"
+                                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                            isCompanySizeErr ? 'border-red-600' : ''
+                                        }`}
+                                    />
+                                    <input
+                                        type="number"
+                                        value={companySizeTo}
+                                        onChange={(e) => setCompanySizeTo(e.target.value)}
+                                        onBlur={() =>
+                                            numberValidator(
+                                                companySizeFrom,
+                                                companySizeTo,
+                                                setIsCompanySizeErr,
+                                                setCompanySizeErrMsg,
+                                            )
+                                        }
+                                        placeholder="1-9999"
+                                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                            isCompanySizeErr ? 'border-red-600' : ''
+                                        }`}
+                                    />
+                                </div>
                                 <p className="text-red-600 text-[1.3rem]">{companySizeErrMsg.number}</p>
                             </div>
                             <div className="space-y-4">

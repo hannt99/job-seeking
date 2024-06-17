@@ -27,7 +27,8 @@ const CompanyInfomationForm = () => {
     const [companyName, setCompanyName] = useState('');
     const [companyNameErrMsg, setCompanyNameErrMsg] = useState({});
     const [isCompanyNameErr, setIsCompanyNameErr] = useState(false);
-    const [companySize, setCompanySize] = useState(Number);
+    const [companySizeFrom, setCompanySizeFrom] = useState(Number);
+    const [companySizeTo, setCompanySizeTo] = useState(Number);
     const [companySizeErrMsg, setCompanySizeErrMsg] = useState({});
     const [isCompanySizeErr, setIsCompanySizeErr] = useState(false);
     const [position, setPosition] = useState('');
@@ -49,11 +50,29 @@ const CompanyInfomationForm = () => {
     const handleUpdateInfo = async () => {
         const isCompanyNameValid = fullNameValidator(companyName, setIsCompanyNameErr, setCompanyNameErrMsg);
         const isCompanyCareerValid = fullNameValidator(companyCareer, setIsCompanyCareerErr, setCompanyCareerErrMsg);
-        const isCompanySizeValid = numberValidator(companySize, setIsCompanySizeErr, setCompanySizeErrMsg);
+        const isCompanySizeFromValid = numberValidator(
+            companySizeFrom,
+            companySizeFrom,
+            setIsCompanySizeErr,
+            setCompanySizeErrMsg,
+        );
+        const isCompanySizeToValid = numberValidator(
+            companySizeFrom,
+            companySizeTo,
+            setIsCompanySizeErr,
+            setCompanySizeErrMsg,
+        );
         const isPositionValid = dropListValidator(position, setIsPositionErr, setPositionErrMsg);
         const isProvinceValid = dropListValidator(province, setIsProvinceErr, setProvinceErrMsg);
 
-        if (!isCompanyNameValid || !isCompanyCareerValid || !isCompanySizeValid || !isPositionValid || !isProvinceValid)
+        if (
+            !isCompanyNameValid ||
+            !isCompanyCareerValid ||
+            !isCompanySizeFromValid ||
+            !isCompanySizeToValid ||
+            !isPositionValid ||
+            !isProvinceValid
+        )
             return;
 
         setIsLoading(true);
@@ -64,7 +83,7 @@ const CompanyInfomationForm = () => {
             companyEmail,
             companyPhone,
             companyCareer,
-            companySize,
+            companySize: { from: companySizeFrom, to: companySizeTo },
             position,
             companyAddress: { district, jsonObject },
             introduction,
@@ -128,7 +147,8 @@ const CompanyInfomationForm = () => {
             if (res?.data?.code === 200) {
                 setCompanyName(res?.data?.company?.companyName);
                 setWebsite(res?.data?.company?.website);
-                setCompanySize(res?.data?.company?.companySize);
+                setCompanySizeFrom(res?.data?.company?.companySize?.from);
+                setCompanySizeTo(res?.data?.company?.companySize?.to);
                 setPosition(res?.data?.company?.position);
                 setProvince(JSON.stringify(res?.data?.company?.companyAddress?.jsonObject));
                 setDistrict(res?.data?.company?.companyAddress?.district);
@@ -245,16 +265,42 @@ const CompanyInfomationForm = () => {
                     <label className="font-semibold text-[1.5rem]">
                         Quy mô<span className="text-[1.8rem] text-red-600">*</span>
                     </label>
-                    <input
-                        type="number"
-                        value={companySize}
-                        onChange={(e) => setCompanySize(e.target.value)}
-                        onBlur={() => numberValidator(companySize, setIsCompanySizeErr, setCompanySizeErrMsg)}
-                        placeholder="1-9999"
-                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
-                            isCompanySizeErr ? 'border-red-600' : ''
-                        }`}
-                    />
+                    <div className="flex items-center gap-5">
+                        <input
+                            type="number"
+                            value={companySizeFrom}
+                            onChange={(e) => setCompanySizeFrom(e.target.value)}
+                            onBlur={() =>
+                                numberValidator(
+                                    companySizeFrom,
+                                    companySizeFrom,
+                                    setIsCompanySizeErr,
+                                    setCompanySizeErrMsg,
+                                )
+                            }
+                            placeholder="1-9999"
+                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                isCompanySizeErr ? 'border-red-600' : ''
+                            }`}
+                        />
+                        <input
+                            type="number"
+                            value={companySizeTo}
+                            onChange={(e) => setCompanySizeTo(e.target.value)}
+                            onBlur={() =>
+                                numberValidator(
+                                    companySizeFrom,
+                                    companySizeTo,
+                                    setIsCompanySizeErr,
+                                    setCompanySizeErrMsg,
+                                )
+                            }
+                            placeholder="1-9999"
+                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                isCompanySizeErr ? 'border-red-600' : ''
+                            }`}
+                        />
+                    </div>
                     <p className="text-red-600 text-[1.3rem]">{companySizeErrMsg.number}</p>
                 </div>
                 <div className="space-y-4">

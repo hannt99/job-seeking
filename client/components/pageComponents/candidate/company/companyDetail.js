@@ -115,7 +115,7 @@ const CompanyDetail = () => {
                 </nav>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-10 lg:gap-x-10 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-14">
-                <div className="col-span-2 space-y-8">
+                <div className="col-span-2 order-2 lg:order-1 space-y-8">
                     <div className="bg-white rounded-lg custom-shadow-v1">
                         <h1 className="p-7 py-3 text-white text-[2rem] font-semibold bg-gradient-to-r from-[var(--primary-hover-color)] to-green-300 rounded-t-lg">
                             Về chúng tôi
@@ -151,7 +151,7 @@ const CompanyDetail = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col-span-1 space-y-10">
+                <div className="col-span-1 order-1 lg:order-2 space-y-10">
                     <div className="px-7 py-10 custom-shadow-v1 bg-white space-y-10 rounded-lg">
                         <div className="space-y-3">
                             <div className="flex justify-center">
@@ -192,7 +192,9 @@ const CompanyDetail = () => {
                                     <FaPeopleGroup />
                                     <span>Quy mô:</span>
                                 </span>
-                                <span className="block font-medium text-[1.7rem]">{company?.companySize}</span>
+                                <span className="block font-medium text-[1.7rem]">
+                                    {company?.companySize?.from + '-' + company?.companySize?.to + ' nhân viên'}
+                                </span>
                             </p>
                             <p>
                                 <span className="flex items-center gap-3 text-[#808080]">

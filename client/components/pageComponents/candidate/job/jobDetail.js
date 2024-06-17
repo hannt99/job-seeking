@@ -124,7 +124,7 @@ const JobDetail = () => {
             </div>
             <div className="flex justify-center w-full h-full bg-white py-14">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-10 lg:gap-x-10 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px]">
-                    <div className="col-span-2 order-2 md:order-1">
+                    <div className="col-span-2 order-2 lg:order-1">
                         <div className="text-[1.5rem]">
                             As a Product Designer, you will work within a Product Delivery Team fused with UX,
                             engineering, product and data talent. You will help the team design beautiful interfaces
@@ -184,7 +184,7 @@ const JobDetail = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col-span-1 order-1 md:order-2 space-y-10">
+                    <div className="col-span-1 order-1 lg:order-2 space-y-10">
                         <div className="flex items-stretch gap-4">
                             <button className="flex-1 text-white font-medium bg-[var(--primary-color)] py-4 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all">
                                 Ứng tuyển

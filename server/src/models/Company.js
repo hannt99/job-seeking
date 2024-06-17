@@ -36,7 +36,7 @@ const CompanySchema = new Schema(
             require: true,
         },
         companySize: {
-            type: Number,
+            type: Object,
             require: true,
         },
         position: {
