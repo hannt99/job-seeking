@@ -128,7 +128,7 @@ const CreateJobForm = ({ formTitle }) => {
         const fetchProvinces = async () => {
             const res = await axios.get('https://esgoo.net/api-tinhthanh/1/0.htm');
             const result = res?.data?.data?.map((item) => {
-                return { value: item?.full_name, label: item?.full_name };
+                return { value: item?.name, label: item?.name };
             });
             setAllProvinces(result);
         };

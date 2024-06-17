@@ -60,6 +60,11 @@ const CompanySchema = new Schema(
             default:
                 'https://png.pngtree.com/png-vector/20220608/ourmid/pngtree-man-avatar-isolated-on-white-background-png-image_4891418.png',
         },
+        followers: {
+            type: Array,
+            trim: true,
+            default: [],
+        },
     },
     {
         timestamps: true,

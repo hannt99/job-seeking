@@ -189,6 +189,9 @@ const CompanyDetail = () => {
                             >
                                 Website công ty
                             </a>
+                            <div className="flex justify-center">
+                                <button className="bg-[#dddddd] font-medium px-20 py-3 rounded-lg">Theo dõi</button>
+                            </div>
                         </div>
                         <hr></hr>
                         <div className="space-y-10">
