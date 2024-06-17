@@ -6,6 +6,9 @@ import {
     getAllJobByEmployerController,
     deleteJobByEmployerController,
     getAllJobController,
+    saveJobController,
+    unsaveJobController,
+    getSaveJobController,
 } from '../controllers/job-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 import { isEmployer } from '../middlewares/role.js';
@@ -29,5 +32,14 @@ router.delete('/delete/:jobId', verifyToken, isEmployer, deleteJobByEmployerCont
 
 // Get all job route
 router.get('/get-all', getAllJobController);
+
+// Save job route
+router.patch('/save-job', verifyToken, saveJobController);
+
+// Unsave job route
+router.patch('/unsave-job', verifyToken, unsaveJobController);
+
+// Get save job route
+router.get('/get-save-job', verifyToken, getSaveJobController);
 
 export default router;

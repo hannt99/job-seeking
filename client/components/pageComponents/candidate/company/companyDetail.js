@@ -202,6 +202,8 @@ const CompanyDetail = () => {
                             <h2 className="text-center text-[1.8rem] font-medium">{company?.companyName}</h2>
                             <a
                                 href={company?.website}
+                                target="_blank"
+                                rel="noreferrer noopener"
                                 className="block text-center text-blue-600 underline font-medium"
                             >
                                 Website công ty

@@ -1,12 +1,50 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, use } from 'react';
+import axios from 'axios';
 import Link from 'next/link';
 import SaveJobCard from './saveJobCard';
 import RightSide from './rightSide';
 
 const JobSave = () => {
     const [sort, setSort] = useState('');
+    const [saveJobIds, setSaveJobIds] = useState([]);
+    const [saveJobs, setSaveJobs] = useState([]);
+    const [allCompanies, setAllCompanies] = useState([]);
+
+    useEffect(() => {
+        const fetchJobId = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-save-job`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            });
+            if (res?.data?.code === 200) {
+                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/company/get-all?page=1&limit=100000`);
+                if (res2?.data?.code === 200) {
+                    setAllCompanies(res2?.data?.companies);
+                    setSaveJobIds(res?.data?.totalJobs);
+                    return;
+                }
+            } else {
+                return;
+            }
+        };
+        fetchJobId();
+    }, []);
+
+    useEffect(() => {
+        const fetchJob = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=1&limit=100000`);
+            if (res?.data?.code === 200) {
+                const result = res?.data?.jobs?.filter((item) =>
+                    saveJobIds?.find((item2) => item2?.jobId === item?._id),
+                );
+                return setSaveJobs(result);
+            } else {
+                return;
+            }
+        };
+        fetchJob();
+    }, [saveJobIds]);
 
     return (
         <>
@@ -75,30 +113,25 @@ const JobSave = () => {
                         </select>
                     </div>
                     <div className="py-5 space-y-8">
-                        <SaveJobCard
-                            jobTitle="Thuc tap sinh IT"
-                            jobStatus="Dang  tuyen"
-                            jobSalaryRange="Thoa thuan"
-                            jobWorkingLocation={[
-                                { label: 'Thanh pho Ha Noi' },
-                                { label: 'Thanh pho Ha Noi' },
-                                { label: 'Thanh pho Ha Noi' },
-                            ]}
-                            updatedAt="2024-06-12T13:04:50.539+00:00"
-                            company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                        />
-                        <SaveJobCard
-                            jobTitle="Thuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh IT"
-                            jobStatus="Dang  tuyen"
-                            jobSalaryRange="Thoa thuan"
-                            jobWorkingLocation={[
-                                { label: 'Thanh pho Ha Noi' },
-                                { label: 'Thanh pho Ha Noi' },
-                                { label: 'Thanh pho Ha Noi' },
-                            ]}
-                            updatedAt="2024-06-12T13:04:50.539+00:00"
-                            company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                        />
+                        {saveJobs?.map((sj, index) => {
+                            const company = allCompanies?.find((ac) => ac?.userId === sj?.userId);
+                            const saveTime = saveJobIds?.find((sji) => sji.jobId === sj?._id);
+                            console.log(saveTime);
+                            return (
+                                <SaveJobCard
+                                    key={index}
+                                    id={sj?._id}
+                                    jobTitle={sj?.jobTitle}
+                                    jobSalaryRange={sj?.jobSalaryRange}
+                                    jobWorkingLocation={sj?.jobWorkingLocation}
+                                    updatedAt={sj?.updatedAt}
+                                    saveTime={saveTime?.saveTime}
+                                    companyId={company?._id}
+                                    companyAvatar={company?.avatar}
+                                    companyName={company?.companyName}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
                 <div className="col-span-2 space-y-10">

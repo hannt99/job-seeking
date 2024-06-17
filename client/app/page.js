@@ -58,7 +58,7 @@ export default function Home() {
     }, []);
 
     useEffect(() => {
-        const fetchCompany = async () => {
+        const fetchJob = async () => {
             const res = await axios.get(
                 `${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=1&limit=6&sort=-jobApplicants`,
             );
@@ -73,7 +73,7 @@ export default function Home() {
                 return;
             }
         };
-        fetchCompany();
+        fetchJob();
     }, []);
 
     return (

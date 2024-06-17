@@ -5,6 +5,7 @@ import { generateVerifyEmailToken, generateAccessToken, generateResetPasswordTok
 import sendMail from '../utils/email.js';
 import jwt from 'jsonwebtoken';
 import Resume from '../models/Resume.js';
+import JobSave from '../models/JobSave.js';
 
 // Sigin controller
 export const signInController = async (req, res) => {
@@ -33,7 +34,6 @@ export const signInController = async (req, res) => {
 // Register controller
 export const registerController = async (req, res) => {
     try {
-        const userBody = {};
         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         const isEmailExist = await User.findOne({ email: req.body.email });
         if (!emailRegex.test(req.body.email)) return res.status(200).json({ code: 403, message: 'Email không hợp lệ' });
@@ -46,6 +46,9 @@ export const registerController = async (req, res) => {
 
         const newResume = new Resume({ ...req.body, userId: newUser?._id });
         await newResume.save();
+
+        const newJobSave = new JobSave({ ...req.body, userId: newUser?._id });
+        await newJobSave.save();
 
         if (req.body.role === 0) {
             const company = await Company.findOne({ companyName: req.body.companyName });

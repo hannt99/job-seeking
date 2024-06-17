@@ -1,5 +1,6 @@
 import Job from '../models/Job.js';
 import Company from '../models/Company.js';
+import JobSave from '../models/JobSave.js';
 
 // Create job controller
 export const createJobController = async (req, res) => {
@@ -90,11 +91,15 @@ export const deleteJobByEmployerController = async (req, res) => {
 // Get all job controller
 export const getAllJobController = async (req, res) => {
     try {
-        let { page, limit, userId, search, sort } = req.query;
+        let { page, limit, userId, search, jobId, sort } = req.query;
         let queryFilters = {};
 
         if (search) {
             queryFilters = { companyName: { $regex: search, $options: 'i' } };
+        }
+
+        if (jobId) {
+            queryFilters.jobId = jobId;
         }
 
         if (userId) {
@@ -109,6 +114,53 @@ export const getAllJobController = async (req, res) => {
         const totalJobs = await Job.countDocuments(queryFilters);
         const totalPages = Math.ceil(totalJobs / limit);
         res.status(200).json({ code: 200, message: 'Thành công', jobs, totalPages });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Save job controller
+export const saveJobController = async (req, res) => {
+    try {
+        const jobId = req.body.jobId;
+        await JobSave.findOneAndUpdate(
+            { userId: req.user._id },
+            {
+                $push: { totalJobs: { saveTime: Date.now(), jobId } },
+            },
+        );
+        res.status(200).json({ code: 200, message: 'Đã lưu' });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// unSave job controller
+export const unsaveJobController = async (req, res) => {
+    try {
+        const jobId = req.body.jobId;
+        await JobSave.findOneAndUpdate(
+            { userId: req.user._id },
+            {
+                $pull: { totalJobs: { jobId } },
+            },
+        );
+        res.status(200).json({ code: 200, message: 'Đã bỏ lưu' });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Save job controller
+export const getSaveJobController = async (req, res) => {
+    try {
+        const saveJobs = await JobSave.findOne({ userId: req.user._id });
+        const totalJobs = saveJobs?.totalJobs;
+
+        res.status(200).json({ code: 200, message: 'Đã lưu', totalJobs });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);
