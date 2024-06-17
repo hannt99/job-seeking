@@ -8,14 +8,49 @@ import { FaMap, FaLocationDot, FaEnvelope, FaPhone, FaPeopleGroup } from 'react-
 import { BiSolidCategory } from 'react-icons/bi';
 import JobCard from '@/components/common/jobCard';
 import Pagination from '@/components/common/pagination';
+import { success } from '@/utils/toastMessage';
 
 const CompanyDetail = () => {
     const [company, setCompany] = useState({});
     const [jobs, setJobs] = useState([]);
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
+    const [reRender, setRerender] = useState(false);
 
     const searchParams = useSearchParams();
+
+    const handleFollowCompany = async () => {
+        const res = await axios.patch(
+            `${process.env.NEXT_PUBLIC_API_URL}/company/add-follower/${searchParams.get('requestId')}`,
+            {},
+            { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } },
+        );
+        if (res?.data?.code === 200) {
+            setRerender(!reRender);
+            return success(res?.data?.message);
+        } else {
+            return;
+        }
+    };
+
+    const handleUnfollowCompany = async () => {
+        const res = await axios.patch(
+            `${process.env.NEXT_PUBLIC_API_URL}/company/remove-follower/${searchParams.get('requestId')}`,
+            {},
+            { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } },
+        );
+        if (res?.data?.code === 200) {
+            setRerender(!reRender);
+            return success(res?.data?.message);
+        } else {
+            return;
+        }
+    };
+
+    const isFollow = () => {
+        const result = company?.followers?.includes(localStorage?.getItem('userId'));
+        return result;
+    };
 
     useEffect(() => {
         const fetchCompany = async () => {
@@ -37,7 +72,7 @@ const CompanyDetail = () => {
             }
         };
         fetchCompany();
-    }, [page]);
+    }, [page, reRender]);
 
     return (
         <>
@@ -171,7 +206,12 @@ const CompanyDetail = () => {
                                 Website công ty
                             </a>
                             <div className="flex justify-center">
-                                <button className="bg-[#dddddd] font-medium px-20 py-3 rounded-lg">Theo dõi</button>
+                                <button
+                                    onClick={isFollow() ? handleUnfollowCompany : handleFollowCompany}
+                                    className="bg-[#dddddd] font-medium px-20 py-3 rounded-lg"
+                                >
+                                    {isFollow() ? <span>&#10003; Đã theo dõi</span> : 'Theo dõi'}
+                                </button>
                             </div>
                         </div>
                         <hr></hr>

@@ -320,7 +320,7 @@ const Header = () => {
                                 </Link>
                             </li>
                             {isAuth?.role === 0 && (
-                                <li className="block md:hidden">
+                                <li className="block lg:hidden">
                                     <Link
                                         href="/employer/dashboard"
                                         className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"

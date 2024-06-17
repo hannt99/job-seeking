@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
 import { emailValidator, passwordValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
@@ -39,7 +40,9 @@ const Signin = () => {
             setEmail('');
             setPassword('');
             setIsLoading(false);
+            const decodedToken = jwtDecode(res?.data?.accessToken);
             localStorage.setItem('accessToken', res?.data?.accessToken);
+            localStorage.setItem('userId', decodedToken?._id);
             router.push('/');
             return success(res?.data?.message);
         } else {

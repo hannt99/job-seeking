@@ -5,6 +5,8 @@ import {
     changeAvatarController,
     getAllCompanyController,
     getCompanyController,
+    addFollowerController,
+    removeFollowerController,
 } from '../controllers/company-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 import { isEmployer } from '../middlewares/role.js';
@@ -26,5 +28,11 @@ router.get('/get-all', getAllCompanyController);
 
 // Get company by employer route
 router.get('/get/:companyId', getCompanyController);
+
+// Add follower route
+router.patch('/add-follower/:companyId', verifyToken, addFollowerController);
+
+// Add remove route
+router.patch('/remove-follower/:companyId', verifyToken, removeFollowerController);
 
 export default router;

@@ -80,3 +80,29 @@ export const getCompanyController = async (req, res) => {
         console.log(error);
     }
 };
+
+// Add follower controller
+export const addFollowerController = async (req, res) => {
+    try {
+        await Company.findByIdAndUpdate(req.params.companyId, {
+            $push: { followers: req.user._id },
+        });
+        res.status(200).json({ code: 200, message: 'Đã theo dõi' });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Remove follower controller
+export const removeFollowerController = async (req, res) => {
+    try {
+        await Company.findByIdAndUpdate(req.params.companyId, {
+            $pull: { followers: req.user._id },
+        });
+        res.status(200).json({ code: 200, message: 'Đã hủy theo dõi' });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
