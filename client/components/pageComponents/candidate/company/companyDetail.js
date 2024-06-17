@@ -1,11 +1,32 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import axios from 'axios';
 import { FaMap, FaLocationDot, FaEnvelope, FaPhone, FaPeopleGroup } from 'react-icons/fa6';
 import { BiSolidCategory } from 'react-icons/bi';
 import JobCard from '@/components/common/jobCard';
 
 const CompanyDetail = () => {
+    const [company, setCompany] = useState({});
+
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const fetchCompany = async () => {
+            const res = await axios.get(
+                `${process.env.NEXT_PUBLIC_API_URL}/company/get/${searchParams.get('requestId')}`,
+            );
+            if (res?.data?.code === 200) {
+                setCompany(res?.data?.company);
+            } else {
+                return;
+            }
+        };
+        fetchCompany();
+    }, []);
+
     return (
         <>
             <div className="w-full flex justify-center px-5 md:px-0">
@@ -74,7 +95,7 @@ const CompanyDetail = () => {
                                     />
                                 </svg>
                                 <span className="ml-1 text-[1.5rem] font-normal text-[#808080] md:ml-2">
-                                    Công ty VNG
+                                    {company?.companyName}
                                 </span>
                             </div>
                         </li>
@@ -87,78 +108,16 @@ const CompanyDetail = () => {
                         <h1 className="p-7 py-3 text-white text-[2rem] font-semibold bg-gradient-to-r from-[var(--primary-hover-color)] to-green-300 rounded-t-lg">
                             Về chúng tôi
                         </h1>
-                        <p className="text-[1.5rem] text-[#808080] p-7 space-y-5">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Mauris vitae ultricies leo integer
-                                malesuada nunc vel risus commodo. Vulputate odio ut enim blandit. Nibh ipsum consequat
-                                nisl vel pretium lectus quam.
-                            </p>
-                            <p>
-                                Nulla at volutpat diam ut. Lobortis feugiat vivamus at augue eget arcu. Urna condimentum
-                                mattis pellentesque id nibh tortor id aliquet. Dignissim cras tincidunt lobortis
-                                feugiat. Est sit amet facilisis magna etiam tempor. Eu augue ut lectus arcu bibendum at
-                                varius vel pharetra. Vel facilisis volutpat est velit egestas dui id. Ut pharetra sit
-                                amet aliquam. Elit at imperdiet dui accumsan sit amet nulla facilisi morbi. Tellus in
-                                metus vulputate eu scelerisque felis imperdiet proin. Magna fringilla urna porttitor
-                                rhoncus. Et odio pellentesque diam volutpat. Congue eu consequat ac felis donec et odio
-                                pellentesque diam. Accumsan in nisl nisi scelerisque eu ultrices vitae auctor eu.
-                            </p>
-                        </p>
+                        <div
+                            className="text-[1.5rem] text-[#808080] p-7"
+                            dangerouslySetInnerHTML={{ __html: company?.introduction }}
+                        ></div>
                     </div>
                     <div className="space-y-5 bg-white rounded-lg custom-shadow-v1">
                         <h2 className="p-7 py-3 text-white text-[2rem] font-semibold bg-gradient-to-r from-[var(--primary-hover-color)] to-green-300 rounded-t-lg">
                             Việc làm đang tuyển
                         </h2>
                         <div className="space-y-5 p-7">
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
                             <JobCard
                                 jobTitle="Thuc tap sinh IT"
                                 jobStatus="Dang  tuyen"
@@ -178,13 +137,17 @@ const CompanyDetail = () => {
                     <div className="px-7 py-10 custom-shadow-v1 bg-white space-y-10 rounded-lg">
                         <div className="space-y-3">
                             <div className="flex justify-center">
-                                <div className="w-[120px] h-[120px] border border-black">
-                                    <img src="" alt="company avatar" className="w-full h-full object-cover" />
+                                <div className="w-[120px] h-[120px]">
+                                    <img
+                                        src={company?.avatar}
+                                        alt="company avatar"
+                                        className="w-full h-full object-cover"
+                                    />
                                 </div>
                             </div>
-                            <h2 className="text-center text-[1.8rem] font-medium">Công ty TNHH ABCDE</h2>
+                            <h2 className="text-center text-[1.8rem] font-medium">{company?.companyName}</h2>
                             <a
-                                href="https://www.google.com"
+                                href={company?.website}
                                 className="block text-center text-blue-600 underline font-medium"
                             >
                                 Website công ty
@@ -200,35 +163,39 @@ const CompanyDetail = () => {
                                     <FaLocationDot />
                                     <span>Địa chỉ:</span>
                                 </span>
-                                <span className="block font-medium text-[1.7rem]">Quận 5, Thành phố Hồ Chí Minh</span>
+                                <span className="block font-medium text-[1.7rem]">
+                                    {company?.companyAddress?.district +
+                                        ', ' +
+                                        company?.companyAddress?.jsonObject?.name}
+                                </span>
                             </p>
                             <p>
                                 <span className="flex items-center gap-3 text-[#808080]">
                                     <FaPeopleGroup />
                                     <span>Quy mô:</span>
                                 </span>
-                                <span className="block font-medium text-[1.7rem]">1-99 nhân viên</span>
+                                <span className="block font-medium text-[1.7rem]">{company?.companySize}</span>
                             </p>
                             <p>
                                 <span className="flex items-center gap-3 text-[#808080]">
                                     <FaEnvelope />
                                     <span>Email:</span>
                                 </span>
-                                <span className="block font-medium text-[1.7rem]">name@example.com</span>
+                                <span className="block font-medium text-[1.7rem]">{company?.companyEmail}</span>
                             </p>
                             <p>
                                 <span className="flex items-center gap-3 text-[#808080]">
                                     <FaPhone />
                                     <span>Số điện thoại:</span>
                                 </span>
-                                <span className="block font-medium text-[1.7rem]">0123456789</span>
+                                <span className="block font-medium text-[1.7rem]">{company?.companyPhone}</span>
                             </p>
                             <p>
                                 <span className="flex items-center gap-3 text-[#808080]">
                                     <BiSolidCategory />
                                     <span>Ngành:</span>
                                 </span>
-                                <span className="block font-medium text-[1.7rem]">Kinh doanh / Bán hàng</span>
+                                <span className="block font-medium text-[1.7rem]">{company?.companyCareer}</span>
                             </p>
                         </div>
                     </div>

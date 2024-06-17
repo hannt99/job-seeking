@@ -1,7 +1,7 @@
 import Company from '../models/Company.js';
 
-// Get company controller
-export const getCompanyController = async (req, res) => {
+// Get company by owner controller
+export const getCompanyByOwnerController = async (req, res) => {
     try {
         const company = await Company.findOne({ userId: req.user._id });
         res.status(200).json({ code: 200, message: 'Success', company });
@@ -39,6 +39,42 @@ export const changeAvatarController = async (req, res) => {
 
         await Company.findOneAndUpdate({ userId: userId }, { avatar: fileUrl });
         res.status(200).json({ code: 200, message: 'Thay đổi ảnh nền thành công', fileName: file.filename });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Get all company controller
+export const getAllCompanyController = async (req, res) => {
+    try {
+        let { page, limit, search } = req.query;
+        let queryFilters = {};
+
+        if (search) {
+            queryFilters = { companyName: { $regex: search, $options: 'i' } };
+        }
+
+        if (!page) page = 1;
+        if (!limit) limit = 5;
+        const skip = (page - 1) * limit;
+
+        const companies = await Company.find(queryFilters).sort({ createdAt: -1 }).skip(skip).limit(limit);
+        const totalCompanies = await Company.countDocuments(queryFilters);
+        const totalPages = Math.ceil(totalCompanies / limit);
+
+        res.status(200).json({ code: 200, message: 'Success', companies, totalPages });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Get company controller
+export const getCompanyController = async (req, res) => {
+    try {
+        const company = await Company.findById(req.params.id);
+        res.status(200).json({ code: 200, message: 'Success', company });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);

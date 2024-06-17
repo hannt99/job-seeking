@@ -28,6 +28,6 @@ router.get('/get-all-by-employer', verifyToken, isEmployer, getAllJobByEmployerC
 router.delete('/delete/:jobId', verifyToken, isEmployer, deleteJobByEmployerController);
 
 // Get all job route
-router.delete('/get-all', getAllJobController);
+router.get('/get-all', getAllJobController);
 
 export default router;
