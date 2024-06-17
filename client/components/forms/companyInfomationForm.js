@@ -4,11 +4,15 @@ import { useState, useEffect, useRef } from 'react';
 import FormData from 'form-data';
 import { fullNameValidator, numberValidator, dropListValidator } from '@/utils/formValidation';
 import axios from 'axios';
+import dynamic from 'next/dynamic';
+const JoditEditor = dynamic(() => import('jodit-react'), {
+    ssr: false,
+});
 import Loading from '@/components/common/loading';
 import { success, error } from '@/utils/toastMessage';
 
 const careers = [
-    { value: 'Kinh doang/Bán hàng', label: 'Kinh doanh/Bán hàng' },
+    { value: 'Kinh doanh/Bán hàng', label: 'Kinh doanh/Bán hàng' },
     { value: 'Biên/Phiên dịch', label: 'Biên / Phiên dịch' },
     { value: 'Bảo hiểm', label: 'Bảo hiểm' },
 ];
@@ -321,15 +325,7 @@ const CompanyInfomationForm = () => {
             </div>
             <div className="space-y-4 mt-5">
                 <label className="font-semibold text-[1.5rem]">Giới thiệu công ty</label>
-                <textarea
-                    type="text"
-                    rows="4"
-                    cols="50"
-                    value={introduction}
-                    onChange={(e) => setIntroduction(e.target.value)}
-                    placeholder="Mô tả ngắn về công ty"
-                    className="whitespace-pre-wrap block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg"
-                ></textarea>
+                <JoditEditor value={introduction} tabIndex={1} onChange={(newContent) => setIntroduction(newContent)} />
             </div>
             <div className="flex justify-end">
                 <button

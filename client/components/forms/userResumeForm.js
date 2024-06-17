@@ -8,8 +8,8 @@ import Loading from '@/components/common/loading';
 import { success, error } from '@/utils/toastMessage';
 
 const careers = [
-    { value: 'Kinh doang/Bán hàng', label: 'Kinh doanh/Bán hàng' },
-    { value: 'Biên/Phiên dịch', label: 'Biên / Phiên dịch' },
+    { value: 'Kinh doanh/Bán hàng', label: 'Kinh doanh/Bán hàng' },
+    { value: 'Biên/Phiên dịch', label: 'Biên/Phiên dịch' },
     { value: 'Bảo hiểm', label: 'Bảo hiểm' },
 ];
 
