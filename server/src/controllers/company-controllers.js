@@ -48,7 +48,7 @@ export const changeAvatarController = async (req, res) => {
 // Get all company controller
 export const getAllCompanyController = async (req, res) => {
     try {
-        let { page, limit, search } = req.query;
+        let { page, limit, search, sort } = req.query;
         let queryFilters = {};
 
         if (search) {
@@ -59,7 +59,7 @@ export const getAllCompanyController = async (req, res) => {
         if (!limit) limit = 5;
         const skip = (page - 1) * limit;
 
-        const companies = await Company.find(queryFilters).sort({ createdAt: -1 }).skip(skip).limit(limit);
+        const companies = await Company.find(queryFilters).sort(sort).skip(skip).limit(limit);
         const totalCompanies = await Company.countDocuments(queryFilters);
         const totalPages = Math.ceil(totalCompanies / limit);
 

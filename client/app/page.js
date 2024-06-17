@@ -21,6 +21,10 @@ export default function Home() {
     const [jobPosition, setJobPosition] = useState('');
     const [allProvinces, setAllProvinces] = useState([]);
     const [province, setProvince] = useState('');
+    const [topCompanies, setTopCompanies] = useState([]);
+    const [allJobs, setAllJobs] = useState([]);
+    const [featJobs, setFeatJobs] = useState([]);
+    const [allCompanies, setAllCompanies] = useState([]);
 
     useEffect(() => {
         Aos.init({ duration: 1200 });
@@ -32,6 +36,44 @@ export default function Home() {
             setAllProvinces(res?.data?.data);
         };
         fetchProvinces();
+    }, []);
+
+    useEffect(() => {
+        const fetchCompany = async () => {
+            const res = await axios.get(
+                `${process.env.NEXT_PUBLIC_API_URL}/company/get-all?page=1&limit=12&sort=-followers`,
+            );
+            if (res?.data?.code === 200) {
+                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=1&limit=100000`);
+                if (res2?.data?.code === 200) {
+                    setAllJobs(res2?.data?.jobs);
+                    setTopCompanies(res?.data?.companies);
+                    return;
+                }
+            } else {
+                return;
+            }
+        };
+        fetchCompany();
+    }, []);
+
+    useEffect(() => {
+        const fetchCompany = async () => {
+            const res = await axios.get(
+                `${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=1&limit=6&sort=-jobApplicants`,
+            );
+            if (res?.data?.code === 200) {
+                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/company/get-all?page=1&limit=100000`);
+                if (res2?.data?.code === 200) {
+                    setAllCompanies(res2?.data?.companies);
+                    setFeatJobs(res?.data?.jobs);
+                    return;
+                }
+            } else {
+                return;
+            }
+        };
+        fetchCompany();
     }, []);
 
     return (
@@ -129,21 +171,23 @@ export default function Home() {
                             modules={[Navigation, Pagination]}
                             className="mySwiper"
                         >
-                            <SwiperSlide>
-                                <CompanyCard />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <CompanyCard />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <CompanyCard />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <CompanyCard />
-                            </SwiperSlide>
-                            <SwiperSlide>
-                                <CompanyCard />
-                            </SwiperSlide>
+                            {topCompanies?.map((tc, index) => {
+                                const jobs = allJobs
+                                    ?.filter((aj) => aj?.userId === tc?.userId)
+                                    ?.filter((aj) => aj?.jobStatus === 'Đang tuyển');
+                                return (
+                                    <SwiperSlide key={index}>
+                                        <CompanyCard
+                                            key={index}
+                                            id={tc?._id}
+                                            companyAvatar={tc?.avatar}
+                                            companyName={tc?.companyName}
+                                            companyAddress={tc?.companyAddress?.jsonObject?.name}
+                                            allOpenJobs={jobs?.length}
+                                        />
+                                    </SwiperSlide>
+                                );
+                            })}
                         </Swiper>
                     </div>
                 </div>
@@ -155,58 +199,22 @@ export default function Home() {
                     <span className="block flex-1 h-[2px] bg-[#f71616] opacity-30"></span>
                 </h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-10" data-aos="fade-up">
-                    <JobCard
-                        jobTitle="Thuc tap sinh IT"
-                        jobStatus="Dang  tuyen"
-                        jobSalaryRange="Thoa thuan"
-                        jobWorkingLocation={[
-                            { label: 'Thanh pho Ha Noi' },
-                            { label: 'Thanh pho Ha Noi' },
-                            { label: 'Thanh pho Ha Noi' },
-                        ]}
-                        updatedAt="2024-06-12T13:04:50.539+00:00"
-                        company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                    />
-                    <JobCard
-                        jobTitle="Thuc tap sinh IT"
-                        jobStatus="Dang  tuyen"
-                        jobSalaryRange="Thoa thuan"
-                        jobWorkingLocation={[{ label: 'Thanh pho Ha Noi' }]}
-                        updatedAt="2024-06-12T13:04:50.539+00:00"
-                        company="Ngan hang quan doi Vietcombank"
-                    />
-                    <JobCard
-                        jobTitle="Thuc tap sinh IT"
-                        jobStatus="Dang  tuyen"
-                        jobSalaryRange="Thoa thuan"
-                        jobWorkingLocation={[{ label: 'Thanh pho Ha Noi' }]}
-                        updatedAt="2024-06-12T13:04:50.539+00:00"
-                        company="Ngan hang quan doi Vietcombank"
-                    />
-                    <JobCard
-                        jobTitle="Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT"
-                        jobStatus="Dang  tuyen"
-                        jobSalaryRange="Thoa thuan"
-                        jobWorkingLocation={[{ label: 'Thanh pho Ha Noi' }]}
-                        updatedAt="2024-06-12T13:04:50.539+00:00"
-                        company="Ngan hang quan doi Vietcombank"
-                    />
-                    <JobCard
-                        jobTitle="Thuc tap sinh IT"
-                        jobStatus="Dang  tuyen"
-                        jobSalaryRange="Thoa thuan"
-                        jobWorkingLocation={[{ label: 'Thanh pho Ha Noi' }]}
-                        updatedAt="2024-06-12T13:04:50.539+00:00"
-                        company="Ngan hang quan doi Vietcombank"
-                    />
-                    <JobCard
-                        jobTitle="Thuc tap sinh IT"
-                        jobStatus="Dang  tuyen"
-                        jobSalaryRange="Thoa thuan"
-                        jobWorkingLocation={[{ label: 'Thanh pho Ha Noi' }]}
-                        updatedAt="2024-06-12T13:04:50.539+00:00"
-                        company="Ngan hang quan doi Vietcombank"
-                    />
+                    {featJobs?.map((fj, index) => {
+                        const company = allCompanies?.find((ac) => ac?.userId === fj?.userId);
+                        return (
+                            <JobCard
+                                key={index}
+                                id={fj?._id}
+                                jobTitle={fj?.jobTitle}
+                                jobSalaryRange={fj?.jobSalaryRange}
+                                jobWorkingLocation={fj?.jobWorkingLocation}
+                                updatedAt={fj?.updatedAt}
+                                companyId={company?._id}
+                                companyName={company?.companyName}
+                                companyAvatar={company?.avatar}
+                            />
+                        );
+                    })}
                 </div>
             </div>
             <div className="flex justify-center w-full bg-white">

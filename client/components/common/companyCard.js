@@ -6,7 +6,7 @@ import setSlug from '@/utils/slugify';
 
 const CompanyCard = (props) => {
     return (
-        <div className="flex flex-col items-center justify-between bg-white custom-shadow-v1 w-full h-full rounded-lg px-10 py-7">
+        <div className="flex flex-col items-center justify-between bg-white custom-shadow-v1 w-full min-h-[330px] rounded-lg px-10 py-7">
             <div className="flex flex-col items-center">
                 <div className="w-[120px] h-[120px] rounded-full">
                     <img

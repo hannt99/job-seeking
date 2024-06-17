@@ -90,7 +90,7 @@ export const deleteJobByEmployerController = async (req, res) => {
 // Get all job controller
 export const getAllJobController = async (req, res) => {
     try {
-        let { page, limit, userId, search } = req.query;
+        let { page, limit, userId, search, sort } = req.query;
         let queryFilters = {};
 
         if (search) {
@@ -105,7 +105,7 @@ export const getAllJobController = async (req, res) => {
         if (!limit) limit = 5;
         const skip = (page - 1) * limit;
 
-        const jobs = await Job.find(queryFilters).sort({ createdAt: -1 }).skip(skip).limit(limit);
+        const jobs = await Job.find(queryFilters).sort(sort).skip(skip).limit(limit);
         const totalJobs = await Job.countDocuments(queryFilters);
         const totalPages = Math.ceil(totalJobs / limit);
         res.status(200).json({ code: 200, message: 'Thành công', jobs, totalPages });

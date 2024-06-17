@@ -20,10 +20,10 @@ const CompanyList = () => {
     useEffect(() => {
         const fetchCompany = async () => {
             const res = await axios.get(
-                `${process.env.NEXT_PUBLIC_API_URL}/company/get-all?page=${page}&limit=12&search=${debouncedValue}`,
+                `${process.env.NEXT_PUBLIC_API_URL}/company/get-all?page=${page}&limit=12&search=${debouncedValue}&sort=-createdAt`,
             );
             if (res?.data?.code === 200) {
-                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-all`);
+                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=1&limit=100000`);
                 if (res2?.data?.code === 200) {
                     setAllJobs(res2?.data?.jobs);
                     setAllCompanies(res?.data?.companies);
