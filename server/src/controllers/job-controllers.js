@@ -34,17 +34,6 @@ export const updateJobController = async (req, res) => {
     }
 };
 
-// Get job controller
-export const getJobController = async (req, res) => {
-    try {
-        const job = await Job.findById(req.params.jobId);
-        res.status(200).json({ code: 200, message: 'Success', job });
-    } catch (error) {
-        res.status(400).json({ code: 400, message: 'Unexpected error' });
-        console.log(error);
-    }
-};
-
 // Get all job by specific employer controller
 export const getAllJobByEmployerController = async (req, res) => {
     try {
@@ -151,6 +140,30 @@ export const getAllJobController = async (req, res) => {
         const totalJobs = await Job.countDocuments(queryFilters);
         const totalPages = Math.ceil(totalJobs / limit);
         res.status(200).json({ code: 200, message: 'Thành công', jobs, totalPages });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Get job controller
+export const getJobController = async (req, res) => {
+    try {
+        const job = await Job.findById(req.params.jobId).populate('companyId');
+        res.status(200).json({ code: 200, message: 'Success', job });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Get job controller
+export const getRelativeJobController = async (req, res) => {
+    try {
+        const { jobCareers, jobType } = req.query;
+
+        const relativeJobs = await Job.find({ jobCareers, jobType }).populate('companyId');
+        res.status(200).json({ code: 200, message: 'Success', relativeJobs });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);

@@ -24,6 +24,7 @@ export const formatVNDateTime = (dateTimeToFormat) => {
 };
 
 export const formatVNTimeAgo = (timeToFormat) => {
+    if (!timeToFormat) return;
     const timeAgo = new TimeAgo();
     const result = timeAgo.format(new Date(timeToFormat));
     return result;

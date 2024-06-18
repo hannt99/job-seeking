@@ -1,5 +1,8 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import axios from 'axios';
 import { AiOutlineDollar } from 'react-icons/ai';
 import { LuClock4 } from 'react-icons/lu';
 import { IoLocationOutline, IoBookmarkOutline } from 'react-icons/io5';
@@ -7,11 +10,93 @@ import { BiSolidCategory } from 'react-icons/bi';
 import { BsSuitcaseLg } from 'react-icons/bs';
 import { CgTimelapse } from 'react-icons/cg';
 import { FaRegCalendarTimes } from 'react-icons/fa';
-import { FaMap, FaLocationDot, FaEnvelope, FaPhone, FaPeopleGroup } from 'react-icons/fa6';
+import { FaLocationDot, FaEnvelope, FaPhone, FaPeopleGroup } from 'react-icons/fa6';
 import JobCard from '@/components/common/jobCard';
 import Link from 'next/link';
+import { formatVNTimeAgo, formatVNDateTime } from '@/utils/formatDateTime';
+import setSlug from '@/utils/slugify';
+import { success } from '@/utils/toastMessage';
 
 const JobDetail = () => {
+    const [job, setJob] = useState({});
+    const [isSave, setIsSave] = useState(false);
+    const [reRender, setRerender] = useState('');
+    const [relativeJobs, setRelativeJobs] = useState([]);
+
+    const searchParams = useSearchParams();
+
+    const refactorLocation = (location) => {
+        const result = location?.map((item) => item?.label).join(', ');
+        return result;
+    };
+
+    const handleSaveJob = async () => {
+        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        const res = await axios.patch(
+            `${process.env.NEXT_PUBLIC_API_URL}/job/save-job`,
+            { jobId: searchParams.get('requestId') },
+            { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } },
+        );
+        if (res?.data?.code === 200) {
+            setRerender(!reRender);
+            return success(res?.data?.message);
+        } else {
+            return;
+        }
+    };
+
+    const handleUnSaveJob = async (id) => {
+        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        const res = await axios.patch(
+            `${process.env.NEXT_PUBLIC_API_URL}/job/unsave-job`,
+            { jobId: searchParams.get('requestId') },
+            { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } },
+        );
+        if (res?.data?.code === 200) {
+            setRerender(!reRender);
+            return success(res?.data?.message);
+        } else {
+            return;
+        }
+    };
+
+    useEffect(() => {
+        const isSave = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-save-job`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            });
+            const result = !!res?.data?.totalJobs?.find((item) => item?.jobId?._id === job?._id);
+            setIsSave(result);
+        };
+        isSave();
+    }, [reRender, job]);
+
+    useEffect(() => {
+        const fetchJob = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get/${searchParams.get('requestId')}`);
+            if (res?.data?.code === 200) {
+                setJob(res?.data?.job);
+            } else {
+                return;
+            }
+        };
+        fetchJob();
+    }, [searchParams]);
+
+    useEffect(() => {
+        const fetchJob = async () => {
+            const res = await axios.get(
+                `${process.env.NEXT_PUBLIC_API_URL}/job/get-relative-job?jobCareers=${job?.jobCareers}&jobType=${job?.jobType}`,
+            );
+            if (res?.data?.code === 200) {
+                setRelativeJobs(res?.data?.relativeJobs);
+            } else {
+                return;
+            }
+        };
+        fetchJob();
+    }, [job]);
+
     return (
         <>
             <div className="w-full flex justify-center px-5 md:px-0">
@@ -80,7 +165,7 @@ const JobDetail = () => {
                                     />
                                 </svg>
                                 <span className="ml-1 text-[1.5rem] font-normal text-[#808080] md:ml-2">
-                                    Thực tập sinh IT
+                                    {job?.jobTitle}
                                 </span>
                             </div>
                         </li>
@@ -89,33 +174,35 @@ const JobDetail = () => {
             </div>
             <div className="px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-14">
                 <div className="flex items-center gap-7">
-                    <div className="w-[100px] h-[100px] border border-black">
-                        <img src="" alt="company avatar" className="w-full h-full object-cover" />
+                    <div className="w-[100px] h-[100px]">
+                        <img src={job?.companyId?.avatar} alt="company avatar" className="w-full h-full object-cover" />
                     </div>
                     <div className="space-y-5">
-                        <h1 className="text-[2.6rem] font-semibold">Thuc tap sinh IT</h1>
-                        <ul className="flex items-center gap-7 text-[1.4rem] text-[#808080]">
+                        <h1 className="text-[2.6rem] font-semibold">{job?.jobTitle}</h1>
+                        <ul className="flex items-center flex-wrap gap-7 text-[1.4rem] text-[#808080]">
                             <li className="flex items-center gap-2">
                                 <BsSuitcaseLg className="text-[2rem]" />
-                                <span>Kinh doanh / Ban hang</span>
+                                <span>{job?.jobCareers}</span>
                             </li>
                             <li className="flex items-center gap-2">
                                 <IoLocationOutline className="text-[2rem]" />
-                                <span>Thanh pho Ho Chi Minh</span>
+                                <span>{refactorLocation(job?.jobWorkingLocation)}</span>
                             </li>
                             <li className="flex items-center gap-2">
                                 <LuClock4 className="text-[2rem]" />
-                                <span>11 giom truoc</span>
+                                <span>{formatVNTimeAgo(job?.updatedAt)}</span>
                             </li>
                             <li className="flex items-center gap-2">
                                 <AiOutlineDollar className="text-[2rem]" />
-                                <span>5 - 10 trieu</span>
+                                <span>{job?.jobSalaryRange}</span>
                             </li>
                         </ul>
                         <ul className="flex items-center gap-3 text-[1.3rem] font-medium text-[#808080]">
-                            <li className="bg-[#d5e3f6] text-blue-700 px-7 py-1 rounded-full uppercase">Full time</li>
+                            <li className="bg-[#d5e3f6] text-blue-700 px-7 py-1 rounded-full uppercase">
+                                {job?.jobType}
+                            </li>
                             <li className="bg-[#d9ede3] text-[var(--primary-color)] px-7 py-1 rounded-full uppercase">
-                                Dang tuyen
+                                {job?.jobStatus}
                             </li>
                         </ul>
                     </div>
@@ -125,62 +212,27 @@ const JobDetail = () => {
             <div className="flex justify-center w-full h-full bg-white py-14">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-10 lg:gap-x-10 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px]">
                     <div className="col-span-2 order-2 lg:order-1">
-                        <div className="text-[1.5rem]">
-                            As a Product Designer, you will work within a Product Delivery Team fused with UX,
-                            engineering, product and data talent. You will help the team design beautiful interfaces
-                            that solve business challenges for our clients. We work with a number of Tier 1 banks on
-                            building web-based applications for AML, KYC and Sanctions List management workflows. This
-                            role is ideal if you are looking to segue your career into the FinTech or Big Data arenas.
-                            As a Product Designer, you will work within a Product Delivery Team fused with UX,
-                            engineering, product and data talent. You will help the team design beautiful interfaces
-                            that solve business challenges for our clients. We work with a number of Tier 1 banks on
-                            building web-based applications for AML, KYC and Sanctions List management workflows. This
-                            role is ideal if you are looking to segue your career into the FinTech or Big Data arenas.
-                            As a Product Designer, you will work within a Product Delivery Team fused with UX,
-                            engineering, product and data talent. You will help the team design beautiful interfaces
-                            that solve business challenges for our clients. We work with a number of Tier 1 banks on
-                            building web-based applications for AML, KYC and Sanctions List management workflows. This
-                            role is ideal if you are looking to segue your career into the FinTech or Big Data arenas.
-                        </div>
+                        <div className="text-[1.5rem]" dangerouslySetInnerHTML={{ __html: job?.jobDesc }}></div>
                         <div className="space-y-5 mt-14">
                             <h2 className="text-[2.4rem] font-semibold">Việc làm liên quan</h2>
                             <div className="space-y-5">
-                                <JobCard
-                                    jobTitle="Thuc tap sinh IT"
-                                    jobStatus="Dang  tuyen"
-                                    jobSalaryRange="Thoa thuan"
-                                    jobWorkingLocation={[
-                                        { label: 'Thanh pho Ha Noi' },
-                                        { label: 'Thanh pho Ha Noi' },
-                                        { label: 'Thanh pho Ha Noi' },
-                                    ]}
-                                    updatedAt="2024-06-12T13:04:50.539+00:00"
-                                    company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                                />
-                                <JobCard
-                                    jobTitle="Thuc tap sinh IT"
-                                    jobStatus="Dang  tuyen"
-                                    jobSalaryRange="Thoa thuan"
-                                    jobWorkingLocation={[
-                                        { label: 'Thanh pho Ha Noi' },
-                                        { label: 'Thanh pho Ha Noi' },
-                                        { label: 'Thanh pho Ha Noi' },
-                                    ]}
-                                    updatedAt="2024-06-12T13:04:50.539+00:00"
-                                    company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                                />
-                                <JobCard
-                                    jobTitle="Thuc tap sinh IT"
-                                    jobStatus="Dang  tuyen"
-                                    jobSalaryRange="Thoa thuan"
-                                    jobWorkingLocation={[
-                                        { label: 'Thanh pho Ha Noi' },
-                                        { label: 'Thanh pho Ha Noi' },
-                                        { label: 'Thanh pho Ha Noi' },
-                                    ]}
-                                    updatedAt="2024-06-12T13:04:50.539+00:00"
-                                    company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                                />
+                                {relativeJobs
+                                    ?.filter((item) => item?._id !== job?._id)
+                                    ?.map((rj, index) => {
+                                        return (
+                                            <JobCard
+                                                key={index}
+                                                id={rj?._id}
+                                                jobTitle={rj?.jobTitle}
+                                                jobSalaryRange={rj?.jobSalaryRange}
+                                                jobWorkingLocation={rj?.jobWorkingLocation}
+                                                updatedAt={rj?.updatedAt}
+                                                companyId={rj?.companyId?._id}
+                                                companyName={rj?.companyId?.companyName}
+                                                companyAvatar={rj?.companyId?.avatar}
+                                            />
+                                        );
+                                    })}
                             </div>
                         </div>
                     </div>
@@ -189,7 +241,14 @@ const JobDetail = () => {
                             <button className="flex-1 text-white font-medium bg-[var(--primary-color)] py-4 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all">
                                 Ứng tuyển
                             </button>
-                            <button className="text-[2.4rem] text-[var(--primary-color)] bg-[var(--secondary-color)] p-4 rounded-lg hover:bg-[var(--primary-color)] hover:text-white transition-all">
+                            <button
+                                onClick={isSave ? handleUnSaveJob : handleSaveJob}
+                                className={`text-[2.4rem] ${
+                                    isSave
+                                        ? 'text-white bg-[var(--primary-color)]'
+                                        : 'text-[var(--primary-color)] bg-[var(--secondary-color)]'
+                                } p-4 rounded-lg hover:bg-[var(--primary-color)] hover:text-white transition-all`}
+                            >
                                 <IoBookmarkOutline />
                             </button>
                         </div>
@@ -200,49 +259,53 @@ const JobDetail = () => {
                                     <LuClock4 className="text-[2.6rem] text-[var(--primary-color)]" />
                                     <p>
                                         <span className="block font-medium">Đã đăng</span>
-                                        <span className="block text-[1.5rem]">1 gio truoc</span>
+                                        <span className="block text-[1.5rem]">{formatVNTimeAgo(job?.updatedAt)}</span>
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-7">
                                     <FaRegCalendarTimes className="text-[2.6rem] text-[var(--primary-color)]" />
                                     <p>
                                         <span className="block font-medium">Hết hạn</span>
-                                        <span className="block text-[1.5rem]">12/07/2024</span>
+                                        <span className="block text-[1.5rem]">
+                                            {formatVNDateTime(job?.jobDeadline)}
+                                        </span>
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-7">
                                     <IoLocationOutline className="text-[2.6rem] text-[var(--primary-color)]" />
                                     <p>
                                         <span className="block font-medium">Địa điểm</span>
-                                        <span className="block text-[1.5rem]">Thành phố Hồ Chí Minh</span>
+                                        <span className="block text-[1.5rem]">
+                                            {refactorLocation(job?.jobWorkingLocation)}
+                                        </span>
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-7">
                                     <BsSuitcaseLg className="text-[2.6rem] text-[var(--primary-color)]" />
                                     <p>
                                         <span className="block font-medium">Ngành nghề</span>
-                                        <span className="block text-[1.5rem]">Kinh doanh / Bán hàng</span>
+                                        <span className="block text-[1.5rem]">{job?.jobCareers}</span>
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-7">
                                     <BiSolidCategory className="text-[2.6rem] text-[var(--primary-color)]" />
                                     <p>
                                         <span className="block font-medium">Hình thức</span>
-                                        <span className="block text-[1.5rem]">Full time</span>
+                                        <span className="block text-[1.5rem]">{job?.jobType}</span>
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-7">
                                     <CgTimelapse className="text-[2.6rem] text-[var(--primary-color)]" />
                                     <p>
                                         <span className="block font-medium">Kinh nghiệm</span>
-                                        <span className="block text-[1.5rem]">2 năm</span>
+                                        <span className="block text-[1.5rem]">{job?.jobExp}</span>
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-7">
                                     <AiOutlineDollar className="text-[2.6rem] text-[var(--primary-color)]" />
                                     <p>
                                         <span className="block font-medium">Mức lương</span>
-                                        <span className="block text-[1.5rem]">10 - 15 trieu</span>
+                                        <span className="block text-[1.5rem]">{job?.jobSalaryRange}</span>
                                     </p>
                                 </div>
                             </div>
@@ -259,15 +322,13 @@ const JobDetail = () => {
                             <div className="space-y-10">
                                 <h2 className="font-medium text-[1.8rem]">Kỹ năng</h2>
                                 <ul className="flex items-center flex-wrap gap-3 text-[1.4rem]">
-                                    <li className="bg-white px-3 py-1 rounded-md shadow-md">HTML/CSS</li>
-                                    <li className="bg-white px-3 py-1 rounded-md shadow-md">Javascript</li>
-                                    <li className="bg-white px-3 py-1 rounded-md shadow-md">React</li>
-                                    <li className="bg-white px-3 py-1 rounded-md shadow-md">HTML/CSS</li>
-                                    <li className="bg-white px-3 py-1 rounded-md shadow-md">Javascript</li>
-                                    <li className="bg-white px-3 py-1 rounded-md shadow-md">React</li>
-                                    <li className="bg-white px-3 py-1 rounded-md shadow-md">HTML/CSS</li>
-                                    <li className="bg-white px-3 py-1 rounded-md shadow-md">Javascript</li>
-                                    <li className="bg-white px-3 py-1 rounded-md shadow-md">React</li>
+                                    {job?.jobSkills?.map((js, index) => {
+                                        return (
+                                            <li key={index} className="bg-white px-3 py-1 rounded-md shadow-md">
+                                                {js?.label}
+                                            </li>
+                                        );
+                                    })}
                                 </ul>
                             </div>
                         </div>
@@ -275,12 +336,23 @@ const JobDetail = () => {
                             <div className="space-y-3">
                                 <div className="flex justify-center">
                                     <div className="w-[120px] h-[120px] border border-black">
-                                        <img src="" alt="company avatar" className="w-full h-full object-cover" />
+                                        <img
+                                            src={job?.companyId?.avatar}
+                                            alt="company avatar"
+                                            className="w-full h-full object-cover"
+                                        />
                                     </div>
                                 </div>
-                                <h2 className="text-center text-[1.8rem] font-medium">Công ty TNHH ABCDE</h2>
+                                <Link
+                                    href={`/company/${setSlug(job?.companyId?.companyName)}?requestId=${
+                                        job?.companyId?._id
+                                    }`}
+                                    className="block text-center text-[1.8rem] font-medium"
+                                >
+                                    {job?.companyId?.companyName}
+                                </Link>
                                 <a
-                                    href="https://www.google.com"
+                                    href={job?.companyId?.website}
                                     className="block text-center text-blue-600 underline font-medium"
                                 >
                                     Website công ty
@@ -294,7 +366,9 @@ const JobDetail = () => {
                                         <span>Địa chỉ:</span>
                                     </span>
                                     <span className="block font-medium text-[1.7rem]">
-                                        Quận 5, Thành phố Hồ Chí Minh
+                                        {job?.companyId?.companyAddress?.district +
+                                            ', ' +
+                                            job?.companyId?.companyAddress?.jsonObject?.name}
                                     </span>
                                 </p>
                                 <p>
@@ -302,28 +376,39 @@ const JobDetail = () => {
                                         <FaPeopleGroup />
                                         <span>Quy mô:</span>
                                     </span>
-                                    <span className="block font-medium text-[1.7rem]">1-99 nhân viên</span>
+                                    <span className="block font-medium text-[1.7rem]">
+                                        {job?.companyId?.companySize?.from +
+                                            '-' +
+                                            job?.companyId?.companySize?.to +
+                                            ' nhân viên'}
+                                    </span>
                                 </p>
                                 <p>
                                     <span className="flex items-center gap-3 text-[#808080]">
                                         <FaEnvelope />
                                         <span>Email:</span>
                                     </span>
-                                    <span className="block font-medium text-[1.7rem]">name@example.com</span>
+                                    <span className="block font-medium text-[1.7rem]">
+                                        {job?.companyId?.companyEmail}
+                                    </span>
                                 </p>
                                 <p>
                                     <span className="flex items-center gap-3 text-[#808080]">
                                         <FaPhone />
                                         <span>Số điện thoại:</span>
                                     </span>
-                                    <span className="block font-medium text-[1.7rem]">0123456789</span>
+                                    <span className="block font-medium text-[1.7rem]">
+                                        {job?.companyId?.companyPhone}
+                                    </span>
                                 </p>
                                 <p>
                                     <span className="flex items-center gap-3 text-[#808080]">
                                         <BiSolidCategory />
                                         <span>Ngành:</span>
                                     </span>
-                                    <span className="block font-medium text-[1.7rem]">Kinh doanh / Bán hàng</span>
+                                    <span className="block font-medium text-[1.7rem]">
+                                        {job?.companyId?.companyCareer}
+                                    </span>
                                 </p>
                             </div>
                         </div>
