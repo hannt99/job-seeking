@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { AiOutlineDollar } from 'react-icons/ai';
 import { IoSearchOutline } from 'react-icons/io5';
 import { CiLocationOn } from 'react-icons/ci';
@@ -34,6 +35,7 @@ const JobSearch = () => {
     const [pages, setPages] = useState(1);
     const [allJobs, setAllJobs] = useState([]);
 
+    const searchParams = useSearchParams();
     const debouncedValue = useDebounce(jobKeyword, 300);
 
     const jobTypes = ['Freelancer', 'Part time', 'Full time', 'Thời vụ'];
@@ -57,6 +59,12 @@ const JobSearch = () => {
         setJobExp('');
         setJobSalaryRange('');
     };
+
+    useEffect(() => {
+        searchParams.size !== 0 && setJobKeyword(decodeURIComponent(searchParams.get('k')) || '');
+        searchParams.size !== 0 && setJobWorkingLocation(decodeURIComponent(searchParams.get('p')) || '');
+        searchParams.size !== 0 && window.history.replaceState(null, '', '/job/search-job');
+    }, [searchParams.size]);
 
     useEffect(() => {
         const fetchProvinces = async () => {
@@ -154,7 +162,7 @@ const JobSearch = () => {
                                                 type="text"
                                                 value={jobKeyword}
                                                 onChange={(e) => setJobKeyword(e.target.value)}
-                                                placeholder="Tên việc làm hoặc công ty"
+                                                placeholder="Tên việc làm"
                                                 className="block w-full text-[1.5rem] outline-none border pl-20 pr-8 py-5 rounded-lg"
                                             />
                                             <IoSearchOutline className="absolute top-[50%] translate-y-[-50%] left-[18px] text-[2.2rem]" />

@@ -29,7 +29,6 @@ const JobSave = () => {
             }
         };
         fetchJobId();
-        console.log(typeof sort);
     }, [sort]);
 
     return (

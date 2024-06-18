@@ -18,7 +18,7 @@ import JobCard from '@/components/common/jobCard';
 import Link from 'next/link';
 
 export default function Home() {
-    const [jobPosition, setJobPosition] = useState('');
+    const [jobKeyword, setJobKeyword] = useState('');
     const [allProvinces, setAllProvinces] = useState([]);
     const [province, setProvince] = useState('');
     const [topCompanies, setTopCompanies] = useState([]);
@@ -43,7 +43,9 @@ export default function Home() {
                 `${process.env.NEXT_PUBLIC_API_URL}/company/get-all?page=1&limit=12&sort=-followers`,
             );
             if (res?.data?.code === 200) {
-                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=1&limit=100000`);
+                const res2 = await axios.get(
+                    `${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=1&limit=100000&jobStatus=Đang tuyển`,
+                );
                 if (res2?.data?.code === 200) {
                     setAllJobs(res2?.data?.jobs);
                     setTopCompanies(res?.data?.companies);
@@ -95,9 +97,9 @@ export default function Home() {
                                 <div className="relative md:border-r col-span-2">
                                     <input
                                         type="text"
-                                        value={jobPosition}
-                                        onChange={(e) => setJobPosition(e.target.value)}
-                                        placeholder="Vị trí tuyển dụng"
+                                        value={jobKeyword}
+                                        onChange={(e) => setJobKeyword(e.target.value)}
+                                        placeholder="Tên việc làm"
                                         className={`block w-full outline-none text-[1.5rem] pl-5 pr-16 py-5 rounded-lg`}
                                     />
                                     <IoSearchOutline className="absolute top-[50%] translate-y-[-50%] right-0 text-[2rem] mr-5" />
@@ -111,20 +113,20 @@ export default function Home() {
                                         <option value="">-- Tỉnh/Thành phố --</option>
                                         {allProvinces?.map((p, index) => {
                                             return (
-                                                <option
-                                                    key={index}
-                                                    value={JSON.stringify({ id: p?.id, name: p?.full_name })}
-                                                >
-                                                    {p?.full_name}
+                                                <option key={index} value={p?.name}>
+                                                    {p?.name}
                                                 </option>
                                             );
                                         })}
                                     </select>
                                     <CiLocationOn className="absolute top-[50%] translate-y-[-50%] right-0 text-[2rem] mr-5 bg-white" />
                                 </div>
-                                <button className="bg-[var(--primary-color)] text-white py-5 rounded-lg">
+                                <Link
+                                    href={`/job/search-job?k=${jobKeyword}&p=${province}`}
+                                    className="block text-center bg-[var(--primary-color)] text-white py-5 rounded-lg hover:bg-[var(--primary-hover-color)]"
+                                >
                                     Tìm kiếm
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
@@ -167,9 +169,7 @@ export default function Home() {
                             className="mySwiper"
                         >
                             {topCompanies?.map((tc, index) => {
-                                const jobs = allJobs
-                                    ?.filter((aj) => aj?.userId === tc?.userId)
-                                    ?.filter((aj) => aj?.jobStatus === 'Đang tuyển');
+                                const jobs = allJobs?.filter((aj) => aj?.companyId?._id === tc?._id);
                                 return (
                                     <SwiperSlide key={index}>
                                         <CompanyCard
