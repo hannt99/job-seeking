@@ -23,7 +23,9 @@ const CompanyList = () => {
                 `${process.env.NEXT_PUBLIC_API_URL}/company/get-all?page=${page}&limit=12&search=${debouncedValue}&sort=-createdAt`,
             );
             if (res?.data?.code === 200) {
-                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=1&limit=100000`);
+                const res2 = await axios.get(
+                    `${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=1&limit=100000&jobStatus=Đang tuyển`,
+                );
                 if (res2?.data?.code === 200) {
                     setAllJobs(res2?.data?.jobs);
                     setAllCompanies(res?.data?.companies);
@@ -101,9 +103,7 @@ const CompanyList = () => {
                 <h1 className="text-center text-[3rem] font-semibold">DANH SÁCH CÁC CÔNG TY</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-10">
                     {allCompanies?.map((ac, index) => {
-                        const jobs = allJobs
-                            ?.filter((aj) => aj?.userId === ac?.userId)
-                            ?.filter((aj) => aj?.jobStatus === 'Đang tuyển');
+                        const jobs = allJobs?.filter((aj) => aj?.companyId?._id === ac?._id);
                         return (
                             <CompanyCard
                                 key={index}

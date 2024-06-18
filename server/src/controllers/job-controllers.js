@@ -102,6 +102,7 @@ export const getAllJobController = async (req, res) => {
             jobCareers,
             jobWorkingLocation,
             jobId,
+            jobStatus,
             sort,
         } = req.query;
         let queryFilters = {};
@@ -132,6 +133,10 @@ export const getAllJobController = async (req, res) => {
 
         if (jobCareers) {
             queryFilters.jobCareers = jobCareers;
+        }
+
+        if (jobStatus) {
+            queryFilters.jobStatus = jobStatus;
         }
 
         if (jobWorkingLocation) {

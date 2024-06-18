@@ -16,14 +16,21 @@ const JobSave = () => {
                 headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
             });
             if (res?.data?.code === 200) {
-                setSaveJobs(res?.data?.totalJobs);
+                setSaveJobs(
+                    res?.data?.totalJobs.sort(function (a, b) {
+                        if (sort === 'asc' || sort === '')
+                            return new Date(Number(b.saveTime)) - new Date(Number(a.saveTime));
+                        if (sort === 'desc') return new Date(Number(a.saveTime)) - new Date(Number(b.saveTime));
+                    }),
+                );
                 return;
             } else {
                 return;
             }
         };
         fetchJobId();
-    }, []);
+        console.log(typeof sort);
+    }, [sort]);
 
     return (
         <>
@@ -79,7 +86,7 @@ const JobSave = () => {
                 <div className="col-span-4 bg-white p-7 rounded-lg custom-shadow-v1 h-fit">
                     <div className="flex items-center justify-between">
                         <h2>
-                            <b>300</b> việc làm đã lưu
+                            <b>{saveJobs?.length}</b> việc làm đã lưu
                         </h2>
                         <select
                             value={sort}
@@ -87,8 +94,8 @@ const JobSave = () => {
                             className="block w-[120px] bg-[#f1f1f1] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
                         >
                             <option value="">Mặc định</option>
-                            <option value="newest">Mới nhất</option>
-                            <option value="oldest">Cũ nhất</option>
+                            <option value="asc">Mới nhất</option>
+                            <option value="desc">Cũ nhất</option>
                         </select>
                     </div>
                     <div className="py-5 space-y-8">
