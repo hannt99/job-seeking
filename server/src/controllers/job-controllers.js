@@ -91,11 +91,23 @@ export const deleteJobByEmployerController = async (req, res) => {
 // Get all job controller
 export const getAllJobController = async (req, res) => {
     try {
-        let { page, limit, userId, search, jobId, sort } = req.query;
+        let {
+            page,
+            limit,
+            userId,
+            search,
+            jobType,
+            jobExp,
+            jobSalaryRange,
+            jobCareers,
+            jobWorkingLocation,
+            jobId,
+            sort,
+        } = req.query;
         let queryFilters = {};
 
         if (search) {
-            queryFilters = { companyName: { $regex: search, $options: 'i' } };
+            queryFilters = { jobTitle: { $regex: search, $options: 'i' } };
         }
 
         if (jobId) {
@@ -104,6 +116,26 @@ export const getAllJobController = async (req, res) => {
 
         if (userId) {
             queryFilters.userId = userId;
+        }
+
+        if (jobType) {
+            queryFilters.jobType = jobType;
+        }
+
+        if (jobExp) {
+            queryFilters.jobExp = jobExp;
+        }
+
+        if (jobSalaryRange) {
+            queryFilters.jobSalaryRange = jobSalaryRange;
+        }
+
+        if (jobCareers) {
+            queryFilters.jobCareers = jobCareers;
+        }
+
+        if (jobWorkingLocation) {
+            queryFilters = { ...queryFilters, 'jobWorkingLocation.value': { $gte: jobWorkingLocation } };
         }
 
         if (!page) page = 1;

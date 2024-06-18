@@ -14,7 +14,7 @@ import { dropListValidator, fullNameValidator, dateValidator, disabledPastDate }
 import { success, error } from '@/utils/toastMessage';
 
 const careers = [
-    { value: 'Kinh doang/Bán hàng', label: 'Kinh doanh/Bán hàng' },
+    { value: 'Kinh doanh/Bán hàng', label: 'Kinh doanh/Bán hàng' },
     { value: 'Biên/Phiên dịch', label: 'Biên / Phiên dịch' },
     { value: 'Bảo hiểm', label: 'Bảo hiểm' },
 ];
@@ -241,15 +241,24 @@ const CreateJobForm = ({ formTitle }) => {
                     <label className="font-semibold text-[1.5rem]">
                         Ngành nghề<span className="text-[1.8rem] text-red-600">*</span>
                     </label>
-                    <DropListMulti
+                    <select
                         value={career}
-                        onChange={setCareer}
+                        onChange={(e) => setCareer(e.target.value)}
                         onBlur={() => dropListValidator(career, setIsCareerErr, setCareerErrMsg)}
-                        options={careers}
-                        placeholder="-- Ngành nghề --"
-                        msg={careerErrMsg.jobCareer}
-                        isErr={isCareerErr}
-                    />
+                        className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                            isCareerErr ? 'border-red-600' : ''
+                        }`}
+                    >
+                        <option value="">-- Ngành nghề --</option>
+                        {careers?.map((c, index) => {
+                            return (
+                                <option key={index} value={c?.value}>
+                                    {c?.label}
+                                </option>
+                            );
+                        })}
+                    </select>
+                    <p className="text-red-600 text-[1.3rem]">{careerErrMsg.jobCareer}</p>
                 </div>
                 <div className="block md:grid grid-cols-2 gap-5">
                     <div className="space-y-4 mt-7">

@@ -10,6 +10,8 @@ import { CgTimelapse } from 'react-icons/cg';
 import Link from 'next/link';
 import axios from 'axios';
 import JobCard from '@/components/common/jobCard';
+import Pagination from '@/components/common/pagination';
+import useDebounce from '@/hooks/useDebounce';
 
 const careers = [
     { value: '', label: 'Tất cả ngành nghề' },
@@ -25,9 +27,15 @@ const JobSearch = () => {
     const [jobType, setJobType] = useState('');
     const [jobExp, setJobExp] = useState('');
     const [jobSalaryRange, setJobSalaryRange] = useState('');
-    const [sort, setSort] = useState('');
+    const [sort, setSort] = useState('-updatedAt');
     const [allJobWorkingLocation, setAllJobWorkingLocation] = useState([]);
     const [openFilter, setOpenFilter] = useState(false);
+    const [page, setPage] = useState(1);
+    const [pages, setPages] = useState(1);
+    const [allJobs, setAllJobs] = useState([]);
+    const [allCompanies, setAllCompanies] = useState([]);
+
+    const debouncedValue = useDebounce(jobKeyword, 300);
 
     const jobTypes = ['Freelancer', 'Part time', 'Full time', 'Thời vụ'];
     const exps = ['Chưa có kinh nghiệm', 'Dưới 1 năm', '1 năm', '2 năm', '3 năm', '4 năm', '5 năm', 'Trên 5 năm'];
@@ -42,6 +50,15 @@ const JobSearch = () => {
         'Thỏa thuận',
     ];
 
+    const handleRemoveFilter = () => {
+        setJobKeyword('');
+        setJobWorkingLocation('');
+        setJobCareer('');
+        setJobType('');
+        setJobExp('');
+        setJobSalaryRange('');
+    };
+
     useEffect(() => {
         const fetchProvinces = async () => {
             const res = await axios.get('https://esgoo.net/api-tinhthanh/1/0.htm');
@@ -49,6 +66,26 @@ const JobSearch = () => {
         };
         fetchProvinces();
     }, []);
+
+    useEffect(() => {
+        const fetchJob = async () => {
+            const res = await axios.get(
+                `${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=${page}&limit=10&search=${debouncedValue}&jobType=${jobType}&jobExp=${jobExp}&jobSalaryRange=${jobSalaryRange}&jobCareers=${jobCareer}&jobWorkingLocation=${jobWorkingLocation}&sort=${sort}`,
+            );
+            if (res?.data?.code === 200) {
+                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/company/get-all?page=1&limit=100000`);
+                if (res2?.data?.code === 200) {
+                    setAllCompanies(res2?.data?.companies);
+                    setAllJobs(res?.data?.jobs);
+                    setPages(res?.data?.totalPages);
+                    return;
+                }
+            } else {
+                return;
+            }
+        };
+        fetchJob();
+    }, [page, debouncedValue, jobType, jobExp, jobSalaryRange, jobCareer, jobWorkingLocation, sort]);
 
     return (
         <>
@@ -139,11 +176,8 @@ const JobSearch = () => {
                                                 <option value="">Tất cả tỉnh/thành phố</option>
                                                 {allJobWorkingLocation?.map((p, index) => {
                                                     return (
-                                                        <option
-                                                            key={index}
-                                                            value={JSON.stringify({ id: p?.id, name: p?.full_name })}
-                                                        >
-                                                            {p?.full_name}
+                                                        <option key={index} value={p?.name}>
+                                                            {p?.name}
                                                         </option>
                                                     );
                                                 })}
@@ -235,14 +269,12 @@ const JobSearch = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3 py-5">
-                                    <button className="block w-full font-medium text-center bg-[var(--primary-color)] text-white py-3 rounded-lg hover:bg-[var(--primary-hover-color)]">
-                                        Áp dụng
-                                    </button>
-                                    <button className="block w-full font-medium text-center bg-red-600 text-white py-3 rounded-lg hover:bg-red-700">
-                                        Xóa bộ lọc
-                                    </button>
-                                </div>
+                                <button
+                                    onClick={handleRemoveFilter}
+                                    className="block w-full font-medium text-center bg-red-600 text-white py-3 rounded-lg hover:bg-red-700"
+                                >
+                                    Xóa bộ lọc
+                                </button>
                             </div>
                         )}
                         <div className="hidden xl:block bg-[var(--secondary-color)] rounded-3xl p-10 space-y-10 border">
@@ -270,11 +302,8 @@ const JobSearch = () => {
                                         <option value="">Tất cả tỉnh/thành phố</option>
                                         {allJobWorkingLocation?.map((p, index) => {
                                             return (
-                                                <option
-                                                    key={index}
-                                                    value={JSON.stringify({ id: p?.id, name: p?.full_name })}
-                                                >
-                                                    {p?.full_name}
+                                                <option key={index} value={p?.name}>
+                                                    {p?.name}
                                                 </option>
                                             );
                                         })}
@@ -364,14 +393,12 @@ const JobSearch = () => {
                                     );
                                 })}
                             </div>
-                            <div className="flex items-center gap-3 py-5">
-                                <button className="block w-full font-medium text-center bg-[var(--primary-color)] text-white py-3 rounded-lg hover:bg-[var(--primary-hover-color)]">
-                                    Áp dụng
-                                </button>
-                                <button className="block w-full font-medium text-center bg-red-600 text-white py-3 rounded-lg hover:bg-red-700">
-                                    Xóa bộ lọc
-                                </button>
-                            </div>
+                            <button
+                                onClick={handleRemoveFilter}
+                                className="block w-full font-medium text-center bg-red-600 text-white py-3 rounded-lg hover:bg-red-700"
+                            >
+                                Xóa bộ lọc
+                            </button>
                         </div>
                         <div className="hidden xl:grid grid-cols-3 bg-[var(--secondary-color)] rounded-3xl border">
                             <div className="col-span-2 p-10 space-y-7">
@@ -406,128 +433,35 @@ const JobSearch = () => {
                                 onChange={(e) => setSort(e.target.value)}
                                 className="block w-[120px] bg-[#f1f1f1] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
                             >
-                                <option value="">Mặc định</option>
-                                <option value="newest">Mới nhất</option>
-                                <option value="oldest">Cũ nhất</option>
+                                <option value="-updatedAt">Mặc định</option>
+                                <option value="-createdAt">Mới nhất</option>
+                                <option value="createdAt">Cũ nhất</option>
                             </select>
                         </div>
                         <div className="space-y-8">
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[{ label: 'Ho Chi Minh' }]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
-                            <JobCard
-                                jobTitle="Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT Thuc tap sinh IT"
-                                jobStatus="Dang  tuyen"
-                                jobSalaryRange="Thoa thuan"
-                                jobWorkingLocation={[
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                    { label: 'Thanh pho Ha Noi' },
-                                ]}
-                                updatedAt="2024-06-12T13:04:50.539+00:00"
-                                company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                            />
+                            {allJobs?.length === 0 ? (
+                                <p className="text-center">Không tìm thấy dữ liệu</p>
+                            ) : (
+                                allJobs?.map((aj, index) => {
+                                    const company = allCompanies?.find((ac) => ac?.userId === aj?.userId);
+                                    return (
+                                        <JobCard
+                                            key={index}
+                                            id={aj?._id}
+                                            jobTitle={aj?.jobTitle}
+                                            jobSalaryRange={aj?.jobSalaryRange}
+                                            jobWorkingLocation={aj?.jobWorkingLocation}
+                                            updatedAt={aj?.updatedAt}
+                                            companyId={company?._id}
+                                            companyName={company?.companyName}
+                                            companyAvatar={company?.avatar}
+                                        />
+                                    );
+                                })
+                            )}
+                            <div className="flex justify-center">
+                                <Pagination page={page} pages={pages} changePage={setPage} />
+                            </div>
                         </div>
                     </div>
                 </div>

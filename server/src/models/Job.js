@@ -34,10 +34,10 @@ const JobSchema = new Schema(
             default: '',
         },
         jobCareers: {
-            type: Array,
+            type: String,
             trim: true,
             require: true,
-            default: [],
+            default: '',
         },
         jobSkills: {
             type: Array,
