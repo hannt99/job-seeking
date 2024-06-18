@@ -7,7 +7,7 @@ export const createJobController = async (req, res) => {
     try {
         const company = await Company.findOne({ userId: req.user._id });
 
-        const newJob = new Job({ ...req.body, userId: req.user._id, companyAvatar: company.avatar });
+        const newJob = new Job({ ...req.body, companyId: company._id });
 
         await newJob.save();
         res.status(200).json({ code: 200, message: 'Việc mới đã được tạo thành công', data: newJob });
@@ -94,7 +94,7 @@ export const getAllJobController = async (req, res) => {
         let {
             page,
             limit,
-            userId,
+            companyId,
             search,
             jobType,
             jobExp,
@@ -114,8 +114,8 @@ export const getAllJobController = async (req, res) => {
             queryFilters.jobId = jobId;
         }
 
-        if (userId) {
-            queryFilters.userId = userId;
+        if (companyId) {
+            queryFilters.companyId = companyId;
         }
 
         if (jobType) {
@@ -142,7 +142,7 @@ export const getAllJobController = async (req, res) => {
         if (!limit) limit = 5;
         const skip = (page - 1) * limit;
 
-        const jobs = await Job.find(queryFilters).sort(sort).skip(skip).limit(limit);
+        const jobs = await Job.find(queryFilters).populate('companyId').sort(sort).skip(skip).limit(limit);
         const totalJobs = await Job.countDocuments(queryFilters);
         const totalPages = Math.ceil(totalJobs / limit);
         res.status(200).json({ code: 200, message: 'Thành công', jobs, totalPages });
@@ -189,7 +189,12 @@ export const unsaveJobController = async (req, res) => {
 // Save job controller
 export const getSaveJobController = async (req, res) => {
     try {
-        const saveJobs = await JobSave.findOne({ userId: req.user._id });
+        const saveJobs = await JobSave.findOne({ userId: req.user._id }).populate({
+            path: 'totalJobs.jobId',
+            populate: {
+                path: 'companyId',
+            },
+        });
         const totalJobs = saveJobs?.totalJobs;
 
         res.status(200).json({ code: 200, message: 'Đã lưu', totalJobs });

@@ -9,10 +9,7 @@ const JobSaveSchema = new Schema(
             trim: true,
             require: true,
         },
-        totalJobs: {
-            type: Array,
-            trim: true,
-        },
+        totalJobs: [{ saveTime: String, jobId: { type: Schema.Types.ObjectId, ref: 'Job' } }],
     },
     {
         timestamps: true,

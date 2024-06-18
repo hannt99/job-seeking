@@ -33,7 +33,6 @@ const JobSearch = () => {
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
     const [allJobs, setAllJobs] = useState([]);
-    const [allCompanies, setAllCompanies] = useState([]);
 
     const debouncedValue = useDebounce(jobKeyword, 300);
 
@@ -73,13 +72,9 @@ const JobSearch = () => {
                 `${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=${page}&limit=10&search=${debouncedValue}&jobType=${jobType}&jobExp=${jobExp}&jobSalaryRange=${jobSalaryRange}&jobCareers=${jobCareer}&jobWorkingLocation=${jobWorkingLocation}&sort=${sort}`,
             );
             if (res?.data?.code === 200) {
-                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/company/get-all?page=1&limit=100000`);
-                if (res2?.data?.code === 200) {
-                    setAllCompanies(res2?.data?.companies);
-                    setAllJobs(res?.data?.jobs);
-                    setPages(res?.data?.totalPages);
-                    return;
-                }
+                setAllJobs(res?.data?.jobs);
+                setPages(res?.data?.totalPages);
+                return;
             } else {
                 return;
             }
@@ -443,7 +438,6 @@ const JobSearch = () => {
                                 <p className="text-center">Không tìm thấy dữ liệu</p>
                             ) : (
                                 allJobs?.map((aj, index) => {
-                                    const company = allCompanies?.find((ac) => ac?.userId === aj?.userId);
                                     return (
                                         <JobCard
                                             key={index}
@@ -452,9 +446,9 @@ const JobSearch = () => {
                                             jobSalaryRange={aj?.jobSalaryRange}
                                             jobWorkingLocation={aj?.jobWorkingLocation}
                                             updatedAt={aj?.updatedAt}
-                                            companyId={company?._id}
-                                            companyName={company?.companyName}
-                                            companyAvatar={company?.avatar}
+                                            companyId={aj?.companyId?._id}
+                                            companyName={aj?.companyId?.companyName}
+                                            companyAvatar={aj?.companyId?.avatar}
                                         />
                                     );
                                 })

@@ -57,7 +57,7 @@ const JobCard = (props) => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-save-job`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
             });
-            const result = !!res?.data?.totalJobs?.find((item) => item?.jobId === props.id);
+            const result = !!res?.data?.totalJobs?.find((item) => item?.jobId?._id === props.id);
             setIsSave(result);
         };
         isSave();

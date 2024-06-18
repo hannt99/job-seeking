@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import SaveJobCard from './saveJobCard';
@@ -8,9 +8,7 @@ import RightSide from './rightSide';
 
 const JobSave = () => {
     const [sort, setSort] = useState('');
-    const [saveJobIds, setSaveJobIds] = useState([]);
     const [saveJobs, setSaveJobs] = useState([]);
-    const [allCompanies, setAllCompanies] = useState([]);
 
     useEffect(() => {
         const fetchJobId = async () => {
@@ -18,33 +16,14 @@ const JobSave = () => {
                 headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
             });
             if (res?.data?.code === 200) {
-                const res2 = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/company/get-all?page=1&limit=100000`);
-                if (res2?.data?.code === 200) {
-                    setAllCompanies(res2?.data?.companies);
-                    setSaveJobIds(res?.data?.totalJobs);
-                    return;
-                }
+                setSaveJobs(res?.data?.totalJobs);
+                return;
             } else {
                 return;
             }
         };
         fetchJobId();
     }, []);
-
-    useEffect(() => {
-        const fetchJob = async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=1&limit=100000`);
-            if (res?.data?.code === 200) {
-                const result = res?.data?.jobs?.filter((item) =>
-                    saveJobIds?.find((item2) => item2?.jobId === item?._id),
-                );
-                return setSaveJobs(result);
-            } else {
-                return;
-            }
-        };
-        fetchJob();
-    }, [saveJobIds]);
 
     return (
         <>
@@ -114,21 +93,18 @@ const JobSave = () => {
                     </div>
                     <div className="py-5 space-y-8">
                         {saveJobs?.map((sj, index) => {
-                            const company = allCompanies?.find((ac) => ac?.userId === sj?.userId);
-                            const saveTime = saveJobIds?.find((sji) => sji.jobId === sj?._id);
-                            console.log(saveTime);
                             return (
                                 <SaveJobCard
                                     key={index}
-                                    id={sj?._id}
-                                    jobTitle={sj?.jobTitle}
-                                    jobSalaryRange={sj?.jobSalaryRange}
-                                    jobWorkingLocation={sj?.jobWorkingLocation}
-                                    updatedAt={sj?.updatedAt}
-                                    saveTime={saveTime?.saveTime}
-                                    companyId={company?._id}
-                                    companyAvatar={company?.avatar}
-                                    companyName={company?.companyName}
+                                    id={sj?.jobId?._id}
+                                    jobTitle={sj?.jobId?.jobTitle}
+                                    jobSalaryRange={sj?.jobId?.jobSalaryRange}
+                                    jobWorkingLocation={sj?.jobId?.jobWorkingLocation}
+                                    updatedAt={sj?.jobId?.updatedAt}
+                                    saveTime={Number(sj?.saveTime)}
+                                    companyId={sj?.jobId?.companyId?._id}
+                                    companyAvatar={sj?.jobId?.companyId?.avatar}
+                                    companyName={sj?.jobId?.companyId?.companyName}
                                 />
                             );
                         })}

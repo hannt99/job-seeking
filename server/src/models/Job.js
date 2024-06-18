@@ -4,10 +4,9 @@ const Schema = mongoose.Schema;
 
 const JobSchema = new Schema(
     {
-        userId: {
-            type: String,
-            trim: true,
-            require: true,
+        companyId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Company',
         },
         jobTitle: {
             type: String,

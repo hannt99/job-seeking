@@ -60,7 +60,7 @@ const CompanyDetail = () => {
             );
             if (res?.data?.code === 200) {
                 const res2 = await axios.get(
-                    `${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=${page}&limit=5&userId=${res?.data?.company?.userId}`,
+                    `${process.env.NEXT_PUBLIC_API_URL}/job/get-all?page=${page}&limit=5&companyId=${res?.data?.company?._id}`,
                 );
                 if (res2?.data?.code === 200) {
                     setJobs(res2?.data?.jobs);
