@@ -10,6 +10,7 @@ import {
     unsaveJobController,
     getSaveJobController,
     getRelativeJobController,
+    getRecommendJobController,
 } from '../controllers/job-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 import { isEmployer } from '../middlewares/role.js';
@@ -45,5 +46,8 @@ router.get('/get-save-job', verifyToken, getSaveJobController);
 
 // Get relative job route
 router.get('/get-relative-job', getRelativeJobController);
+
+// Get recommend job route
+router.get('/get-recommend-job', verifyToken, getRecommendJobController);
 
 export default router;

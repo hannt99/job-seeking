@@ -1,5 +1,7 @@
-import RecommendJobCard from '@/components/common/recommendJobCard';
+'use client';
+
 import Link from 'next/link';
+import JobRecommend from './jobRecommend';
 
 const RightSide = () => {
     return (
@@ -7,42 +9,7 @@ const RightSide = () => {
             <div className="bg-white p-7 rounded-lg custom-shadow-v1">
                 <h2 className="text-[2.4rem] font-semibold">Gợi ý việc làm</h2>
                 <div className="py-5 space-y-8">
-                    <RecommendJobCard
-                        jobTitle="Thuc tap sinh IT"
-                        jobStatus="Dang  tuyen"
-                        jobSalaryRange="Thoa thuan"
-                        jobWorkingLocation={[
-                            { label: 'Thanh pho Ha Noi' },
-                            { label: 'Thanh pho Ha Noi' },
-                            { label: 'Thanh pho Ha Noi' },
-                        ]}
-                        updatedAt="2024-06-12T13:04:50.539+00:00"
-                        company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                    />
-                    <RecommendJobCard
-                        jobTitle="Thuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh IT"
-                        jobStatus="Dang  tuyen"
-                        jobSalaryRange="Thoa thuan"
-                        jobWorkingLocation={[
-                            { label: 'Thanh pho Ha Noi' },
-                            { label: 'Thanh pho Ha Noi' },
-                            { label: 'Thanh pho Ha Noi' },
-                        ]}
-                        updatedAt="2024-06-12T13:04:50.539+00:00"
-                        company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                    />
-                    <RecommendJobCard
-                        jobTitle="Thuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh IT"
-                        jobStatus="Dang  tuyen"
-                        jobSalaryRange="Thoa thuan"
-                        jobWorkingLocation={[
-                            { label: 'Thanh pho Ha Noi' },
-                            { label: 'Thanh pho Ha Noi' },
-                            { label: 'Thanh pho Ha Noi' },
-                        ]}
-                        updatedAt="2024-06-12T13:04:50.539+00:00"
-                        company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                    />
+                    <JobRecommend />
                 </div>
             </div>
             <Link

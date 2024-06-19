@@ -216,23 +216,27 @@ const JobDetail = () => {
                         <div className="space-y-5 mt-14">
                             <h2 className="text-[2.4rem] font-semibold">Việc làm liên quan</h2>
                             <div className="space-y-5">
-                                {relativeJobs
-                                    ?.filter((item) => item?._id !== job?._id)
-                                    ?.map((rj, index) => {
-                                        return (
-                                            <JobCard
-                                                key={index}
-                                                id={rj?._id}
-                                                jobTitle={rj?.jobTitle}
-                                                jobSalaryRange={rj?.jobSalaryRange}
-                                                jobWorkingLocation={rj?.jobWorkingLocation}
-                                                updatedAt={rj?.updatedAt}
-                                                companyId={rj?.companyId?._id}
-                                                companyName={rj?.companyId?.companyName}
-                                                companyAvatar={rj?.companyId?.avatar}
-                                            />
-                                        );
-                                    })}
+                                {relativeJobs?.length <= 1 ? (
+                                    <p className="text-center">Không tìm thấy dữ liệu</p>
+                                ) : (
+                                    relativeJobs
+                                        ?.filter((item) => item?._id !== job?._id)
+                                        ?.map((rj, index) => {
+                                            return (
+                                                <JobCard
+                                                    key={index}
+                                                    id={rj?._id}
+                                                    jobTitle={rj?.jobTitle}
+                                                    jobSalaryRange={rj?.jobSalaryRange}
+                                                    jobWorkingLocation={rj?.jobWorkingLocation}
+                                                    updatedAt={rj?.updatedAt}
+                                                    companyId={rj?.companyId?._id}
+                                                    companyName={rj?.companyId?.companyName}
+                                                    companyAvatar={rj?.companyId?.avatar}
+                                                />
+                                            );
+                                        })
+                                )}
                             </div>
                         </div>
                     </div>

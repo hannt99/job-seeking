@@ -11,7 +11,7 @@ const JobSave = () => {
     const [saveJobs, setSaveJobs] = useState([]);
 
     useEffect(() => {
-        const fetchJobId = async () => {
+        const fetchSaveJob = async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-save-job`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
             });
@@ -28,7 +28,7 @@ const JobSave = () => {
                 return;
             }
         };
-        fetchJobId();
+        fetchSaveJob();
     }, [sort]);
 
     return (

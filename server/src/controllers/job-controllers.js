@@ -1,6 +1,7 @@
 import Job from '../models/Job.js';
 import Company from '../models/Company.js';
 import JobSave from '../models/JobSave.js';
+import Resume from '../models/Resume.js';
 
 // Create job controller
 export const createJobController = async (req, res) => {
@@ -129,7 +130,7 @@ export const getAllJobController = async (req, res) => {
         }
 
         if (jobWorkingLocation) {
-            queryFilters = { ...queryFilters, 'jobWorkingLocation.value': { $gte: jobWorkingLocation } };
+            queryFilters.jobWorkingLocation = { $elemMatch: { value: jobWorkingLocation } };
         }
 
         if (!page) page = 1;
@@ -157,7 +158,7 @@ export const getJobController = async (req, res) => {
     }
 };
 
-// Get job controller
+// Get relative job controller
 export const getRelativeJobController = async (req, res) => {
     try {
         const { jobCareers, jobType } = req.query;
@@ -216,6 +217,29 @@ export const getSaveJobController = async (req, res) => {
         const totalJobs = saveJobs?.totalJobs;
 
         res.status(200).json({ code: 200, message: 'Đã lưu', totalJobs });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Get recommend job controller
+export const getRecommendJobController = async (req, res) => {
+    try {
+        const userResume = await Resume.findOne({ userId: req.user._id });
+
+        const careers = userResume?.careers?.map((item) => item?.value);
+        const skills = userResume?.skills;
+        const experience = userResume?.experience;
+        const workingLocation = userResume?.workingLocation;
+
+        const recommendJobs = await Job.find({
+            jobCareers: { $in: careers },
+            jobSkills: { $in: skills },
+            jobExp: experience,
+            jobWorkingLocation: { $in: workingLocation },
+        }).populate('companyId');
+        res.status(200).json({ code: 200, message: 'Success', recommendJobs });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);
