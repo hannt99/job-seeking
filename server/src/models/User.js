@@ -43,7 +43,7 @@ const UserSchema = new Schema(
         },
         isAppeared: {
             type: Boolean,
-            default: false,
+            default: true,
         },
         isSeeking: {
             type: Boolean,

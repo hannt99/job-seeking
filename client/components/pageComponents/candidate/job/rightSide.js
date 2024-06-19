@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import JobRecommend from './jobRecommend';
+import JobRecommendItem from './jobRecommendItem';
 
 const RightSide = () => {
     return (
@@ -9,8 +9,14 @@ const RightSide = () => {
             <div className="bg-white p-7 rounded-lg custom-shadow-v1">
                 <h2 className="text-[2.4rem] font-semibold">Gợi ý việc làm</h2>
                 <div className="py-5 space-y-8">
-                    <JobRecommend />
+                    <JobRecommendItem />
                 </div>
+                <Link
+                    href="/job/recommend-job"
+                    className="block text-center text-[1.5rem] font-medium underline text-blue-700"
+                >
+                    Xem tất cả &#8594;
+                </Link>
             </div>
             <Link
                 href="https://www.facebook.com/share/p/HMf35xXGgY4Yteja/"

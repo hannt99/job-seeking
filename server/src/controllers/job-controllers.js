@@ -226,6 +226,12 @@ export const getSaveJobController = async (req, res) => {
 // Get recommend job controller
 export const getRecommendJobController = async (req, res) => {
     try {
+        let { page, limit } = req.query;
+
+        if (!page) page = 1;
+        if (!limit) limit = 5;
+        const skip = (page - 1) * limit;
+
         const userResume = await Resume.findOne({ userId: req.user._id });
 
         const careers = userResume?.careers?.map((item) => item?.value);
@@ -238,8 +244,20 @@ export const getRecommendJobController = async (req, res) => {
             jobSkills: { $in: skills },
             jobExp: experience,
             jobWorkingLocation: { $in: workingLocation },
-        }).populate('companyId');
-        res.status(200).json({ code: 200, message: 'Success', recommendJobs });
+        })
+            .populate('companyId')
+            .sort({ updatedAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        const totalJobs = await Job.countDocuments({
+            jobCareers: { $in: careers },
+            jobSkills: { $in: skills },
+            jobExp: experience,
+            jobWorkingLocation: { $in: workingLocation },
+        });
+        const totalPages = Math.ceil(totalJobs / limit);
+        res.status(200).json({ code: 200, message: 'Success', recommendJobs, totalPages });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);

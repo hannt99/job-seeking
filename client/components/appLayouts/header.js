@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill, RiShieldUserFill } from 'react-icons/ri';
 import { TbWorldUpload } from 'react-icons/tb';
 import { FaBars, FaXmark, FaAngleDown, FaAngleUp } from 'react-icons/fa6';
-import { IoSearchOutline, IoHeartOutline } from 'react-icons/io5';
+import { IoSearchOutline, IoHeartOutline, IoCheckboxOutline } from 'react-icons/io5';
 import { BsSuitcaseLg, BsFire } from 'react-icons/bs';
 import axios from 'axios';
 import Link from 'next/link';
@@ -121,6 +121,22 @@ const Header = () => {
                                     >
                                         <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
                                         <span>Việc làm đã lưu</span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <hr></hr>
+                                </li>
+                                <li
+                                    className={`hover:text-[var(--primary-color)] ${
+                                        pathname?.includes('/recommend-job') ? 'text-[var(--primary-color)]' : ''
+                                    }`}
+                                >
+                                    <Link
+                                        href="/job/recommend-job"
+                                        className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                    >
+                                        <IoCheckboxOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                        <span>Gợi ý việc làm</span>
                                     </Link>
                                 </li>
                             </ul>
@@ -408,6 +424,22 @@ const Header = () => {
                                 >
                                     <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
                                     <span>Việc làm đã lưu</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <hr></hr>
+                            </li>
+                            <li
+                                className={`p-3 hover:text-[var(--primary-color)] ${
+                                    pathname?.includes('/recommend-job') ? 'text-[var(--primary-color)]' : ''
+                                }`}
+                            >
+                                <Link
+                                    href="/job/recommend-job"
+                                    className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                >
+                                    <IoCheckboxOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                    <span>Gợi ý việc làm</span>
                                 </Link>
                             </li>
                         </ul>

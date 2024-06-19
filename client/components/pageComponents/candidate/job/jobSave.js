@@ -98,22 +98,26 @@ const JobSave = () => {
                         </select>
                     </div>
                     <div className="py-5 space-y-8">
-                        {saveJobs?.map((sj, index) => {
-                            return (
-                                <SaveJobCard
-                                    key={index}
-                                    id={sj?.jobId?._id}
-                                    jobTitle={sj?.jobId?.jobTitle}
-                                    jobSalaryRange={sj?.jobId?.jobSalaryRange}
-                                    jobWorkingLocation={sj?.jobId?.jobWorkingLocation}
-                                    updatedAt={sj?.jobId?.updatedAt}
-                                    saveTime={Number(sj?.saveTime)}
-                                    companyId={sj?.jobId?.companyId?._id}
-                                    companyAvatar={sj?.jobId?.companyId?.avatar}
-                                    companyName={sj?.jobId?.companyId?.companyName}
-                                />
-                            );
-                        })}
+                        {saveJobs?.length === 0 ? (
+                            <p className="text-center">Chưa lưu việc làm</p>
+                        ) : (
+                            saveJobs?.map((sj, index) => {
+                                return (
+                                    <SaveJobCard
+                                        key={index}
+                                        id={sj?.jobId?._id}
+                                        jobTitle={sj?.jobId?.jobTitle}
+                                        jobSalaryRange={sj?.jobId?.jobSalaryRange}
+                                        jobWorkingLocation={sj?.jobId?.jobWorkingLocation}
+                                        updatedAt={sj?.jobId?.updatedAt}
+                                        saveTime={Number(sj?.saveTime)}
+                                        companyId={sj?.jobId?.companyId?._id}
+                                        companyAvatar={sj?.jobId?.companyId?.avatar}
+                                        companyName={sj?.jobId?.companyId?.companyName}
+                                    />
+                                );
+                            })
+                        )}
                     </div>
                 </div>
                 <div className="col-span-2 space-y-10">
