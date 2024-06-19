@@ -4,11 +4,33 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
+import { FaShare } from 'react-icons/fa6';
 import RightSide from './rightSide';
 import DragAndDropFile from '@/components/common/dragAndDropFile';
+import { error, success } from '@/utils/toastMessage';
+import { FacebookShareButton, FacebookIcon } from 'next-share';
 
 const CvManage = () => {
     const [cvs, setCvs] = useState([]);
+    const [reRender, setReRender] = useState(false);
+
+    const handleDeleteCV = async (filename) => {
+        const confirmMsg = `Bạn có chắc muốn xóa vĩnh viễn CV này không?`;
+        if (!window.confirm(confirmMsg)) return;
+        const res = await axios.patch(
+            `${process.env.NEXT_PUBLIC_API_URL}/resume/delete-cv`,
+            { filename },
+            {
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            },
+        );
+        if (res?.data?.code === 200) {
+            setReRender(!reRender);
+            return success(res?.data?.message);
+        } else {
+            return error(res?.data?.message);
+        }
+    };
 
     useEffect(() => {
         const fetchCV = async () => {
@@ -22,9 +44,7 @@ const CvManage = () => {
             }
         };
         fetchCV();
-    }, []);
-
-    console.log(cvs);
+    }, [reRender]);
 
     return (
         <>
@@ -77,42 +97,49 @@ const CvManage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-6 gap-10 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-10">
                 <div className="lg:col-span-4 space-y-10">
                     <div className="h-fit custom-shadow-v1 rounded-lg">
-                        <DragAndDropFile />
+                        <DragAndDropFile setReRender={() => setReRender(!reRender)} />
                     </div>
                     <div className="h-fit bg-white custom-shadow-v1 rounded-lg p-9 space-y-8">
                         <h1 className="text-[2.2rem] font-semibold">CV đã tải lên</h1>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-9">
-                            {cvs?.map((cv, index) => {
-                                return (
-                                    <div
-                                        key={index}
-                                        className="relative bg-default-cv w-full h-[280px] xl:h-[330px] rounded-lg"
-                                    >
-                                        <div className="flex flex-col justify-between absolute top-0 left-0 bottom-0 right-0 bg-gradient-to-b from-black/5 to-black/75 p-7">
-                                            <div className="self-end flex items-center gap-2 bg-white text-[1.3rem] text-black font-medium px-5 py-1 rounded-full">
-                                                <span className="text-[1.8rem]">&#9733;</span>
-                                                <span>Đặt làm CV chính</span>
-                                            </div>
-                                            <div className="text-white space-y-10">
-                                                <a
-                                                    href={cv?.path}
-                                                    target="_blank"
-                                                    rel="noreferrer noopener"
-                                                    className="text-[2.2rem] font-bold"
-                                                >
-                                                    {cv?.name}
-                                                </a>
-                                                <div className="flex items-center justify-between">
-                                                    <div className="font-medium text-[1.4rem] bg-[#58636f] px-5 py-1 rounded-full">
-                                                        Tải xuống
+                            {cvs?.length === 0 ? (
+                                <p className="col-span-2 text-center">Chưa đăng tải CV</p>
+                            ) : (
+                                cvs?.map((cv, index) => {
+                                    return (
+                                        <div
+                                            key={index}
+                                            className="relative bg-default-cv w-full h-[280px] xl:h-[330px] rounded-lg"
+                                        >
+                                            <div className="flex flex-col justify-between absolute top-0 left-0 bottom-0 right-0 bg-gradient-to-b from-black/5 to-black/75 p-7">
+                                                <div className="self-end flex items-center gap-2 bg-white text-[1.3rem] text-black font-medium px-5 py-1 rounded-full">
+                                                    <span className="text-[1.8rem]">&#9733;</span>
+                                                    <span>Đặt làm CV chính</span>
+                                                </div>
+                                                <div className="text-white space-y-10">
+                                                    <a
+                                                        href={cv?.path}
+                                                        target="_blank"
+                                                        rel="noreferrer noopener"
+                                                        className="w-full text-[2.2rem] font-bold break-all truncate-2"
+                                                    >
+                                                        {cv?.name?.slice(8)}
+                                                    </a>
+                                                    <div className="flex items-center justify-between">
+                                                        <FacebookShareButton url={cv?.path} className="aaa">
+                                                            <FacebookIcon size={32} round />
+                                                        </FacebookShareButton>
+                                                        <MdOutlineDeleteOutline
+                                                            onClick={() => handleDeleteCV(cv?.name)}
+                                                            className="text-[2.4rem] cursor-pointer"
+                                                        />
                                                     </div>
-                                                    <MdOutlineDeleteOutline className="text-[2.4rem]" />
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })
+                            )}
                         </div>
                     </div>
                 </div>

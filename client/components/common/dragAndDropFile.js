@@ -5,7 +5,7 @@ import FormData from 'form-data';
 import axios from 'axios';
 import { success, warning } from '@/utils/toastMessage';
 
-const DragAndDropFile = () => {
+const DragAndDropFile = ({ setReRender }) => {
     const [dragActive, setDragActive] = useState(false);
     const [files, setFiles] = useState([]);
 
@@ -36,6 +36,7 @@ const DragAndDropFile = () => {
             });
             if (res?.data?.code === 200) {
                 setFiles([]);
+                setReRender(false);
                 return success(res?.data?.message);
             } else {
                 return warning(res?.data?.message);
