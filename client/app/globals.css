@@ -122,3 +122,7 @@ select {
 .bg-ads {
     background: url('/assets/images/ads-bg-1.png') left / cover no-repeat;
 }
+
+.bg-default-cv {
+    background: url('/assets/images/default_cv.jpg') center / cover no-repeat;
+}

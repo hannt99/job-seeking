@@ -141,8 +141,11 @@ const DragAndDropFile = () => {
                 ))}
             </div>
 
-            <button className="bg-black rounded-lg p-2 mt-3 w-auto" onClick={handleSubmitFile}>
-                <span className="p-2 text-white">Submit</span>
+            <button
+                className="bg-[var(--primary-color)] hover:bg-[var(--primary-hover-color)] rounded-lg p-2 mt-3 w-auto"
+                onClick={handleSubmitFile}
+            >
+                <span className="px-14 py-2 text-white font-medium">Tải lên</span>
             </button>
         </form>
     );

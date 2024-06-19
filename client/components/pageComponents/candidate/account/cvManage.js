@@ -1,11 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Link from 'next/link';
+import { MdOutlineDeleteOutline } from 'react-icons/md';
 import RightSide from './rightSide';
 import DragAndDropFile from '@/components/common/dragAndDropFile';
 
 const CvManage = () => {
+    const [cvs, setCvs] = useState([]);
+
+    useEffect(() => {
+        const fetchCV = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/resume/get-all-cv`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            });
+            if (res?.data?.code === 200) {
+                return setCvs(res?.data?.cvs);
+            } else {
+                return;
+            }
+        };
+        fetchCV();
+    }, []);
+
+    console.log(cvs);
+
     return (
         <>
             <div className="w-full flex justify-center px-5 md:px-0">
@@ -55,8 +75,46 @@ const CvManage = () => {
                 </nav>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-6 gap-10 px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] py-10">
-                <div className="lg:col-span-4 bg-white custom-shadow-v1 rounded-lg">
-                    <DragAndDropFile />
+                <div className="lg:col-span-4 space-y-10">
+                    <div className="h-fit custom-shadow-v1 rounded-lg">
+                        <DragAndDropFile />
+                    </div>
+                    <div className="h-fit bg-white custom-shadow-v1 rounded-lg p-9 space-y-8">
+                        <h1 className="text-[2.2rem] font-semibold">CV đã tải lên</h1>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-9">
+                            {cvs?.map((cv, index) => {
+                                return (
+                                    <div
+                                        key={index}
+                                        className="relative bg-default-cv w-full h-[280px] xl:h-[330px] rounded-lg"
+                                    >
+                                        <div className="flex flex-col justify-between absolute top-0 left-0 bottom-0 right-0 bg-gradient-to-b from-black/5 to-black/75 p-7">
+                                            <div className="self-end flex items-center gap-2 bg-white text-[1.3rem] text-black font-medium px-5 py-1 rounded-full">
+                                                <span className="text-[1.8rem]">&#9733;</span>
+                                                <span>Đặt làm CV chính</span>
+                                            </div>
+                                            <div className="text-white space-y-10">
+                                                <a
+                                                    href={cv?.path}
+                                                    target="_blank"
+                                                    rel="noreferrer noopener"
+                                                    className="text-[2.2rem] font-bold"
+                                                >
+                                                    {cv?.name}
+                                                </a>
+                                                <div className="flex items-center justify-between">
+                                                    <div className="font-medium text-[1.4rem] bg-[#58636f] px-5 py-1 rounded-full">
+                                                        Tải xuống
+                                                    </div>
+                                                    <MdOutlineDeleteOutline className="text-[2.4rem]" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
                 <div className="lg:col-span-2 w-full h-fit rounded-lg">
                     <RightSide />
