@@ -45,6 +45,11 @@ const ResumeSchema = new Schema(
             require: true,
             default: [],
         },
+        cv: {
+            type: Array,
+            trim: true,
+            default: [],
+        },
     },
     {
         timestamps: true,

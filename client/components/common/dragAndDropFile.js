@@ -1,6 +1,10 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import FormData from 'form-data';
+import axios from 'axios';
+import { success, warning } from '@/utils/toastMessage';
+
 const DragAndDropFile = () => {
     const [dragActive, setDragActive] = useState(false);
     const [files, setFiles] = useState([]);
@@ -18,11 +22,24 @@ const DragAndDropFile = () => {
         }
     };
 
-    const handleSubmitFile = (e) => {
+    const handleSubmitFile = async (e) => {
+        e.preventDefault();
         if (files.length === 0) {
-            // no file has been submitted
+            warning('Hãy chọn ít nhất 1 cv');
         } else {
-            // write submit logic here
+            const data = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                data.append('myCV', files[i]);
+            }
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/resume/upload-cv`, data, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            });
+            if (res?.data?.code === 200) {
+                setFiles([]);
+                return success(res?.data?.message);
+            } else {
+                return warning(res?.data?.message);
+            }
         }
     };
 
@@ -124,12 +141,9 @@ const DragAndDropFile = () => {
                 ))}
             </div>
 
-            {/* <button
-          className="bg-black rounded-lg p-2 mt-3 w-auto"
-          onClick={handleSubmitFile}
-        >
-          <span className="p-2 text-white">Submit</span>
-        </button> */}
+            <button className="bg-black rounded-lg p-2 mt-3 w-auto" onClick={handleSubmitFile}>
+                <span className="p-2 text-white">Submit</span>
+            </button>
         </form>
     );
 };

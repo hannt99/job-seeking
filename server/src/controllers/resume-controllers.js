@@ -27,3 +27,27 @@ export const updateResumeController = async (req, res) => {
         console.log(error);
     }
 };
+
+// Upload file controller
+export const uploadCVController = async (req, res) => {
+    try {
+        const files = req.files;
+
+        if (!files) return res.status(200).json({ code: 400, message: 'Hãy chọn ít nhất 1 file' });
+
+        const fileUrls = files.map((file) => {
+            return process.env.BASE_URL + `/static/${file.filename}`;
+        });
+
+        const iterator = fileUrls.values();
+
+        for (const value of iterator) {
+            await Resume.findOneAndUpdate({ userId: req.user._id }, { $push: { cv: value } });
+        }
+
+        res.status(200).json({ code: 200, message: 'Upload CV thành công' });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};

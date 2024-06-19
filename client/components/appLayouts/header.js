@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill, RiShieldUserFill } from 'react-icons/ri';
 import { TbWorldUpload } from 'react-icons/tb';
 import { FaBars, FaXmark, FaAngleDown, FaAngleUp } from 'react-icons/fa6';
-import { IoSearchOutline, IoHeartOutline, IoCheckboxOutline } from 'react-icons/io5';
+import { IoSearchOutline, IoHeartOutline, IoCheckboxOutline, IoDocumentText } from 'react-icons/io5';
 import { BsSuitcaseLg, BsFire } from 'react-icons/bs';
 import axios from 'axios';
 import Link from 'next/link';
@@ -236,6 +236,17 @@ const Header = () => {
                                         )}
                                         <li>
                                             <Link
+                                                href="/account/cv-manage"
+                                                className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                                            >
+                                                <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
+                                                    <IoDocumentText className="m-auto" />
+                                                </div>
+                                                <span className="whitespace-nowrap">Quản lý CV</span>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link
                                                 href="/account/change-password"
                                                 className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
                                             >
@@ -348,6 +359,17 @@ const Header = () => {
                                     </Link>
                                 </li>
                             )}
+                            <li>
+                                <Link
+                                    href="/account/cv-manage"
+                                    className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
+                                >
+                                    <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
+                                        <IoDocumentText className="m-auto" />
+                                    </div>
+                                    <span className="whitespace-nowrap">Quản lý CV</span>
+                                </Link>
+                            </li>
                             <li>
                                 <Link
                                     href="/account/change-password"
