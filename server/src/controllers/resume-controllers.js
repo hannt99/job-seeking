@@ -81,3 +81,28 @@ export const getAllCVController = async (req, res) => {
         console.log(error);
     }
 };
+
+// Set main cv controller
+export const setMainCVController = async (req, res) => {
+    try {
+        const filename = req.body.filename;
+        const resume = await Resume.findOne({ userId: req.user._id });
+
+        let cvsFind = resume?.cv?.find((item) => item?.name === filename);
+        cvsFind = { ...cvsFind, isMain: true };
+
+        const cvsFilter = resume?.cv?.filter((item) => item?.name !== filename);
+        const cvsMap = cvsFilter?.map((item) => {
+            return { ...item, isMain: false };
+        });
+
+        const result = [cvsFind, ...cvsMap];
+
+        await Resume.findOneAndUpdate({ userId: req.user._id }, { cv: result });
+
+        res.status(200).json({ code: 200, message: 'Đặt CV chính thành công' });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};

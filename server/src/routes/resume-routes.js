@@ -5,6 +5,7 @@ import {
     uploadCVController,
     getAllCVController,
     deleteCVController,
+    setMainCVController,
 } from '../controllers/resume-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 import upload from '../utils/uploadFile.js';
@@ -25,5 +26,8 @@ router.patch('/delete-cv', verifyToken, deleteCVController);
 
 // Get all cv route
 router.get('/get-all-cv', verifyToken, getAllCVController);
+
+// Get set main cv route
+router.patch('/set-main-cv', verifyToken, setMainCVController);
 
 export default router;

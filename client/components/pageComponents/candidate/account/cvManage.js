@@ -32,6 +32,22 @@ const CvManage = () => {
         }
     };
 
+    const setMainCV = async (filename) => {
+        const res = await axios.patch(
+            `${process.env.NEXT_PUBLIC_API_URL}/resume/set-main-cv`,
+            { filename },
+            {
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            },
+        );
+        if (res?.data?.code === 200) {
+            setReRender(!reRender);
+            return success(res?.data?.message);
+        } else {
+            return;
+        }
+    };
+
     useEffect(() => {
         const fetchCV = async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/resume/get-all-cv`, {
@@ -112,9 +128,20 @@ const CvManage = () => {
                                             className="relative bg-default-cv w-full h-[280px] xl:h-[330px] rounded-lg"
                                         >
                                             <div className="flex flex-col justify-between absolute top-0 left-0 bottom-0 right-0 bg-gradient-to-b from-black/5 to-black/75 p-7">
-                                                <div className="self-end flex items-center gap-2 bg-white text-[1.3rem] text-black font-medium px-5 py-1 rounded-full">
-                                                    <span className="text-[1.8rem]">&#9733;</span>
-                                                    <span>Đặt làm CV chính</span>
+                                                <div
+                                                    onClick={() => setMainCV(cv?.name)}
+                                                    className={`self-end flex items-center gap-2 text-[1.3rem] ${
+                                                        cv?.isMain ? 'bg-[#212f3f] text-white' : 'bg-white text-black'
+                                                    } font-medium px-5 py-1 rounded-full cursor-pointer`}
+                                                >
+                                                    <span
+                                                        className={`text-[1.8rem] ${
+                                                            cv?.isMain ? 'text-yellow-400' : ''
+                                                        }`}
+                                                    >
+                                                        &#9733;
+                                                    </span>
+                                                    <span>{cv?.isMain ? 'CV chính' : 'Đặt làm CV chính'}</span>
                                                 </div>
                                                 <div className="text-white space-y-10">
                                                     <a
