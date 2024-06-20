@@ -40,10 +40,10 @@ export const phoneValidator = (phone, setIsPhoneErr, setPhoneErrMsg) => {
 export const numberValidatorFrom = (from, setIsNumberErr, setNumberErrMsg) => {
     const msg = {};
     if (isEmpty(String(from))) {
-        msg.number = 'Quy mô không được để trống';
+        msg.number = 'Số không được để trống';
         setIsNumberErr(true);
     } else if (from <= 0 || from > 9999) {
-        msg.number = 'Quy mô không hợp lệ';
+        msg.number = 'Số không hợp lệ';
         setIsNumberErr(true);
     } else {
         setIsNumberErr(false);
@@ -56,13 +56,13 @@ export const numberValidatorFrom = (from, setIsNumberErr, setNumberErrMsg) => {
 export const numberValidatorTo = (to, from, setIsNumberErr, setNumberErrMsg) => {
     const msg = {};
     if (isEmpty(String(to))) {
-        msg.number = 'Quy mô không được để trống';
+        msg.number = 'Số không được để trống';
         setIsNumberErr(true);
     } else if (to <= 0 || to > 9999) {
-        msg.number = 'Quy mô không hợp lệ';
+        msg.number = 'Số không hợp lệ';
         setIsNumberErr(true);
     } else if (to <= from) {
-        msg.number = 'Số sau phải lớn hơn số trước';
+        msg.number = 'Số sau phải lớn';
         setIsNumberErr(true);
     } else {
         setIsNumberErr(false);

@@ -2,7 +2,13 @@
 
 import { useState, useEffect, useRef } from 'react';
 import FormData from 'form-data';
-import { fullNameValidator, numberValidator, dropListValidator } from '@/utils/formValidation';
+import {
+    fullNameValidator,
+    numberValidator,
+    dropListValidator,
+    numberValidatorFrom,
+    numberValidatorTo,
+} from '@/utils/formValidation';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 const JoditEditor = dynamic(() => import('jodit-react'), {
@@ -27,10 +33,14 @@ const CompanyInfomationForm = () => {
     const [companyName, setCompanyName] = useState('');
     const [companyNameErrMsg, setCompanyNameErrMsg] = useState({});
     const [isCompanyNameErr, setIsCompanyNameErr] = useState(false);
+
     const [companySizeFrom, setCompanySizeFrom] = useState(Number);
+    const [companySizeFromErrMsg, setCompanySizeFromErrMsg] = useState({});
+    const [isCompanySizeFromErr, setIsCompanySizeFromErr] = useState(false);
     const [companySizeTo, setCompanySizeTo] = useState(Number);
-    const [companySizeErrMsg, setCompanySizeErrMsg] = useState({});
-    const [isCompanySizeErr, setIsCompanySizeErr] = useState(false);
+    const [companySizeToErrMsg, setCompanySizeToErrMsg] = useState({});
+    const [isCompanySizeToErr, setIsCompanySizeToErr] = useState(false);
+
     const [position, setPosition] = useState('');
     const [positionErrMsg, setPositionErrMsg] = useState({});
     const [isPositionErr, setIsPositionErr] = useState(false);
@@ -50,17 +60,16 @@ const CompanyInfomationForm = () => {
     const handleUpdateInfo = async () => {
         const isCompanyNameValid = fullNameValidator(companyName, setIsCompanyNameErr, setCompanyNameErrMsg);
         const isCompanyCareerValid = fullNameValidator(companyCareer, setIsCompanyCareerErr, setCompanyCareerErrMsg);
-        const isCompanySizeFromValid = numberValidator(
+        const isCompanySizeFromValid = numberValidatorFrom(
             companySizeFrom,
-            companySizeFrom,
-            setIsCompanySizeErr,
-            setCompanySizeErrMsg,
+            setIsCompanySizeFromErr,
+            setCompanySizeFromErrMsg,
         );
-        const isCompanySizeToValid = numberValidator(
-            companySizeFrom,
+        const isCompanySizeToValid = numberValidatorTo(
             companySizeTo,
-            setIsCompanySizeErr,
-            setCompanySizeErrMsg,
+            companySizeFrom,
+            setIsCompanySizeToErr,
+            setCompanySizeToErrMsg,
         );
         const isPositionValid = dropListValidator(position, setIsPositionErr, setPositionErrMsg);
         const isProvinceValid = dropListValidator(province, setIsProvinceErr, setProvinceErrMsg);
@@ -265,43 +274,47 @@ const CompanyInfomationForm = () => {
                     <label className="font-semibold text-[1.5rem]">
                         Quy mô<span className="text-[1.8rem] text-red-600">*</span>
                     </label>
-                    <div className="flex items-center gap-5">
-                        <input
-                            type="number"
-                            value={companySizeFrom}
-                            onChange={(e) => setCompanySizeFrom(e.target.value)}
-                            onBlur={() =>
-                                numberValidator(
-                                    companySizeFrom,
-                                    companySizeFrom,
-                                    setIsCompanySizeErr,
-                                    setCompanySizeErrMsg,
-                                )
-                            }
-                            placeholder="1-9999"
-                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
-                                isCompanySizeErr ? 'border-red-600' : ''
-                            }`}
-                        />
-                        <input
-                            type="number"
-                            value={companySizeTo}
-                            onChange={(e) => setCompanySizeTo(e.target.value)}
-                            onBlur={() =>
-                                numberValidator(
-                                    companySizeFrom,
-                                    companySizeTo,
-                                    setIsCompanySizeErr,
-                                    setCompanySizeErrMsg,
-                                )
-                            }
-                            placeholder="1-9999"
-                            className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
-                                isCompanySizeErr ? 'border-red-600' : ''
-                            }`}
-                        />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <input
+                                type="number"
+                                value={companySizeFrom}
+                                onChange={(e) => setCompanySizeFrom(e.target.value)}
+                                onBlur={() =>
+                                    numberValidatorFrom(
+                                        companySizeFrom,
+                                        setIsCompanySizeFromErr,
+                                        setCompanySizeFromErrMsg,
+                                    )
+                                }
+                                placeholder="1-9999"
+                                className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                    isCompanySizeFromErr ? 'border-red-600' : ''
+                                }`}
+                            />
+                            <p className="text-red-600 text-[1.3rem]">{companySizeFromErrMsg.number}</p>
+                        </div>
+                        <div>
+                            <input
+                                type="number"
+                                value={companySizeTo}
+                                onChange={(e) => setCompanySizeTo(e.target.value)}
+                                onBlur={() =>
+                                    numberValidatorTo(
+                                        companySizeFrom,
+                                        companySizeTo,
+                                        setIsCompanySizeToErr,
+                                        setCompanySizeToErrMsg,
+                                    )
+                                }
+                                placeholder="1-9999"
+                                className={`block w-full text-[1.5rem] outline-[var(--primary-color)] border px-5 py-3 rounded-lg ${
+                                    isCompanySizeToErr ? 'border-red-600' : ''
+                                }`}
+                            />
+                            <p className="text-red-600 text-[1.3rem]">{companySizeToErrMsg.number}</p>
+                        </div>
                     </div>
-                    <p className="text-red-600 text-[1.3rem]">{companySizeErrMsg.number}</p>
                 </div>
                 <div className="space-y-4">
                     <label className="font-semibold text-[1.5rem]">
