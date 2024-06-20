@@ -281,3 +281,27 @@ export const getActiveJobByEmployerController = async (req, res) => {
         console.log(error);
     }
 };
+
+// Apply job controller
+export const applyJobController = async (req, res) => {
+    try {
+        const { coverLetter, cvPath } = req.body;
+        const jobId = req.params.jobId;
+        const userId = req.user._id;
+
+        const company = await Company.findOne({ userId });
+
+        const job = await Job.findOne({ _id: jobId, companyId: company?._id });
+
+        if (job) return res.status(200).json({ code: 400, message: 'Bạn không thể ứng việc làm của chính bạn' });
+
+        const result = await Job.findByIdAndUpdate(jobId, {
+            $push: { jobApplicants: { status: 'Đã ứng tuyển', userId, coverLetter, cvPath } },
+        });
+
+        res.status(200).json({ code: 200, message: 'Thành công', result });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};

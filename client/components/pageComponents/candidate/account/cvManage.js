@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { MdOutlineDeleteOutline } from 'react-icons/md';
-import { FaShare } from 'react-icons/fa6';
 import RightSide from './rightSide';
 import DragAndDropFile from '@/components/common/dragAndDropFile';
 import { error, success } from '@/utils/toastMessage';
