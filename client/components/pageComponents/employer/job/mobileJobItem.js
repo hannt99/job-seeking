@@ -14,7 +14,7 @@ const MobileJobItem = (props) => {
 
     return (
         <div className="flex items-start gap-5 w-full border p-5">
-            <div className="w-[67px] h-[67px] border border-black rounded-lg">
+            <div className="w-[67px] h-[67px] rounded-lg">
                 <img src={props.companyAvatar} alt="job card" className="w-full h-full object-cover rounded-lg" />
             </div>
             <div className="flex-1">
@@ -29,9 +29,9 @@ const MobileJobItem = (props) => {
                     </span>
                 </p>
                 <div className="flex items-center justify-end gap-3 mt-5">
-                    <div className="bg-[var(--secondary-color)] text-[var(--primary-color)] text-[1.8rem] p-3 rounded-lg">
+                    {/* <div className="bg-[var(--secondary-color)] text-[var(--primary-color)] text-[1.8rem] p-3 rounded-lg">
                         <FaRegEye />
-                    </div>
+                    </div> */}
                     <Link
                         href={`/employer/edit-job?requestId=${props.jobId}`}
                         className="block bg-[var(--secondary-color)] text-[var(--primary-color)] text-[1.8rem] p-3 rounded-lg"

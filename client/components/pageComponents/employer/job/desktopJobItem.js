@@ -10,8 +10,8 @@ import { formatVNDate } from '@/utils/formatDateTime';
 
 const DesktopJobItem = (props) => {
     const refactorLocation = (location) => {
-        if (location?.length > 2) {
-            return `${location[0].label} & 1+ địa điểm`;
+        if (location?.length > 1) {
+            return `${location?.length} địa điểm`;
         } else {
             return location[0].label;
         }
@@ -19,15 +19,15 @@ const DesktopJobItem = (props) => {
 
     return (
         <div className="grid grid-cols-7 gap-16 px-10 py-7 border-b">
-            <div className="col-span-2 flex items-start gap-5">
-                <div className="w-[45px] h-[45px] rounded-lg border border-black">
+            <div className="col-span-3 flex items-start gap-5">
+                <div className="w-[50px] h-[50px] rounded-lg">
                     <img src={props.companyAvatar} alt="avatar" className="w-full h-full object-cover rounded-lg" />
                 </div>
                 <div className="flex-1">
                     <Link href="#" className="block w-full text-[1.8rem] font-semibold truncate-2">
                         {props.jobTitle}
                     </Link>
-                    <p className="text-[1.4rem] text-[#808080] mt-5 space-y-3">
+                    <p className="flex items-center flex-wrap gap-7 text-[1.4rem] text-[#808080] mt-5">
                         <span className="flex items-center gap-3">
                             <AiOutlineDollar className="text-[1.8rem]" />
                             <span className="flex-1">{props.jobSalaryRange}</span>
@@ -50,10 +50,10 @@ const DesktopJobItem = (props) => {
             <div className="col-span-1 flex">
                 <span className="text-[1.3rem] text-green-600 my-auto">{props.jobStatus}</span>
             </div>
-            <div className="col-span-2 flex items-center gap-3">
-                <div className="bg-[var(--secondary-color)] text-[var(--primary-color)] text-[1.8rem] p-3 rounded-lg">
+            <div className="col-span-1 flex items-center gap-3">
+                {/* <div className="bg-[var(--secondary-color)] text-[var(--primary-color)] text-[1.8rem] p-3 rounded-lg">
                     <FaRegEye />
-                </div>
+                </div> */}
                 <Link
                     href={`/employer/edit-job?requestId=${props.jobId}`}
                     className="block bg-[var(--secondary-color)] text-[var(--primary-color)] text-[1.8rem] p-3 rounded-lg"

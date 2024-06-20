@@ -79,7 +79,7 @@ const Sidebar = () => {
                             <span>Tất cả ứng viên</span>
                         </Link>
                     </li>
-                    <li className="pointer-events-none opacity-45">
+                    <li>
                         <Link
                             href={'/employer/recommendation'}
                             className={

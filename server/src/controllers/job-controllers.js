@@ -50,11 +50,14 @@ export const getAllJobByEmployerController = async (req, res) => {
         if (!limit) limit = 5;
         const skip = (page - 1) * limit;
 
-        const jobs = await Job.find({ ...queryFilters, userId: req.user._id })
+        const company = await Company.findOne({ userId: req.user._id });
+
+        const jobs = await Job.find({ ...queryFilters, companyId: company._id })
+            .populate('companyId')
             .sort({ createdAt: -1 })
             .skip(skip)
             .limit(limit);
-        const totalJobs = await Job.countDocuments({ ...queryFilters, userId: req.user._id });
+        const totalJobs = await Job.countDocuments({ ...queryFilters, companyId: company._id });
         const totalPages = Math.ceil(totalJobs / limit);
         res.status(200).json({ code: 200, message: 'Thành công', jobs, totalPages });
     } catch (error) {

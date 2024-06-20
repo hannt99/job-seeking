@@ -66,45 +66,53 @@ const ManageJobs = () => {
                 </div>
                 <div className="hidden xl:block">
                     <div className="grid grid-cols-7 gap-16 font-medium text-[var(--primary-color)] bg-[var(--secondary-color)] px-10 py-7">
-                        <h3 className="col-span-2">Tên công việc</h3>
+                        <h3 className="col-span-3">Tên công việc</h3>
                         <h3 className="col-span-1">Đơn ứng cử</h3>
                         <h3 className="col-span-1">Ngày hết hạn</h3>
                         <h3 className="col-span-1">Trạng thái</h3>
-                        <h3 className="col-span-2">Thao tác</h3>
+                        <h3 className="col-span-1">Thao tác</h3>
                     </div>
-                    {allJobs?.map((ajs, index) => {
-                        return (
-                            <DesktopJobItem
-                                key={index}
-                                companyAvatar={ajs?.companyAvatar}
-                                jobTitle={ajs?.jobTitle}
-                                jobSalaryRange={ajs?.jobSalaryRange}
-                                jobWorkingLocation={ajs?.jobWorkingLocation}
-                                jobApplicants={ajs?.jobApplicants}
-                                jobDeadline={ajs?.jobDeadline}
-                                jobStatus={ajs?.jobStatus}
-                                jobId={ajs?._id}
-                                handleDeleteJob={() => handleDeleteJob(ajs?._id)}
-                            />
-                        );
-                    })}
-                </div>
-                <div className="block xl:hidden">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        {allJobs?.map((ajs, index) => {
+                    {allJobs?.length === 0 ? (
+                        <p className="text-center mt-5">Chưa tạo việc làm</p>
+                    ) : (
+                        allJobs?.map((ajs, index) => {
                             return (
-                                <MobileJobItem
+                                <DesktopJobItem
                                     key={index}
-                                    companyAvatar={ajs?.companyAvatar}
+                                    companyAvatar={ajs?.companyId?.avatar}
                                     jobTitle={ajs?.jobTitle}
                                     jobSalaryRange={ajs?.jobSalaryRange}
                                     jobWorkingLocation={ajs?.jobWorkingLocation}
+                                    jobApplicants={ajs?.jobApplicants}
+                                    jobDeadline={ajs?.jobDeadline}
                                     jobStatus={ajs?.jobStatus}
                                     jobId={ajs?._id}
                                     handleDeleteJob={() => handleDeleteJob(ajs?._id)}
                                 />
                             );
-                        })}
+                        })
+                    )}
+                </div>
+                <div className="block xl:hidden">
+                    <div className="grid grid-cols-1 gap-5">
+                        {allJobs?.length === 0 ? (
+                            <p className="text-center mt-5">Chưa tạo việc làm</p>
+                        ) : (
+                            allJobs?.map((ajs, index) => {
+                                return (
+                                    <MobileJobItem
+                                        key={index}
+                                        companyAvatar={ajs?.companyId?.avatar}
+                                        jobTitle={ajs?.jobTitle}
+                                        jobSalaryRange={ajs?.jobSalaryRange}
+                                        jobWorkingLocation={ajs?.jobWorkingLocation}
+                                        jobStatus={ajs?.jobStatus}
+                                        jobId={ajs?._id}
+                                        handleDeleteJob={() => handleDeleteJob(ajs?._id)}
+                                    />
+                                );
+                            })
+                        )}
                     </div>
                 </div>
                 <div className="mt-10">
