@@ -24,9 +24,7 @@ const DesktopJobItem = (props) => {
                     <img src={props.companyAvatar} alt="avatar" className="w-full h-full object-cover rounded-lg" />
                 </div>
                 <div className="flex-1">
-                    <Link href="#" className="block w-full text-[1.8rem] font-semibold truncate-2">
-                        {props.jobTitle}
-                    </Link>
+                    <h2 className="block w-full text-[1.8rem] font-semibold truncate-2">{props.jobTitle}</h2>
                     <p className="flex items-center flex-wrap gap-7 text-[1.4rem] text-[#808080] mt-5">
                         <span className="flex items-center gap-3">
                             <AiOutlineDollar className="text-[1.8rem]" />

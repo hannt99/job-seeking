@@ -6,8 +6,10 @@ import {
     getAllCVController,
     deleteCVController,
     setMainCVController,
+    recommendCVController,
 } from '../controllers/resume-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
+import { isEmployer } from '../middlewares/role.js';
 import upload from '../utils/uploadFile.js';
 
 const router = Router();
@@ -27,7 +29,10 @@ router.patch('/delete-cv', verifyToken, deleteCVController);
 // Get all cv route
 router.get('/get-all-cv', verifyToken, getAllCVController);
 
-// Get set main cv route
+// Set main cv route
 router.patch('/set-main-cv', verifyToken, setMainCVController);
+
+// Recommend cv route
+router.get('/recommend-cv', verifyToken, isEmployer, recommendCVController);
 
 export default router;

@@ -1,4 +1,6 @@
 import Resume from '../models/Resume.js';
+import Job from '../models/Job.js';
+import Company from '../models/Company.js';
 
 // Get resume controller
 export const getResumeController = async (req, res) => {
@@ -106,3 +108,47 @@ export const setMainCVController = async (req, res) => {
         console.log(error);
     }
 };
+
+// Recommend cv controller
+export const recommendCVController = async (req, res) => {
+    try {
+        const job = await Job.findOne({ _id: req.query.jobId });
+
+        let resumes = await Resume.find({ skills: { $in: job?.jobSkills }, experience: job?.jobExp }).populate(
+            'userId',
+            '-password -role',
+        );
+        resumes = resumes?.filter((item) => item?.userId?._id != req.user._id);
+
+        res.status(200).json({ code: 200, message: 'Success', resumes });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// export const recommendCVController = async (req, res) => {
+//     try {
+//         const company = await Company.findOne({ userId: req.user._id });
+//         const jobs = await Job.find({ companyId: company?._id, jobStatus: 'Đang tuyển' });
+
+//         const result = await Promise.all(
+//             jobs?.map(async (item) => {
+//                 let resumes = await Resume.find({
+//                     skills: { $in: item?.jobSkills },
+//                     experience: item?.jobExp,
+//                 }).populate('userId', '-password -role');
+//                 resumes = resumes?.filter((item) => item?.userId?._id != req.user._id);
+//                 return {
+//                     jobTitle: item?.jobTitle,
+//                     recommendCV: resumes,
+//                 };
+//             }),
+//         );
+
+//         res.status(200).json({ code: 200, message: 'Success', result });
+//     } catch (error) {
+//         res.status(400).json({ code: 400, message: 'Unexpected error' });
+//         console.log(error);
+//     }
+// };

@@ -5,9 +5,8 @@ const Schema = mongoose.Schema;
 const ResumeSchema = new Schema(
     {
         userId: {
-            type: String,
-            trim: true,
-            require: true,
+            type: Schema.Types.ObjectId,
+            ref: 'User',
         },
         jobPosition: {
             type: String,

@@ -266,3 +266,18 @@ export const getRecommendJobController = async (req, res) => {
         console.log(error);
     }
 };
+
+// Get active job by employer controller
+export const getActiveJobByEmployerController = async (req, res) => {
+    try {
+        const company = await Company.findOne({ userId: req.user._id });
+
+        const activeJobs = await Job.find({ companyId: company._id, jobStatus: 'Đang tuyển' })
+            .select('_id jobTitle')
+            .sort({ createdAt: -1 });
+        res.status(200).json({ code: 200, message: 'Thành công', activeJobs });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};

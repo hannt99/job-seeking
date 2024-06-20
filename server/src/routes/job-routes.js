@@ -11,6 +11,7 @@ import {
     getSaveJobController,
     getRelativeJobController,
     getRecommendJobController,
+    getActiveJobByEmployerController,
 } from '../controllers/job-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 import { isEmployer } from '../middlewares/role.js';
@@ -49,5 +50,8 @@ router.get('/get-relative-job', getRelativeJobController);
 
 // Get recommend job route
 router.get('/get-recommend-job', verifyToken, getRecommendJobController);
+
+// Get active job route
+router.get('/get-active-job-by-employer', verifyToken, isEmployer, getActiveJobByEmployerController);
 
 export default router;
