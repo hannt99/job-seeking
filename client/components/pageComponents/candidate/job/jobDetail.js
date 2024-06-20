@@ -11,7 +11,15 @@ import { BiSolidCategory } from 'react-icons/bi';
 import { BsSuitcaseLg } from 'react-icons/bs';
 import { CgTimelapse } from 'react-icons/cg';
 import { FaRegCalendarTimes } from 'react-icons/fa';
-import { FaLocationDot, FaEnvelope, FaPhone, FaPeopleGroup, FaFeatherPointed, FaXmark } from 'react-icons/fa6';
+import {
+    FaLocationDot,
+    FaEnvelope,
+    FaPhone,
+    FaPeopleGroup,
+    FaFeatherPointed,
+    FaXmark,
+    FaArrowRotateLeft,
+} from 'react-icons/fa6';
 import JobCard from '@/components/common/jobCard';
 import Link from 'next/link';
 import { formatVNTimeAgo, formatVNDateTime } from '@/utils/formatDateTime';
@@ -24,6 +32,10 @@ const JobDetail = () => {
     const [isSave, setIsSave] = useState(false);
     const [reRender, setRerender] = useState('');
     const [relativeJobs, setRelativeJobs] = useState([]);
+    const [resume, setResume] = useState({});
+    const [mainCV, setMainCV] = useState({});
+    const [coverLetter, setCoverLetter] = useState('');
+    const [isApplied, setIsApplied] = useState(true);
 
     const searchParams = useSearchParams();
 
@@ -62,9 +74,57 @@ const JobDetail = () => {
         }
     };
 
+    const handleApplyJob = async () => {
+        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        const data = {
+            userInfo: {
+                userId: resume?.userId?._id,
+                fullName: resume?.userId?.fullName,
+                email: resume?.userId?.email,
+                phone: resume?.userId?.phone,
+            },
+            coverLetter,
+            cvPath: mainCV?.path,
+        };
+        const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/job/apply-job/${job?._id}`, data, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+        });
+        if (res?.data?.code === 200) {
+            setRerender(!reRender);
+            setOpenApplyForm(false);
+            return success(res?.data?.message);
+        } else {
+            return;
+        }
+    };
+
     useEffect(() => {
         openApplyForm ? (document.body.style.overflow = 'hidden') : (document.body.style.overflow = 'unset');
     }, [openApplyForm]);
+
+    useEffect(() => {
+        if (job?.jobApplicants?.find((item) => item?.userInfo?.userId === resume?.userId?._id)) {
+            return setIsApplied(true);
+        } else {
+            setIsApplied(false);
+        }
+    }, [reRender, job, resume]);
+
+    useEffect(() => {
+        const fetchResume = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/resume/get`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            });
+            if (res?.data?.code === 200) {
+                const cv = res?.data?.resume?.cv?.find((item) => item?.isMain === true);
+                setMainCV(cv);
+                return setResume(res?.data?.resume);
+            } else {
+                return;
+            }
+        };
+        fetchResume();
+    }, []);
 
     useEffect(() => {
         const isSave = async () => {
@@ -87,7 +147,7 @@ const JobDetail = () => {
             }
         };
         fetchJob();
-    }, [searchParams]);
+    }, [searchParams, reRender]);
 
     useEffect(() => {
         const fetchJob = async () => {
@@ -252,7 +312,14 @@ const JobDetail = () => {
                                 onClick={() => setOpenApplyForm(true)}
                                 className="flex-1 text-white font-medium bg-[var(--primary-color)] py-4 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
                             >
-                                Ứng tuyển
+                                {isApplied ? (
+                                    <span className="flex items-center justify-center gap-5">
+                                        <FaArrowRotateLeft className="text-[2rem]" />
+                                        <span>Ứng tuyển lại</span>
+                                    </span>
+                                ) : (
+                                    'Ứng tuyển'
+                                )}
                             </button>
                             <button
                                 onClick={isSave ? handleUnSaveJob : handleSaveJob}
@@ -439,10 +506,7 @@ const JobDetail = () => {
                     >
                         <div className="flex items-center border-b-2 border-dashed mb-5 pb-5">
                             <h2 className="flex-1 text-[2rem] font-bold truncate">
-                                Ứng tuyển{' '}
-                                <span className="text-[var(--primary-color)]">
-                                    Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello Hello
-                                </span>
+                                Ứng tuyển <span className="text-[var(--primary-color)]">{job?.jobTitle}</span>
                             </h2>
                             <FaXmark onClick={() => setOpenApplyForm(false)} className="text-[2.4rem] cursor-pointer" />
                         </div>
@@ -459,26 +523,25 @@ const JobDetail = () => {
                                             <span>CV ứng tuyển:</span>
                                         </span>
                                         <a
-                                            href="#"
+                                            href={mainCV?.path}
                                             target="_blank"
                                             rel="noreferrer noopener"
                                             className="font-bold truncate"
                                         >
-                                            Trinh_Phieu_An_CV.pdf Trinh_Phieu_An_CV.pdf Trinh_Phieu_An_CV.pdf
-                                            Trinh_Phieu_An_CV.pdf Trinh_Phieu_An_CV.pdf
+                                            {mainCV?.name?.slice(8)}
                                         </a>
                                     </div>
                                     <p className="text-[1.5rem] space-x-3">
                                         <span className="text-[#808080]">Họ và tên:</span>
-                                        <span className="font-semibold">Trinh Phieu An</span>
+                                        <span className="font-semibold">{resume?.userId?.fullName}</span>
                                     </p>
                                     <p className="text-[1.5rem] space-x-3">
                                         <span className="text-[#808080]">Email:</span>
-                                        <span className="font-semibold">trinhan@gmail.com</span>
+                                        <span className="font-semibold">{resume?.userId?.email}</span>
                                     </p>
                                     <p className="text-[1.5rem] space-x-3">
                                         <span className="text-[#808080]">Số điện thoại:</span>
-                                        <span className="font-semibold">0123456789</span>
+                                        <span className="font-semibold">{resume?.userId?.phone}</span>
                                     </p>
                                 </div>
                             </div>
@@ -492,6 +555,8 @@ const JobDetail = () => {
                                     tượng hơn với nhà tuyển dụng.
                                 </p>
                                 <textarea
+                                    value={coverLetter}
+                                    onChange={(e) => setCoverLetter(e.target.value)}
                                     rows="4"
                                     cols="50"
                                     placeholder="Viết thư giới thiệu ngắn gọn về bản thân"
@@ -526,10 +591,18 @@ const JobDetail = () => {
                             </div>
                         </div>
                         <div className="flex items-start gap-3 mt-7">
-                            <button className="flex-1 bg-[var(--primary-color)] text-[1.5rem] text-white font-medium py-3 rounded-lg">
+                            <button
+                                onClick={handleApplyJob}
+                                className="flex-1 bg-[var(--primary-color)] text-[1.5rem] text-white font-medium py-3 rounded-lg"
+                            >
                                 Nộp hồ sơ
                             </button>
-                            <button className="bg-[#cccccc] text-[1.5rem] font-medium px-7 py-3 rounded-lg">Hủy</button>
+                            <button
+                                onClick={() => setOpenApplyForm(false)}
+                                className="bg-[#cccccc] text-[1.5rem] font-medium px-7 py-3 rounded-lg"
+                            >
+                                Hủy
+                            </button>
                         </div>
                     </div>
                 </div>
