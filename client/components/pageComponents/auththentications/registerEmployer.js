@@ -9,8 +9,9 @@ import {
     emailValidator,
     passwordValidator,
     phoneValidator,
-    numberValidator,
     dropListValidator,
+    numberValidatorFrom,
+    numberValidatorTo,
 } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
 import Loading from '@/components/common/loading';
@@ -65,15 +66,10 @@ const RegisterEmployer = () => {
         );
         const isPhoneValid = phoneValidator(phone, setIsPhoneErr, setPhoneErrMsg);
         const isCompanyNameValid = fullNameValidator(companyName, setIsCompanyNameErr, setCompanyNameErrMsg);
-        const isCompanySizeFromValid = numberValidator(
-            companySizeFrom,
-            companySizeFrom,
-            setIsCompanySizeErr,
-            setCompanySizeErrMsg,
-        );
-        const isCompanySizeToValid = numberValidator(
-            companySizeFrom,
+        const isCompanySizeFromValid = numberValidatorFrom(companySizeFrom, setIsCompanySizeErr, setCompanySizeErrMsg);
+        const isCompanySizeToValid = numberValidatorTo(
             companySizeTo,
+            companySizeFrom,
             setIsCompanySizeErr,
             setCompanySizeErrMsg,
         );
@@ -279,8 +275,7 @@ const RegisterEmployer = () => {
                                         value={companySizeFrom}
                                         onChange={(e) => setCompanySizeFrom(e.target.value)}
                                         onBlur={() =>
-                                            numberValidator(
-                                                companySizeFrom,
+                                            numberValidatorFrom(
                                                 companySizeFrom,
                                                 setIsCompanySizeErr,
                                                 setCompanySizeErrMsg,
@@ -296,9 +291,9 @@ const RegisterEmployer = () => {
                                         value={companySizeTo}
                                         onChange={(e) => setCompanySizeTo(e.target.value)}
                                         onBlur={() =>
-                                            numberValidator(
-                                                companySizeFrom,
+                                            numberValidatorTo(
                                                 companySizeTo,
+                                                companySizeFrom,
                                                 setIsCompanySizeErr,
                                                 setCompanySizeErrMsg,
                                             )
