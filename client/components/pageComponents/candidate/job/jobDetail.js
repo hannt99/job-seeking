@@ -74,15 +74,14 @@ const JobDetail = () => {
         }
     };
 
+    const handleOpenApplyForm = () => {
+        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        return setOpenApplyForm(true);
+    };
+
     const handleApplyJob = async () => {
         if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
         const data = {
-            userInfo: {
-                userId: resume?.userId?._id,
-                fullName: resume?.userId?.fullName,
-                email: resume?.userId?.email,
-                phone: resume?.userId?.phone,
-            },
             coverLetter,
             cvPath: mainCV?.path,
         };
@@ -103,7 +102,7 @@ const JobDetail = () => {
     }, [openApplyForm]);
 
     useEffect(() => {
-        if (job?.jobApplicants?.find((item) => item?.userInfo?.userId === resume?.userId?._id)) {
+        if (job?.jobApplicants?.find((item) => item?.userId === resume?.userId?._id)) {
             return setIsApplied(true);
         } else {
             setIsApplied(false);
@@ -309,7 +308,7 @@ const JobDetail = () => {
                     <div className="col-span-1 order-1 lg:order-2 space-y-10">
                         <div className="flex items-stretch gap-4">
                             <button
-                                onClick={() => setOpenApplyForm(true)}
+                                onClick={handleOpenApplyForm}
                                 className="flex-1 text-white font-medium bg-[var(--primary-color)] py-4 rounded-lg hover:bg-[var(--primary-hover-color)] transition-all"
                             >
                                 {isApplied ? (
@@ -415,7 +414,7 @@ const JobDetail = () => {
                         <div className="bg-[#f4f6fb] p-10 space-y-14 rounded-lg">
                             <div className="space-y-3">
                                 <div className="flex justify-center">
-                                    <div className="w-[120px] h-[120px] border border-black">
+                                    <div className="w-[120px] h-[120px]">
                                         <img
                                             src={job?.companyId?.avatar}
                                             alt="company avatar"

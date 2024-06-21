@@ -62,7 +62,17 @@ const JobSchema = new Schema(
             require: true,
             default: [],
         },
-        jobApplicants: [{ status: String, userInfo: Object, coverLetter: String, cvPath: String }],
+        jobApplicants: [
+            {
+                status: String,
+                userId: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'User',
+                },
+                coverLetter: String,
+                cvPath: String,
+            },
+        ],
         jobDeadline: {
             type: String,
             trim: true,

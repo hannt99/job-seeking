@@ -1,5 +1,7 @@
+import AllApplicants from '@/components/pageComponents/employer/applicant/allApplicants';
+
 const page = () => {
-    return <div>All applicants</div>;
+    return <AllApplicants />;
 };
 
 export default page;
