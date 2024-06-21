@@ -76,6 +76,7 @@ const JobDetail = () => {
 
     const handleOpenApplyForm = () => {
         if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        if (job?.jobStatus === 'Hết hạn nộp') return alert('Việc làm đã hết hạn nộp');
         return setOpenApplyForm(true);
     };
 
@@ -266,7 +267,13 @@ const JobDetail = () => {
                             <li className="bg-[#d5e3f6] text-blue-700 px-7 py-1 rounded-full uppercase">
                                 {job?.jobType}
                             </li>
-                            <li className="bg-[#d9ede3] text-[var(--primary-color)] px-7 py-1 rounded-full uppercase">
+                            <li
+                                className={`${
+                                    job?.jobStatus === 'Đang tuyển'
+                                        ? 'bg-[#d9ede3] text-[var(--primary-color)]'
+                                        : 'bg-red-200 text-red-600'
+                                } px-7 py-1 rounded-full uppercase`}
+                            >
                                 {job?.jobStatus}
                             </li>
                         </ul>

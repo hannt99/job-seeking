@@ -46,7 +46,13 @@ const DesktopJobItem = (props) => {
                 <span className="text-[1.4rem] text-[#808080] my-auto">{formatVNDate(props.jobDeadline)}</span>
             </div>
             <div className="col-span-1 flex">
-                <span className="text-[1.3rem] text-green-600 my-auto">{props.jobStatus}</span>
+                <span
+                    className={`text-[1.3rem] ${
+                        props.jobStatus === 'Đang tuyển' ? 'text-green-600' : 'text-red-600'
+                    } my-auto`}
+                >
+                    {props.jobStatus}
+                </span>
             </div>
             <div className="col-span-1 flex items-center gap-3">
                 {/* <div className="bg-[var(--secondary-color)] text-[var(--primary-color)] text-[1.8rem] p-3 rounded-lg">

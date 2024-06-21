@@ -19,7 +19,13 @@ const MobileJobItem = (props) => {
             </div>
             <div className="flex-1">
                 <h2 className="block w-full font-semibold truncate-1 leading-none">{props.jobTitle}</h2>
-                <p className="text-[1.3rem] leading-none text-green-600 mt-2">{props.jobStatus}</p>
+                <p
+                    className={`text-[1.3rem] leading-none ${
+                        props.jobStatus === 'Đang tuyển' ? 'text-green-600' : 'text-red-600'
+                    } mt-2`}
+                >
+                    {props.jobStatus}
+                </p>
                 <p className="flex gap-3 flex-wrap text-[1.3rem] font-medium mt-5">
                     <span className="bg-[#e2e2e2] px-3 py-1 rounded-md">{props.jobSalaryRange}</span>
                     <span className="bg-[#e2e2e2] px-3 py-1 rounded-md">
