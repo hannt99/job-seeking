@@ -62,7 +62,11 @@ const ApplicantRecommend = () => {
                     </select>
                 </div>
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-7">
-                    {allRecommendCV?.length === 0 ? (
+                    {jobId === '336fb003882f472185c091b9' ? (
+                        <p className="text-center col-span-2 text-red-600 font-medium">
+                            Lưu ý: Lọc dữ liệu theo từng việc làm
+                        </p>
+                    ) : allRecommendCV?.length === 0 ? (
                         <p className="text-center col-span-2">Không tìm thấy gợi ý</p>
                     ) : (
                         allRecommendCV?.map((ar, index) => {

@@ -85,7 +85,11 @@ const AllApplicants = () => {
                     </select>
                 </div>
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-7">
-                    {allApplicants?.length === 0 || allApplicants === undefined ? (
+                    {jobId === '336fb003882f472185c091b9' ? (
+                        <p className="text-center col-span-2 text-red-600 font-medium">
+                            Lưu ý: Lọc dữ liệu theo từng việc làm
+                        </p>
+                    ) : allApplicants?.length === 0 || allApplicants === undefined ? (
                         <p className="text-center col-span-2">Không tìm thấy ứng viên</p>
                     ) : (
                         allApplicants?.map((ar, index) => {

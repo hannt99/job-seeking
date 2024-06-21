@@ -7,7 +7,7 @@ import ApplyJobCard from './applyJobCard';
 import RightSide from './rightSide';
 
 const JobApply = () => {
-    const [filter, setFilter] = useState('');
+    const [filter, setFilter] = useState('Đã ứng tuyển');
     const [allAppliedJobs, setAllAppliedJobs] = useState([]);
     const [userId, setUserId] = useState('');
 
@@ -23,13 +23,15 @@ const JobApply = () => {
             });
             if (res?.data?.code === 200) {
                 setUserId(res?.data?.userId);
-                return setAllAppliedJobs(res?.data?.result);
+                return setAllAppliedJobs(
+                    res?.data?.result?.filter((item) => item?.jobApplicants?.find((item2) => item2?.status === filter)),
+                );
             } else {
                 return;
             }
         };
         fetchAppliedJob();
-    }, []);
+    }, [filter]);
 
     return (
         <>
@@ -90,31 +92,33 @@ const JobApply = () => {
                         <select
                             value={filter}
                             onChange={(e) => setFilter(e.target.value)}
-                            className="block w-[120px] bg-[#f1f1f1] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
+                            className="block w-[160px] bg-[#f1f1f1] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
                         >
-                            <option value="">Trạng thái</option>
-                            <option value="newest">Đã ứng tuyển</option>
-                            <option value="oldest">NTD đã xem hồ sơ</option>
-                            <option value="oldest">Hồ sơ phù hợp</option>
-                            <option value="oldest">Hồ sơ chưa phù hợp</option>
+                            <option value="Đã ứng tuyển">Đã ứng tuyển</option>
+                            <option value="Phù hợp">Phù hợp</option>
+                            <option value="Chưa phù hợp">Chưa phù hợp</option>
                         </select>
                     </div>
                     <div className="py-5 space-y-8">
-                        {allAppliedJobs?.map((ap, index) => {
-                            return (
-                                <ApplyJobCard
-                                    key={index}
-                                    id={ap?._id}
-                                    jobTitle={ap?.jobTitle}
-                                    companyId={ap?.companyId?._id}
-                                    companyName={ap?.companyId?.companyName}
-                                    companyAvatar={ap?.companyId?.avatar}
-                                    appliedTime={getApplyInfo(ap?.jobApplicants)?.appliedTime}
-                                    applyStatus={getApplyInfo(ap?.jobApplicants)?.status}
-                                    cvPath={getApplyInfo(ap?.jobApplicants)?.cvPath}
-                                />
-                            );
-                        })}
+                        {allAppliedJobs?.length === 0 ? (
+                            <p className="text-center col-span-2">Không tìm thấy dữ liệu</p>
+                        ) : (
+                            allAppliedJobs?.map((ap, index) => {
+                                return (
+                                    <ApplyJobCard
+                                        key={index}
+                                        id={ap?._id}
+                                        jobTitle={ap?.jobTitle}
+                                        companyId={ap?.companyId?._id}
+                                        companyName={ap?.companyId?.companyName}
+                                        companyAvatar={ap?.companyId?.avatar}
+                                        appliedTime={getApplyInfo(ap?.jobApplicants)?.appliedTime}
+                                        applyStatus={getApplyInfo(ap?.jobApplicants)?.status}
+                                        cvPath={getApplyInfo(ap?.jobApplicants)?.cvPath}
+                                    />
+                                );
+                            })
+                        )}
                     </div>
                 </div>
                 <div className="col-span-2 space-y-10">

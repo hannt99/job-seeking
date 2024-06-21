@@ -52,8 +52,6 @@ const ApplyJobCard = (props) => {
                     </div>
                 </div>
             </div>
-            <IoBookmark className="absolute top-5 right-5 text-[2.4rem]" />
-            <div className="flex justify-end"></div>
         </div>
     );
 };
