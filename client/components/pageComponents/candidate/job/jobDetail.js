@@ -521,14 +521,20 @@ const JobDetail = () => {
                                             <IoDocumentText className="text-[1.8rem]" />
                                             <span>CV ứng tuyển:</span>
                                         </span>
-                                        <a
-                                            href={mainCV?.path}
-                                            target="_blank"
-                                            rel="noreferrer noopener"
-                                            className="font-bold truncate"
-                                        >
-                                            {mainCV?.name?.slice(8)}
-                                        </a>
+                                        {mainCV?.path ? (
+                                            <a
+                                                href={mainCV?.path}
+                                                target="_blank"
+                                                rel="noreferrer noopener"
+                                                className="font-bold truncate"
+                                            >
+                                                {mainCV?.name?.slice(8)}
+                                            </a>
+                                        ) : (
+                                            <p className="font-bold text-red-600">
+                                                Vui lòng upload CV hoặc đặt CV chính
+                                            </p>
+                                        )}
                                     </div>
                                     <p className="text-[1.5rem] space-x-3">
                                         <span className="text-[#808080]">Họ và tên:</span>
@@ -592,7 +598,9 @@ const JobDetail = () => {
                         <div className="flex items-start gap-3 mt-7">
                             <button
                                 onClick={handleApplyJob}
-                                className="flex-1 bg-[var(--primary-color)] text-[1.5rem] text-white font-medium py-3 rounded-lg"
+                                className={`flex-1 bg-[var(--primary-color)] text-[1.5rem] text-white font-medium py-3 rounded-lg ${
+                                    mainCV?.path ? '' : 'pointer-events-none opacity-45'
+                                }`}
                             >
                                 Nộp hồ sơ
                             </button>

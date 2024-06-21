@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { AiOutlineDollar } from 'react-icons/ai';
 import { IoLocationOutline, IoBookmarkOutline, IoBookmark } from 'react-icons/io5';
-import { LuClock4 } from 'react-icons/lu';
+import { MdUpdate } from 'react-icons/md';
 import Link from 'next/link';
 import { formatVNTimeAgo } from '@/utils/formatDateTime';
 import setSlug from '@/utils/slugify';
@@ -93,7 +93,7 @@ const JobCard = (props) => {
                         <span>{refactorLocation(props.jobWorkingLocation)}</span>
                     </p>
                     <p className="flex items-center gap-1 rounded-md">
-                        <LuClock4 className="text-[1.8rem]" />
+                        <MdUpdate className="text-[1.8rem]" />
                         <span>{formatVNTimeAgo(props.updatedAt)}</span>
                     </p>
                 </div>
