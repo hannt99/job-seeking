@@ -60,7 +60,7 @@ const DesktopJobItem = (props) => {
                 </Link>
                 <div
                     onClick={props.handleDeleteJob}
-                    className="bg-[var(--secondary-color)] text-[var(--primary-color)] text-[1.8rem] p-3 rounded-lg cursor-pointer"
+                    className="bg-red-200 text-red-600 text-[1.8rem] p-3 rounded-lg cursor-pointer"
                 >
                     <RiDeleteBin6Line />
                 </div>

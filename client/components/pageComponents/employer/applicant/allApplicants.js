@@ -2,13 +2,31 @@
 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaEnvelope, FaPhone, FaFeatherPointed } from 'react-icons/fa6';
+import { FaEnvelope, FaPhone, FaFeatherPointed, FaCheck, FaRegCircleXmark } from 'react-icons/fa6';
+import { success } from '@/utils/toastMessage';
 
 const AllApplicants = () => {
     const [allJobs, setAllJobs] = useState([]);
     const [jobId, setJobId] = useState('336fb003882f472185c091b9');
     const [allApplicants, setAllApplicants] = useState([]);
     const [openCoverLetter, setOpenCoverLetter] = useState(false);
+    const [reRender, setReRender] = useState(false);
+
+    const handleDecideApply = async (status, userId) => {
+        const data = {
+            status,
+            userId,
+        };
+        const res = await axios.patch(`${process.env.NEXT_PUBLIC_API_URL}/job/decide-applicant/${jobId}`, data, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+        });
+        if (res?.data?.code === 200) {
+            setReRender(!reRender);
+            return success(res?.data?.message);
+        } else {
+            return;
+        }
+    };
 
     useEffect(() => {
         const fetchJobs = async () => {
@@ -41,9 +59,7 @@ const AllApplicants = () => {
             }
         };
         fetchApplicant();
-    }, [jobId]);
-
-    console.log(allApplicants);
+    }, [jobId, reRender]);
 
     return (
         <div className="p-10">
@@ -111,6 +127,35 @@ const AllApplicants = () => {
                                                     Thư giới thiệu
                                                 </div>
                                             </div>
+                                            {ar?.status === 'Đã ứng tuyển' ? (
+                                                <div className="flex items-center gap-5 mt-5">
+                                                    <div
+                                                        onClick={() => handleDecideApply('Phù hợp', ar?.userId?._id)}
+                                                        className="bg-[var(--secondary-color)] text-[var(--primary-color)] text-[1.8rem] p-3 rounded-lg cursor-pointer"
+                                                    >
+                                                        <FaCheck />
+                                                    </div>
+                                                    <div
+                                                        onClick={() =>
+                                                            handleDecideApply('Chưa phù hợp', ar?.userId?._id)
+                                                        }
+                                                        className="bg-red-200 text-red-600 text-[1.8rem] p-3 rounded-lg cursor-pointer"
+                                                    >
+                                                        <FaRegCircleXmark />
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <p className="text-[#808080] space-x-2 mt-5">
+                                                    <span>Trạng thái:</span>
+                                                    <span
+                                                        className={`${
+                                                            ar?.status === 'Phù hợp' ? 'text-green-600' : 'text-red-600'
+                                                        } font-medium`}
+                                                    >
+                                                        {ar?.status}
+                                                    </span>
+                                                </p>
+                                            )}
                                         </div>
                                     </div>
                                     {openCoverLetter && (

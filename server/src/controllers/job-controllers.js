@@ -309,11 +309,35 @@ export const applyJobController = async (req, res) => {
 // Get candidate by job controller
 export const getApplicantsByJob = async (req, res) => {
     try {
-        const job = await Job.findOne({ _id: req.query.jobId }).populate('jobApplicants.userId');
+        const job = await Job.findOne({ _id: req.query.jobId }).populate('jobApplicants.userId', '-password -role');
 
         const applicants = job?.jobApplicants;
 
         res.status(200).json({ code: 200, message: 'Success', applicants });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Get candidate by job controller
+export const decideApplicant = async (req, res) => {
+    try {
+        const jobId = req.params.jobId;
+        const { userId, status } = req.body;
+        const job = await Job.findOne({ _id: jobId });
+        const applicants = job?.jobApplicants;
+
+        let appFind = applicants?.find((item) => item?.userId?.toString() === userId);
+        appFind = Object.assign(appFind, { status });
+
+        let appFilter = applicants?.filter((item) => item?.userId?.toString() !== userId);
+
+        const result = [...appFilter, appFind];
+
+        await Job.findOneAndUpdate({ _id: jobId }, { jobApplicants: result });
+
+        res.status(200).json({ code: 200, message: status === 'Phù hợp' ? 'Đã chấp nhận' : 'Đã từ chối', result });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);
