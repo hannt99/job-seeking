@@ -1,12 +1,35 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
 import ApplyJobCard from './applyJobCard';
 import RightSide from './rightSide';
 
 const JobApply = () => {
     const [filter, setFilter] = useState('');
+    const [allAppliedJobs, setAllAppliedJobs] = useState([]);
+    const [userId, setUserId] = useState('');
+
+    const getApplyInfo = (array) => {
+        const result = array?.find((item) => item?.userId?.toString() === userId);
+        return result;
+    };
+
+    useEffect(() => {
+        const fetchAppliedJob = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/job/get-applied-job`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
+            });
+            if (res?.data?.code === 200) {
+                setUserId(res?.data?.userId);
+                return setAllAppliedJobs(res?.data?.result);
+            } else {
+                return;
+            }
+        };
+        fetchAppliedJob();
+    }, []);
 
     return (
         <>
@@ -62,7 +85,7 @@ const JobApply = () => {
                 <div className="col-span-4 bg-white p-7 rounded-lg custom-shadow-v1 h-fit">
                     <div className="flex items-center justify-between">
                         <h2>
-                            <b>300</b> việc làm đã ứng tuyển
+                            <b>{allAppliedJobs?.length}</b> việc làm đã ứng tuyển
                         </h2>
                         <select
                             value={filter}
@@ -77,30 +100,21 @@ const JobApply = () => {
                         </select>
                     </div>
                     <div className="py-5 space-y-8">
-                        <ApplyJobCard
-                            jobTitle="Thuc tap sinh IT"
-                            jobStatus="Dang  tuyen"
-                            jobSalaryRange="Thoa thuan"
-                            jobWorkingLocation={[
-                                { label: 'Thanh pho Ha Noi' },
-                                { label: 'Thanh pho Ha Noi' },
-                                { label: 'Thanh pho Ha Noi' },
-                            ]}
-                            updatedAt="2024-06-12T13:04:50.539+00:00"
-                            company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                        />
-                        <ApplyJobCard
-                            jobTitle="Thuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh ITThuc tap sinh IT"
-                            jobStatus="Dang  tuyen"
-                            jobSalaryRange="Thoa thuan"
-                            jobWorkingLocation={[
-                                { label: 'Thanh pho Ha Noi' },
-                                { label: 'Thanh pho Ha Noi' },
-                                { label: 'Thanh pho Ha Noi' },
-                            ]}
-                            updatedAt="2024-06-12T13:04:50.539+00:00"
-                            company="Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank Ngan hang quan doi Vietcombank"
-                        />
+                        {allAppliedJobs?.map((ap, index) => {
+                            return (
+                                <ApplyJobCard
+                                    key={index}
+                                    id={ap?._id}
+                                    jobTitle={ap?.jobTitle}
+                                    companyId={ap?.companyId?._id}
+                                    companyName={ap?.companyId?.companyName}
+                                    companyAvatar={ap?.companyId?.avatar}
+                                    appliedTime={getApplyInfo(ap?.jobApplicants)?.appliedTime}
+                                    applyStatus={getApplyInfo(ap?.jobApplicants)?.status}
+                                    cvPath={getApplyInfo(ap?.jobApplicants)?.cvPath}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
                 <div className="col-span-2 space-y-10">

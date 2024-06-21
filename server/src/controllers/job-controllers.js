@@ -295,8 +295,8 @@ export const applyJobController = async (req, res) => {
 
         if (job) return res.status(200).json({ code: 400, message: 'Bạn không thể ứng việc làm của chính bạn' });
 
-        const result = await Job.findByIdAndUpdate(jobId, {
-            $push: { jobApplicants: { status: 'Đã ứng tuyển', userId, coverLetter, cvPath } },
+        await Job.findByIdAndUpdate(jobId, {
+            $push: { jobApplicants: { status: 'Đã ứng tuyển', appliedTime: Date.now(), userId, coverLetter, cvPath } },
         });
 
         res.status(200).json({ code: 200, message: 'Ứng tuyển thành công' });
@@ -338,6 +338,22 @@ export const decideApplicant = async (req, res) => {
         await Job.findOneAndUpdate({ _id: jobId }, { jobApplicants: result });
 
         res.status(200).json({ code: 200, message: status === 'Phù hợp' ? 'Đã chấp nhận' : 'Đã từ chối', result });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Get applied job controller
+export const getAppliedJob = async (req, res) => {
+    try {
+        const jobs = await Job.find().populate('companyId');
+
+        const result = jobs?.filter((item) =>
+            item?.jobApplicants?.find((item2) => item2?.userId?.toString() === req.user._id),
+        );
+
+        res.status(200).json({ code: 200, message: 'Success', result, userId: req.user._id });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);

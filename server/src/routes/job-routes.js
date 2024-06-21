@@ -15,6 +15,7 @@ import {
     applyJobController,
     getApplicantsByJob,
     decideApplicant,
+    getAppliedJob,
 } from '../controllers/job-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 import { isEmployer } from '../middlewares/role.js';
@@ -65,5 +66,8 @@ router.get('/get-applicants-by-job', verifyToken, isEmployer, getApplicantsByJob
 
 // Get candidate by job route
 router.patch('/decide-applicant/:jobId', verifyToken, isEmployer, decideApplicant);
+
+// Get applied job route
+router.get('/get-applied-job', verifyToken, getAppliedJob);
 
 export default router;

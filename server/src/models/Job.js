@@ -65,6 +65,7 @@ const JobSchema = new Schema(
         jobApplicants: [
             {
                 status: String,
+                appliedTime: Number,
                 userId: {
                     type: Schema.Types.ObjectId,
                     ref: 'User',

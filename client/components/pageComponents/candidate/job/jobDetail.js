@@ -255,7 +255,7 @@ const JobDetail = () => {
                             </li>
                             <li className="flex items-center gap-2">
                                 <LuClock4 className="text-[2rem]" />
-                                <span>{formatVNTimeAgo(job?.updatedAt)}</span>
+                                <span>{formatVNTimeAgo(job?.createdAt)}</span>
                             </li>
                             <li className="flex items-center gap-2">
                                 <AiOutlineDollar className="text-[2rem]" />
@@ -338,7 +338,7 @@ const JobDetail = () => {
                                     <LuClock4 className="text-[2.6rem] text-[var(--primary-color)]" />
                                     <p>
                                         <span className="block font-medium">Đã đăng</span>
-                                        <span className="block text-[1.5rem]">{formatVNTimeAgo(job?.updatedAt)}</span>
+                                        <span className="block text-[1.5rem]">{formatVNTimeAgo(job?.createdAt)}</span>
                                     </p>
                                 </div>
                                 <div className="flex items-start gap-7">
