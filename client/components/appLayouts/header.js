@@ -95,52 +95,58 @@ const Header = () => {
                                         <span>Tìm việc làm</span>
                                     </Link>
                                 </li>
-                                <li>
-                                    <hr></hr>
-                                </li>
-                                <li
-                                    className={`hover:text-[var(--primary-color)] ${
-                                        pathname?.includes('/applied-job') ? 'text-[var(--primary-color)]' : ''
-                                    }`}
-                                >
-                                    <Link
-                                        href="/job/applied-job"
-                                        className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
-                                    >
-                                        <BsSuitcaseLg className="text-[2rem] text-[var(--primary-color)]" />
-                                        <span>Việc làm đã ứng tuyển</span>
-                                        <BsFire className="text-[2rem] text-orange-600" />
-                                    </Link>
-                                </li>
-                                <li
-                                    className={`hover:text-[var(--primary-color)] ${
-                                        pathname?.includes('/saved-job') ? 'text-[var(--primary-color)]' : ''
-                                    }`}
-                                >
-                                    <Link
-                                        href="/job/saved-job"
-                                        className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
-                                    >
-                                        <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
-                                        <span>Việc làm đã lưu</span>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <hr></hr>
-                                </li>
-                                <li
-                                    className={`hover:text-[var(--primary-color)] ${
-                                        pathname?.includes('/recommend-job') ? 'text-[var(--primary-color)]' : ''
-                                    }`}
-                                >
-                                    <Link
-                                        href="/job/recommend-job"
-                                        className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
-                                    >
-                                        <IoCheckboxOutline className="text-[2rem] text-[var(--primary-color)]" />
-                                        <span>Gợi ý việc làm</span>
-                                    </Link>
-                                </li>
+                                {isAuth?.status === true && (
+                                    <>
+                                        <li>
+                                            <hr></hr>
+                                        </li>
+                                        <li
+                                            className={`hover:text-[var(--primary-color)] ${
+                                                pathname?.includes('/applied-job') ? 'text-[var(--primary-color)]' : ''
+                                            }`}
+                                        >
+                                            <Link
+                                                href="/job/applied-job"
+                                                className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                            >
+                                                <BsSuitcaseLg className="text-[2rem] text-[var(--primary-color)]" />
+                                                <span>Việc làm đã ứng tuyển</span>
+                                                <BsFire className="text-[2rem] text-orange-600" />
+                                            </Link>
+                                        </li>
+                                        <li
+                                            className={`hover:text-[var(--primary-color)] ${
+                                                pathname?.includes('/saved-job') ? 'text-[var(--primary-color)]' : ''
+                                            }`}
+                                        >
+                                            <Link
+                                                href="/job/saved-job"
+                                                className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                            >
+                                                <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                                <span>Việc làm đã lưu</span>
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <hr></hr>
+                                        </li>
+                                        <li
+                                            className={`hover:text-[var(--primary-color)] ${
+                                                pathname?.includes('/recommend-job')
+                                                    ? 'text-[var(--primary-color)]'
+                                                    : ''
+                                            }`}
+                                        >
+                                            <Link
+                                                href="/job/recommend-job"
+                                                className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                            >
+                                                <IoCheckboxOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                                <span>Gợi ý việc làm</span>
+                                            </Link>
+                                        </li>
+                                    </>
+                                )}
                             </ul>
                         </li>
                         <li className="group relative h-full">
@@ -165,22 +171,28 @@ const Header = () => {
                                         <span>Danh sách công ty</span>
                                     </Link>
                                 </li>
-                                <li>
-                                    <hr></hr>
-                                </li>
-                                <li
-                                    className={`hover:text-[var(--primary-color)] ${
-                                        pathname?.includes('/followed-company') ? 'text-[var(--primary-color)]' : ''
-                                    }`}
-                                >
-                                    <Link
-                                        href="/company/followed-company"
-                                        className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
-                                    >
-                                        <PiBuildingThin className="text-[2rem] text-[var(--primary-color)]" />
-                                        <span>Công ty đã theo dõi</span>
-                                    </Link>
-                                </li>
+                                {isAuth?.status === true && (
+                                    <>
+                                        <li>
+                                            <hr></hr>
+                                        </li>
+                                        <li
+                                            className={`hover:text-[var(--primary-color)] ${
+                                                pathname?.includes('/followed-company')
+                                                    ? 'text-[var(--primary-color)]'
+                                                    : ''
+                                            }`}
+                                        >
+                                            <Link
+                                                href="/company/followed-company"
+                                                className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                            >
+                                                <PiBuildingThin className="text-[2rem] text-[var(--primary-color)]" />
+                                                <span>Công ty đã theo dõi</span>
+                                            </Link>
+                                        </li>
+                                    </>
+                                )}
                             </ul>
                         </li>
                         <li className="h-full">
@@ -452,52 +464,56 @@ const Header = () => {
                                     <span>Tìm việc làm</span>
                                 </Link>
                             </li>
-                            <li>
-                                <hr></hr>
-                            </li>
-                            <li
-                                className={`p-3 hover:text-[var(--primary-color)] ${
-                                    pathname?.includes('/applied-job') ? 'text-[var(--primary-color)]' : ''
-                                }`}
-                            >
-                                <Link
-                                    href="/job/applied-job"
-                                    className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
-                                >
-                                    <BsSuitcaseLg className="text-[2rem] text-[var(--primary-color)]" />
-                                    <span>Việc làm đã ứng tuyển</span>
-                                    <BsFire className="text-[2rem] text-orange-600" />
-                                </Link>
-                            </li>
-                            <li
-                                className={`p-3 hover:text-[var(--primary-color)] ${
-                                    pathname?.includes('/saved-job') ? 'text-[var(--primary-color)]' : ''
-                                }`}
-                            >
-                                <Link
-                                    href="/job/saved-job"
-                                    className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
-                                >
-                                    <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
-                                    <span>Việc làm đã lưu</span>
-                                </Link>
-                            </li>
-                            <li>
-                                <hr></hr>
-                            </li>
-                            <li
-                                className={`p-3 hover:text-[var(--primary-color)] ${
-                                    pathname?.includes('/recommend-job') ? 'text-[var(--primary-color)]' : ''
-                                }`}
-                            >
-                                <Link
-                                    href="/job/recommend-job"
-                                    className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
-                                >
-                                    <IoCheckboxOutline className="text-[2rem] text-[var(--primary-color)]" />
-                                    <span>Gợi ý việc làm</span>
-                                </Link>
-                            </li>
+                            {isAuth?.status === true && (
+                                <>
+                                    <li>
+                                        <hr></hr>
+                                    </li>
+                                    <li
+                                        className={`p-3 hover:text-[var(--primary-color)] ${
+                                            pathname?.includes('/applied-job') ? 'text-[var(--primary-color)]' : ''
+                                        }`}
+                                    >
+                                        <Link
+                                            href="/job/applied-job"
+                                            className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                        >
+                                            <BsSuitcaseLg className="text-[2rem] text-[var(--primary-color)]" />
+                                            <span>Việc làm đã ứng tuyển</span>
+                                            <BsFire className="text-[2rem] text-orange-600" />
+                                        </Link>
+                                    </li>
+                                    <li
+                                        className={`p-3 hover:text-[var(--primary-color)] ${
+                                            pathname?.includes('/saved-job') ? 'text-[var(--primary-color)]' : ''
+                                        }`}
+                                    >
+                                        <Link
+                                            href="/job/saved-job"
+                                            className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                        >
+                                            <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                            <span>Việc làm đã lưu</span>
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <hr></hr>
+                                    </li>
+                                    <li
+                                        className={`p-3 hover:text-[var(--primary-color)] ${
+                                            pathname?.includes('/recommend-job') ? 'text-[var(--primary-color)]' : ''
+                                        }`}
+                                    >
+                                        <Link
+                                            href="/job/recommend-job"
+                                            className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                        >
+                                            <IoCheckboxOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                            <span>Gợi ý việc làm</span>
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </li>
                     <li>
@@ -526,22 +542,26 @@ const Header = () => {
                                     <span>Danh sách công ty</span>
                                 </Link>
                             </li>
-                            <li>
-                                <hr></hr>
-                            </li>
-                            <li
-                                className={`p-3 hover:text-[var(--primary-color)] ${
-                                    pathname?.includes('/followed-company') ? 'text-[var(--primary-color)]' : ''
-                                }`}
-                            >
-                                <Link
-                                    href="/company/followed-company"
-                                    className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
-                                >
-                                    <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
-                                    <span>Công ty đã theo dõi</span>
-                                </Link>
-                            </li>
+                            {isAuth?.status === true && (
+                                <>
+                                    <li>
+                                        <hr></hr>
+                                    </li>
+                                    <li
+                                        className={`p-3 hover:text-[var(--primary-color)] ${
+                                            pathname?.includes('/followed-company') ? 'text-[var(--primary-color)]' : ''
+                                        }`}
+                                    >
+                                        <Link
+                                            href="/company/followed-company"
+                                            className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                        >
+                                            <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                            <span>Công ty đã theo dõi</span>
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </li>
                     <li>

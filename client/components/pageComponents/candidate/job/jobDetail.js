@@ -25,6 +25,7 @@ import Link from 'next/link';
 import { formatVNTimeAgo, formatVNDateTime } from '@/utils/formatDateTime';
 import setSlug from '@/utils/slugify';
 import { success } from '@/utils/toastMessage';
+import Auth from '@/utils/auth';
 
 const JobDetail = () => {
     const [openApplyForm, setOpenApplyForm] = useState(false);
@@ -38,6 +39,7 @@ const JobDetail = () => {
     const [isApplied, setIsApplied] = useState(true);
 
     const searchParams = useSearchParams();
+    const isAuth = Auth(typeof window !== 'undefined' && localStorage.getItem('accessToken'));
 
     const refactorLocation = (location) => {
         const result = location?.map((item) => item?.label).join(', ');
@@ -45,7 +47,7 @@ const JobDetail = () => {
     };
 
     const handleSaveJob = async () => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        if (isAuth?.status === false) return alert('Đăng nhập để sử dụng tính năng này');
         const res = await axios.patch(
             `${process.env.NEXT_PUBLIC_API_URL}/job/save-job`,
             { jobId: searchParams.get('requestId') },
@@ -60,7 +62,7 @@ const JobDetail = () => {
     };
 
     const handleUnSaveJob = async () => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        if (isAuth?.status === false) return alert('Đăng nhập để sử dụng tính năng này');
         const res = await axios.patch(
             `${process.env.NEXT_PUBLIC_API_URL}/job/unsave-job`,
             { jobId: searchParams.get('requestId') },
@@ -75,13 +77,13 @@ const JobDetail = () => {
     };
 
     const handleOpenApplyForm = () => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        if (isAuth?.status === false) return alert('Đăng nhập để sử dụng tính năng này');
         if (job?.jobStatus === 'Hết hạn nộp') return alert('Việc làm đã hết hạn nộp');
         return setOpenApplyForm(true);
     };
 
     const handleApplyJob = async () => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        if (isAuth?.status === false) return alert('Đăng nhập để sử dụng tính năng này');
         const data = {
             coverLetter,
             cvPath: mainCV?.path,

@@ -5,8 +5,17 @@ const protectedRoutes = [
     '/employer/dashboard',
     '/employer/all-applicants',
     '/employer/create-job',
+    '/employer/edit-job',
     '/employer/manage-jobs',
     '/employer/account/setting',
+    '/employer/recommendation',
+    '/company/followed-company',
+    '/account/change-password',
+    '/account/cv-manage',
+    '/account/setting-user-information',
+    '/job/applied-job',
+    '/job/recommend-job',
+    '/job/saved-job',
 ];
 const authRoutes = ['/signin', '/register/employer', '/register/candidate', '/forgot-password', '/reset-password'];
 

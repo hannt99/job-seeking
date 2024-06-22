@@ -11,7 +11,6 @@ const CompanyCard = (props) => {
     const [company, setCompany] = useState({});
 
     const handleFollowCompany = async () => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
         const res = await axios.patch(
             `${process.env.NEXT_PUBLIC_API_URL}/company/add-follower/${props.id}`,
             {},
@@ -26,7 +25,6 @@ const CompanyCard = (props) => {
     };
 
     const handleUnfollowCompany = async () => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
         const res = await axios.patch(
             `${process.env.NEXT_PUBLIC_API_URL}/company/remove-follower/${props.id}`,
             {},

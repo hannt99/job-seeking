@@ -9,6 +9,7 @@ import { BiSolidCategory } from 'react-icons/bi';
 import JobCard from '@/components/common/jobCard';
 import Pagination from '@/components/common/pagination';
 import { success } from '@/utils/toastMessage';
+import Auth from '@/utils/auth';
 
 const CompanyDetail = () => {
     const [company, setCompany] = useState({});
@@ -18,9 +19,10 @@ const CompanyDetail = () => {
     const [reRender, setRerender] = useState(false);
 
     const searchParams = useSearchParams();
+    const isAuth = Auth(typeof window !== 'undefined' && localStorage.getItem('accessToken'));
 
     const handleFollowCompany = async () => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        if (isAuth?.status === false) return alert('Đăng nhập để sử dụng tính năng này');
         const res = await axios.patch(
             `${process.env.NEXT_PUBLIC_API_URL}/company/add-follower/${searchParams.get('requestId')}`,
             {},
@@ -35,7 +37,7 @@ const CompanyDetail = () => {
     };
 
     const handleUnfollowCompany = async () => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        if (isAuth?.status === false) return alert('Đăng nhập để sử dụng tính năng này');
         const res = await axios.patch(
             `${process.env.NEXT_PUBLIC_API_URL}/company/remove-follower/${searchParams.get('requestId')}`,
             {},

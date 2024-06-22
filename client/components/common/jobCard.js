@@ -9,13 +9,16 @@ import Link from 'next/link';
 import { formatVNTimeAgo } from '@/utils/formatDateTime';
 import setSlug from '@/utils/slugify';
 import { success } from '@/utils/toastMessage';
+import Auth from '@/utils/auth';
 
 const JobCard = (props) => {
     const [isSave, setIsSave] = useState(false);
     const [reRender, setRerender] = useState('');
 
+    const isAuth = Auth(typeof window !== 'undefined' && localStorage.getItem('accessToken'));
+
     const handleSaveJob = async (id) => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        if (isAuth?.status === false) return alert('Đăng nhập để sử dụng tính năng này');
         const res = await axios.patch(
             `${process.env.NEXT_PUBLIC_API_URL}/job/save-job`,
             { jobId: id },
@@ -30,7 +33,7 @@ const JobCard = (props) => {
     };
 
     const handleUnSaveJob = async (id) => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        if (isAuth?.status === false) return alert('Đăng nhập để sử dụng tính năng này');
         const res = await axios.patch(
             `${process.env.NEXT_PUBLIC_API_URL}/job/unsave-job`,
             { jobId: id },

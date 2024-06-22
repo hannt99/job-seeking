@@ -15,7 +15,6 @@ const RecommendJobCard = (props) => {
     const [reRender, setRerender] = useState('');
 
     const handleSaveJob = async (id) => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
         const res = await axios.patch(
             `${process.env.NEXT_PUBLIC_API_URL}/job/save-job`,
             { jobId: id },
@@ -30,7 +29,6 @@ const RecommendJobCard = (props) => {
     };
 
     const handleUnSaveJob = async (id) => {
-        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
         const res = await axios.patch(
             `${process.env.NEXT_PUBLIC_API_URL}/job/unsave-job`,
             { jobId: id },
