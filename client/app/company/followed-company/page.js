@@ -1,5 +1,7 @@
+import CompanyFollowed from '@/components/pageComponents/candidate/company/companyFollowed';
+
 const page = () => {
-    return <div>followed company</div>;
+    return <CompanyFollowed />;
 };
 
 export default page;

@@ -106,3 +106,26 @@ export const removeFollowerController = async (req, res) => {
         console.log(error);
     }
 };
+
+// Get all followed company controller
+export const getAllFollowedCompanyController = async (req, res) => {
+    try {
+        let { page, limit } = req.query;
+
+        if (!page) page = 1;
+        if (!limit) limit = 5;
+        const skip = (page - 1) * limit;
+
+        const companies = await Company.find({ followers: req.user._id })
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+        const totalCompanies = await Company.countDocuments({ followers: req.user._id });
+        const totalPages = Math.ceil(totalCompanies / limit);
+
+        res.status(200).json({ code: 200, message: 'Success', companies, totalPages });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};

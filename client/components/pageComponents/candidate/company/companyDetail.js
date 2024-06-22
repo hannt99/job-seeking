@@ -35,6 +35,7 @@ const CompanyDetail = () => {
     };
 
     const handleUnfollowCompany = async () => {
+        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
         const res = await axios.patch(
             `${process.env.NEXT_PUBLIC_API_URL}/company/remove-follower/${searchParams.get('requestId')}`,
             {},
