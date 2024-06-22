@@ -8,6 +8,7 @@ import { TbWorldUpload } from 'react-icons/tb';
 import { FaBars, FaXmark, FaAngleDown, FaAngleUp } from 'react-icons/fa6';
 import { IoSearchOutline, IoHeartOutline, IoCheckboxOutline, IoDocumentText } from 'react-icons/io5';
 import { BsSuitcaseLg, BsFire } from 'react-icons/bs';
+import { PiBuildingThin } from 'react-icons/pi';
 import axios from 'axios';
 import Link from 'next/link';
 import CheckRoleRegister from '../common/checkRoleRegister';
@@ -20,6 +21,7 @@ const Header = () => {
     const [currUser, setCurrUser] = useState({});
     const [navOpen, setNavOpen] = useState(false);
     const [navJobOpen, setNavJobOpen] = useState(false);
+    const [navCompanyOpen, setNavCompanyOpen] = useState(false);
     const [navUserOpen, setNavUserOpen] = useState(false);
 
     const { isChangeUserAvatar } = useContext(UserAvatarContext);
@@ -141,13 +143,45 @@ const Header = () => {
                                 </li>
                             </ul>
                         </li>
-                        <li className="h-full">
-                            <Link
-                                href="/company/company-list"
-                                className="flex items-center px-4 h-full hover:text-[var(--primary-color)] transition-all"
+                        <li className="group relative h-full">
+                            <div
+                                className={`flex items-center px-4 h-full cursor-pointer hover:text-[var(--primary-color)] transition-all ${
+                                    pathname?.includes('/company') ? 'text-[var(--primary-color)]' : ''
+                                }`}
                             >
                                 Công ty
-                            </Link>
+                            </div>
+                            <ul className="hidden group-hover:block absolute top-[calc(100%-8px)] left-0 w-[400px] bg-white text-[1.5rem] border-t-4 border-[var(--primary-hover-color)] arrow-top p-6 custom-shadow-v1 space-y-3 rounded-lg z-[999]">
+                                <li
+                                    className={`hover:text-[var(--primary-color)] ${
+                                        pathname?.includes('/company-list') ? 'text-[var(--primary-color)]' : ''
+                                    }`}
+                                >
+                                    <Link
+                                        href="/company/company-list"
+                                        className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                    >
+                                        <IoSearchOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                        <span>Danh sách công ty</span>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <hr></hr>
+                                </li>
+                                <li
+                                    className={`hover:text-[var(--primary-color)] ${
+                                        pathname?.includes('/followed-company') ? 'text-[var(--primary-color)]' : ''
+                                    }`}
+                                >
+                                    <Link
+                                        href="/company/followed-company"
+                                        className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                    >
+                                        <PiBuildingThin className="text-[2rem] text-[var(--primary-color)]" />
+                                        <span>Công ty đã theo dõi</span>
+                                    </Link>
+                                </li>
+                            </ul>
                         </li>
                         <li className="h-full">
                             <Link
@@ -467,11 +501,55 @@ const Header = () => {
                         </ul>
                     </li>
                     <li>
+                        <div
+                            onClick={() => setNavCompanyOpen(!navCompanyOpen)}
+                            className={`flex items-center justify-between hover:text-[var(--primary-color)] border-t border-[#cccccc]/[0.3] ${
+                                pathname?.includes('/company') ? 'text-[var(--primary-color)]' : ''
+                            }`}
+                        >
+                            <div className="flex-1 pl-10 py-7 transition-all cursor-pointer">Công ty</div>
+                            <div className="text-[2rem] px-10 cursor-pointer">
+                                {!navCompanyOpen ? <FaAngleDown /> : <FaAngleUp />}
+                            </div>
+                        </div>
+                        <ul className={navCompanyOpen ? 'block' : 'hidden'}>
+                            <li
+                                className={`p-3 hover:text-[var(--primary-color)] ${
+                                    pathname?.includes('/company-list') ? 'text-[var(--primary-color)]' : ''
+                                }`}
+                            >
+                                <Link
+                                    href="/company/company-list"
+                                    className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                >
+                                    <IoSearchOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                    <span>Danh sách công ty</span>
+                                </Link>
+                            </li>
+                            <li>
+                                <hr></hr>
+                            </li>
+                            <li
+                                className={`p-3 hover:text-[var(--primary-color)] ${
+                                    pathname?.includes('/followed-company') ? 'text-[var(--primary-color)]' : ''
+                                }`}
+                            >
+                                <Link
+                                    href="/company/followed-company"
+                                    className="flex items-center gap-5 p-5 bg-[var(--secondary-color)] rounded-lg"
+                                >
+                                    <IoHeartOutline className="text-[2rem] text-[var(--primary-color)]" />
+                                    <span>Công ty đã theo dõi</span>
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
                         <Link
-                            href="/company/company-list"
+                            href="#"
                             className="block px-10 py-7 hover:text-[var(--primary-color)] border-t border-[#cccccc]/[0.3] transition-all"
                         >
-                            Công ty
+                            Công cụ
                         </Link>
                     </li>
                 </ul>

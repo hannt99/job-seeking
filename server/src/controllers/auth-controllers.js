@@ -85,9 +85,13 @@ export const verifyController = async (req, res) => {
 
             await User.updateOne({ _id: user._id }, { $set: { isActived: true } });
 
-            res.status(200).send(
-                `<h1 style="color:red;">Xác thực tài khoản thành công</h1><a href='${process.env.REACT_APP_BASE_URL}'>Chuyển đến trang đăng nhập</a>`,
-            );
+            res.status(200).format({
+                'text/html': function () {
+                    res.send(
+                        `<h1 style="color:red;">Xác thực tài khoản thành công</h1><a href='${process.env.REACT_APP_BASE_URL}/signin'>Chuyển đến trang đăng nhập</a>`,
+                    );
+                },
+            });
         });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });

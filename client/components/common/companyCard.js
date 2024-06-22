@@ -2,9 +2,44 @@
 
 import Link from 'next/link';
 import { CiLocationOn } from 'react-icons/ci';
+import axios from 'axios';
 import setSlug from '@/utils/slugify';
 
 const CompanyCard = (props) => {
+    const handleFollowCompany = async () => {
+        if (!localStorage.getItem('accessToken')) return alert('Đăng nhập để sử dụng tính năng này');
+        const res = await axios.patch(
+            `${process.env.NEXT_PUBLIC_API_URL}/company/add-follower/${searchParams.get('requestId')}`,
+            {},
+            { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } },
+        );
+        if (res?.data?.code === 200) {
+            setRerender(false);
+            return success(res?.data?.message);
+        } else {
+            return;
+        }
+    };
+
+    const handleUnfollowCompany = async () => {
+        const res = await axios.patch(
+            `${process.env.NEXT_PUBLIC_API_URL}/company/remove-follower/${searchParams.get('requestId')}`,
+            {},
+            { headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` } },
+        );
+        if (res?.data?.code === 200) {
+            setRerender(false);
+            return success(res?.data?.message);
+        } else {
+            return;
+        }
+    };
+
+    const isFollow = () => {
+        const result = company?.followers?.includes(localStorage?.getItem('userId'));
+        return result;
+    };
+
     return (
         <div className="flex flex-col items-center justify-between bg-white custom-shadow-v1 w-full min-h-[330px] rounded-lg px-10 py-7">
             <div className="flex flex-col items-center">
@@ -26,9 +61,20 @@ const CompanyCard = (props) => {
                     <span className="text-[1.4rem] text-[#808080]">{props.companyAddress}</span>
                 </p>
             </div>
-            <div className="block w-full text-center font-medium text-[var(--primary-color)] bg-[var(--secondary-color)] py-5 mt-12 rounded-full">
-                {props.allOpenJobs} vị trí đang tuyển
-            </div>
+            {props.isFollowBtn ? (
+                <div className="flex justify-center">
+                    <button
+                        onClick={isFollow() ? handleUnfollowCompany : handleFollowCompany}
+                        className="bg-[#dddddd] font-medium px-20 py-3 rounded-lg"
+                    >
+                        {isFollow() ? <span>&#10003; Đã theo dõi</span> : 'Theo dõi'}
+                    </button>
+                </div>
+            ) : (
+                <div className="block w-full text-center font-medium text-[var(--primary-color)] bg-[var(--secondary-color)] py-5 mt-12 rounded-full">
+                    {props.allOpenJobs} vị trí đang tuyển
+                </div>
+            )}
         </div>
     );
 };
