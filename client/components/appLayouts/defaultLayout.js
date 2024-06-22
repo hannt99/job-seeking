@@ -10,6 +10,7 @@ import { FaBars } from 'react-icons/fa';
 import { FaXmark } from 'react-icons/fa6';
 import TimeAgo from 'javascript-time-ago';
 import vi from 'javascript-time-ago/locale/vi';
+import { socket } from '@/socket';
 
 TimeAgo.addDefaultLocale(vi);
 
@@ -22,6 +23,7 @@ const DefaultLayout = ({ main }) => {
     const [isChangeUserAvatar, setIsChangeUserAvatar] = useState(false);
 
     const pathname = usePathname();
+    const userId = typeof window !== 'undefined' && localStorage.getItem('userId');
 
     const toggle = () => {
         setToggleSidebar(!toggleSidebar);
@@ -40,6 +42,11 @@ const DefaultLayout = ({ main }) => {
             return false;
         }
     };
+
+    // Socket
+    useEffect(() => {
+        socket.emit('addUser', userId);
+    }, [userId]);
 
     useEffect(() => {
         const scrollPage = () => {

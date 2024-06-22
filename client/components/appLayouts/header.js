@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { RiLockPasswordFill, RiLogoutBoxLine, RiArrowDropDownFill, RiShieldUserFill } from 'react-icons/ri';
 import { TbWorldUpload } from 'react-icons/tb';
 import { FaBars, FaXmark, FaAngleDown, FaAngleUp } from 'react-icons/fa6';
-import { IoSearchOutline, IoHeartOutline, IoCheckboxOutline, IoDocumentText } from 'react-icons/io5';
+import { IoSearchOutline, IoHeartOutline, IoCheckboxOutline, IoDocumentText, IoNotifications } from 'react-icons/io5';
 import { BsSuitcaseLg, BsFire } from 'react-icons/bs';
 import { PiBuildingThin } from 'react-icons/pi';
 import axios from 'axios';
@@ -14,6 +14,7 @@ import Link from 'next/link';
 import CheckRoleRegister from '../common/checkRoleRegister';
 import { success, error } from '@/utils/toastMessage';
 import { UserAvatarContext } from './defaultLayout';
+import NotificationCard from '../common/notificationCard';
 import Auth from '@/utils/auth';
 
 const Header = () => {
@@ -23,6 +24,7 @@ const Header = () => {
     const [navJobOpen, setNavJobOpen] = useState(false);
     const [navCompanyOpen, setNavCompanyOpen] = useState(false);
     const [navUserOpen, setNavUserOpen] = useState(false);
+    const [notiTab, setNotiTab] = useState(false);
 
     const { isChangeUserAvatar } = useContext(UserAvatarContext);
     const router = useRouter();
@@ -206,6 +208,67 @@ const Header = () => {
                     </ul>
                 </div>
                 <div className="flex items-center gap-3">
+                    {isAuth?.status === true && (
+                        <div className="group relative text-[2.6rem] mr-5 p-3 bg-[var(--secondary-color)] text-[var(--primary-color)] rounded-full cursor-pointer">
+                            <IoNotifications />
+                            <div className="hidden absolute top-[100%] right-[-12px] border text-black bg-white custom-shadow-v1 group-hover:block rounded-lg z-[999]">
+                                <div className="p-[12px] cursor-default">
+                                    <h3 className="text-[2.4rem] font-bold">Thông báo</h3>
+                                    <div className="flex items-center gap-x-3 text-[1.5rem]">
+                                        <div
+                                            onClick={() => setNotiTab(false)}
+                                            className={
+                                                notiTab === false
+                                                    ? 'text-[var(--primary-color)] font-semibold bg-[var(--secondary-color)] p-3 rounded-xl cursor-pointer hover:bg-[#f1f1f1]'
+                                                    : 'font-semibold p-3 rounded-xl cursor-pointer hover:bg-[#f1f1f1]'
+                                            }
+                                        >
+                                            Tất cả
+                                        </div>
+                                        <div
+                                            onClick={() => setNotiTab(true)}
+                                            className={
+                                                notiTab === true
+                                                    ? 'text-[var(--primary-color)] font-semibold bg-[var(--secondary-color)] p-3 rounded-xl cursor-pointer hover:bg-[#f1f1f1]'
+                                                    : 'font-semibold p-3 rounded-xl cursor-pointer hover:bg-[#f1f1f1]'
+                                            }
+                                        >
+                                            Chưa đọc
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul className="w-[320px] max-h-[300px] overflow-hidden hover:overflow-y-auto">
+                                    {/* {notifications?.length > 0 ? (
+                                    notifications
+                                        ?.sort(function (a, b) {
+                                            return new Date(b.createdAt) - new Date(a.createdAt);
+                                        })
+                                        .map((notification, index) => {
+                                            return (
+                                                <NotificationCard
+                                                    key={index}
+                                                    linkTask={notification?.linkTask}
+                                                    notification={notification?.notification}
+                                                    createdAt={notification?.createdAt}
+                                                    isRead={notification.isRead}
+                                                    handleChangeNotificationStatus={() =>
+                                                        handleChangeNotificationStatus(notification?._id)
+                                                    }
+                                                    handleDelete={() => {
+                                                        handleDelete(notification?._id);
+                                                    }}
+                                                />
+                                            );
+                                        })
+                                ) : (
+                                    <li className="w-full truncate p-[12px] text-[1.3rem] text-center cursor-default">
+                                        Không có thông báo
+                                    </li>
+                                )} */}
+                                </ul>
+                            </div>
+                        </div>
+                    )}
                     {isAuth?.status === false && (
                         <div className="hidden md:flex items-center gap-3">
                             <Link
