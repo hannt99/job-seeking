@@ -20,11 +20,13 @@ export const signInController = async (req, res) => {
 
         const accessToken = generateAccessToken(user);
 
-        res.cookie('accessToken', accessToken, { httpOnly: true }).status(200).json({
-            code: 200,
-            message: 'Đăng nhập thành công',
-            accessToken: accessToken,
-        });
+        res.cookie('accessToken', accessToken, { expires: new Date(Date.now() + 24 * 3600000), httpOnly: true })
+            .status(200)
+            .json({
+                code: 200,
+                message: 'Đăng nhập thành công',
+                accessToken: accessToken,
+            });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);
