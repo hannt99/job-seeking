@@ -8,7 +8,7 @@ const NotificationCard = (props) => {
     return (
         <li
             onClick={props.handleChangeNotificationStatus}
-            className="group/item-list relative w-full p-[12px] text-[1.3rem] cursor-pointer hover:bg-[#eeeeee] transition-all duration-[0.5s]"
+            className="group/item-list relative w-full p-[12px] text-[1.3rem] cursor-pointer hover:bg-[var(--secondary-color)] transition-all duration-[0.5s]"
         >
             <Link className="w-full" href={props.linkTask}>
                 <p title={props.notification} className="w-[90%] truncate">
@@ -25,7 +25,7 @@ const NotificationCard = (props) => {
                 onClick={props.handleDelete}
                 className="hidden absolute top-[50%] translate-y-[-50%] right-[36px] w-[30px] h-[30px] bg-white text-[1.8rem] leading-none rounded-full shadow-4Way group-hover/item-list:flex"
             >
-                <FaXmark />
+                <FaXmark className="m-auto" />
             </div>
         </li>
     );

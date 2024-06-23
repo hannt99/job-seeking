@@ -3,6 +3,7 @@ import Company from '../models/Company.js';
 import JobSave from '../models/JobSave.js';
 import Resume from '../models/Resume.js';
 import schedule from 'node-schedule';
+import Notification from '../models/Notification.js';
 
 // Create job controller
 export const createJobController = async (req, res) => {
@@ -318,6 +319,18 @@ export const applyJobController = async (req, res) => {
             $push: { jobApplicants: { status: 'Đã ứng tuyển', appliedTime: Date.now(), userId, coverLetter, cvPath } },
         });
 
+        // Notification
+        const currJob = await Job.findById(jobId);
+        const jobCompany = await Company.findById(currJob?.companyId);
+
+        const newNotification = new Notification({
+            notification: 'Bạn có 1 đơn ứng tuyển mới',
+            receiverId: jobCompany?.userId,
+            link: '#',
+            isRead: false,
+        });
+        await newNotification.save();
+
         res.status(200).json({ code: 200, message: 'Ứng tuyển thành công' });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
@@ -355,6 +368,15 @@ export const decideApplicant = async (req, res) => {
         const result = [...appFilter, appFind];
 
         await Job.findOneAndUpdate({ _id: jobId }, { jobApplicants: result });
+
+        // Notification
+        const newNotification = new Notification({
+            notification: `Hồ sơ của bạn ${status?.toLowerCase()} cho ${job?.jobTitle}`,
+            receiverId: appFind?.userId?.toString(),
+            link: '#',
+            isRead: false,
+        });
+        await newNotification.save();
 
         res.status(200).json({ code: 200, message: status === 'Phù hợp' ? 'Đã chấp nhận' : 'Đã từ chối', result });
     } catch (error) {
