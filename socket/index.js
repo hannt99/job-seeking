@@ -29,15 +29,10 @@ io.on('connection', (socket) => {
         io.emit('getUsers', users);
     });
 
-    socket.on('sendNotification', ({ senderId, _id, receiverId, text, link, isRead }) => {
+    socket.on('sendNotification', ({ _id, receiverId, text, link, isRead }) => {
         const receiveUser = users?.find((item) => item?.userId === receiverId);
         io.to(receiveUser?.socketId).emit('getNotification', {
-            senderId,
-            _id,
-            text,
             receiverId,
-            link,
-            isRead,
         });
     });
 

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaEnvelope, FaPhone, FaFeatherPointed, FaCheck, FaRegCircleXmark } from 'react-icons/fa6';
 import { success } from '@/utils/toastMessage';
+import { socket } from '@/socket';
 
 const AllApplicants = () => {
     const [allJobs, setAllJobs] = useState([]);
@@ -21,6 +22,9 @@ const AllApplicants = () => {
             headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
         });
         if (res?.data?.code === 200) {
+            socket.emit('sendNotification', {
+                receiverId: res?.data?.receiverId,
+            });
             setReRender(!reRender);
             return success(res?.data?.message);
         } else {

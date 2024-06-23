@@ -326,12 +326,12 @@ export const applyJobController = async (req, res) => {
         const newNotification = new Notification({
             notification: 'Bạn có 1 đơn ứng tuyển mới',
             receiverId: jobCompany?.userId,
-            link: '#',
+            link: `${process.env.REACT_APP_BASE_URL}/employer/all-applicants`,
             isRead: false,
         });
         await newNotification.save();
 
-        res.status(200).json({ code: 200, message: 'Ứng tuyển thành công' });
+        res.status(200).json({ code: 200, message: 'Ứng tuyển thành công', receiverId: jobCompany?.userId });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);
@@ -373,12 +373,17 @@ export const decideApplicant = async (req, res) => {
         const newNotification = new Notification({
             notification: `Hồ sơ của bạn ${status?.toLowerCase()} cho ${job?.jobTitle}`,
             receiverId: appFind?.userId?.toString(),
-            link: '#',
+            link: `${process.env.REACT_APP_BASE_URL}/job/applied-job`,
             isRead: false,
         });
         await newNotification.save();
 
-        res.status(200).json({ code: 200, message: status === 'Phù hợp' ? 'Đã chấp nhận' : 'Đã từ chối', result });
+        res.status(200).json({
+            code: 200,
+            message: status === 'Phù hợp' ? 'Đã chấp nhận' : 'Đã từ chối',
+            result,
+            receiverId: appFind?.userId?.toString(),
+        });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);

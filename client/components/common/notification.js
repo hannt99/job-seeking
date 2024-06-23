@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IoNotifications } from 'react-icons/io5';
 import NotificationCard from './notificationCard';
+import { socket } from '@/socket';
 
 const Notification = () => {
     const [notiTab, setNotiTab] = useState(false);
-    const [notification, setNotification] = useState(null);
+    // const [isNewNoti, setIsNewNoti] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const [notReadNoti, setNotReadNoti] = useState([]);
     const [reRender, setReRender] = useState(false);
 
     const handleChangeNotificationStatus = async (id) => {
@@ -38,11 +40,18 @@ const Notification = () => {
     };
 
     useEffect(() => {
+        socket.on('getNotification', (data) => {
+            setReRender(!reRender);
+        });
+    }, [socket, reRender]);
+
+    useEffect(() => {
         const fetchNotification = async () => {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/notification/get-all`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
             });
             if (res?.data?.code === 200) {
+                setNotReadNoti(res?.data?.notRead);
                 if (notiTab === false) {
                     return setNotifications(res?.data?.notifications);
                 } else {
@@ -58,6 +67,15 @@ const Notification = () => {
     return (
         <div className="group relative text-[2.6rem] mr-5 p-3 bg-[var(--secondary-color)] text-[var(--primary-color)] rounded-full cursor-pointer">
             <IoNotifications />
+            <span
+                className={
+                    notReadNoti?.length > 0
+                        ? 'absolute block top-0 right-0 text-center min-w-[18px] text-[1rem] font-semibold text-[white] bg-red-600 p-1.5 rounded-full leading-none'
+                        : 'hidden'
+                }
+            >
+                {notReadNoti?.length}
+            </span>
             <div className="hidden absolute top-[100%] right-[-12px] border text-black bg-white custom-shadow-v1 group-hover:block rounded-lg z-[999]">
                 <div className="p-[12px] cursor-default">
                     <h3 className="text-[2.4rem] font-bold">Thông báo</h3>

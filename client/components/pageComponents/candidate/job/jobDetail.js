@@ -26,6 +26,7 @@ import { formatVNTimeAgo, formatVNDateTime } from '@/utils/formatDateTime';
 import setSlug from '@/utils/slugify';
 import { success } from '@/utils/toastMessage';
 import Auth from '@/utils/auth';
+import { socket } from '@/socket';
 
 const JobDetail = () => {
     const [openApplyForm, setOpenApplyForm] = useState(false);
@@ -92,6 +93,9 @@ const JobDetail = () => {
             headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
         });
         if (res?.data?.code === 200) {
+            socket.emit('sendNotification', {
+                receiverId: res?.data?.receiverId,
+            });
             setRerender(!reRender);
             setOpenApplyForm(false);
             return success(res?.data?.message);
