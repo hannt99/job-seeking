@@ -4,6 +4,8 @@ import JobSave from '../models/JobSave.js';
 import Resume from '../models/Resume.js';
 import schedule from 'node-schedule';
 import Notification from '../models/Notification.js';
+import setSlug from '../utils/slugify.js';
+import { checkDatetime } from '../utils/checkDateTime.js';
 
 // Create job controller
 export const createJobController = async (req, res) => {
@@ -14,24 +16,28 @@ export const createJobController = async (req, res) => {
 
         schedule.scheduleJob(newJob?.jobDeadline, async () => {
             await Job.findOneAndUpdate({ _id: newJob._id }, { jobStatus: 'Hết hạn nộp' });
-            // const notification = `Nhiệm vụ ${newTask.taskName} đã quá hạn`;
-            // const linkTask = `${process.env.REACT_APP_BASE_URL}/tasks/detail/${newTask._id}`;
-            // const newNotiId = await Promise.all(
-            //     newTask.assignTo?.map(async (item) => {
-            //         const newNotification = new Notification({ notification, userId: item.value, linkTask });
-            //         await newNotification.save();
-            //         return { notiId: newNotification._id, userId: newNotification.userId };
-            //     }),
-            // );
-            // sendNotification(
-            //     newNotiId,
-            //     `Nhiệm vụ ${newTask?.taskName} đã quá hạn`,
-            //     getAssignToIds(newTask?.assignTo),
-            //     `${process.env.REACT_APP_BASE_URL}/tasks/detail/${newTask._id}`,
-            // );
         });
 
-        res.status(200).json({ code: 200, message: 'Việc mới đã được tạo thành công', data: newJob });
+        Promise.all(
+            company?.followers?.map(async (fl) => {
+                const newNotification = new Notification({
+                    notification: `${company?.companyName} vừa tạo việc làm mới`,
+                    receiverId: fl,
+                    link: `${process.env.REACT_APP_BASE_URL}/company/${setSlug(company?.companyName)}?requestId=${
+                        company?._id
+                    }`,
+                    isRead: false,
+                });
+                await newNotification.save();
+            }),
+        );
+
+        res.status(200).json({
+            code: 200,
+            message: 'Việc mới đã được tạo thành công',
+            data: newJob,
+            receiverIds: company?.followers,
+        });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);
@@ -43,11 +49,17 @@ export const updateJobController = async (req, res) => {
     try {
         await Job.findOneAndUpdate(
             { _id: req.params.jobId },
-            { $set: req.body },
+            { $set: { ...req.body, jobStatus: checkDatetime(Date.now(), req.body.jobDeadline) } },
             {
                 new: true,
             },
         );
+
+        const job = await Job.findById(req.params.jobId);
+
+        schedule.scheduleJob(job?.jobDeadline, async () => {
+            await Job.findOneAndUpdate({ _id: job._id }, { jobStatus: 'Hết hạn nộp' });
+        });
         res.status(200).json({ code: 200, message: 'Cập nhật thành công' });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });

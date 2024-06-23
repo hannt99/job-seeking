@@ -12,6 +12,7 @@ import Loading from '../common/loading';
 import DropListMulti from '../common/dropListMulti';
 import { dropListValidator, fullNameValidator, dateValidator, disabledPastDate } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
+import { socket } from '@/socket';
 
 const careers = [
     { value: 'Kinh doanh/Bán hàng', label: 'Kinh doanh/Bán hàng' },
@@ -117,6 +118,13 @@ const CreateJobForm = ({ formTitle }) => {
         if (res?.data?.code === 200) {
             setIsLoading(false);
             router.push('/employer/manage-jobs');
+            if (!searchParams.get('requestId')) {
+                res?.data?.receiverIds?.map((item) => {
+                    return socket.emit('sendNotification', {
+                        receiverId: item,
+                    });
+                });
+            }
             return success(res?.data?.message);
         } else {
             setIsLoading(false);
