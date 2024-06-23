@@ -109,21 +109,6 @@ const Sidebar = () => {
                             <span>Cài đặt tài khoản</span>
                         </Link>
                     </li>
-                    <li className="pointer-events-none opacity-45">
-                        <Link
-                            href={'/employer/recommendation'}
-                            className={
-                                pathName === '/employer/recommendation'
-                                    ? 'flex items-center gap-5 bg-[var(--secondary-color)] text-[var(--primary-color)] rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
-                                    : 'flex items-center gap-5 rounded-lg px-5 py-5 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] transition-all duration-500'
-                            }
-                        >
-                            <span className="text-[2.4rem]">
-                                <MdOutlineDelete />
-                            </span>
-                            <span>Xóa tài khoản vĩnh viễn</span>
-                        </Link>
-                    </li>
                 </ul>
             </div>
         </div>
