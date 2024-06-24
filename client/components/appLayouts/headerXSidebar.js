@@ -9,12 +9,15 @@ import { success, error } from '@/utils/toastMessage';
 import { UserAvatarContext } from './defaultLayout';
 import Link from 'next/link';
 import Notification from '../common/notification';
+import Auth from '@/utils/auth';
 
 const HeaderXSidebar = () => {
     const [currUser, setCurrUser] = useState({});
 
     const router = useRouter();
     const { isChangeUserAvatar } = useContext(UserAvatarContext);
+
+    const isAuth = Auth(typeof window !== 'undefined' && localStorage.getItem('accessToken'));
 
     const handleLogout = async () => {
         const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/signout`, {
@@ -63,15 +66,17 @@ const HeaderXSidebar = () => {
                         </div>
                         <div className="absolute top-[100%] right-0 w-[70px] h-5"></div>
                         <div className="group-hover:block hidden absolute top-[100%] right-0 w-[200px] rounded-lg mt-5 shadow-lg transition-all cursor-default z-[999]">
-                            <Link
-                                href="/"
-                                className="flex items-center gap-3 px-6 py-4 bg-white rounded-t-lg cursor-pointer"
-                            >
-                                <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
-                                    <IoHomeSharp className="m-auto" />
-                                </div>
-                                <span className="whitespace-nowrap">Về trang chủ</span>
-                            </Link>
+                            {isAuth?.role !== 2 && (
+                                <Link
+                                    href="/"
+                                    className="flex items-center gap-3 px-6 py-4 bg-white rounded-t-lg cursor-pointer"
+                                >
+                                    <div className="flex w-[30px] h-[30px] bg-[#cccccc]/50 rounded-full">
+                                        <IoHomeSharp className="m-auto" />
+                                    </div>
+                                    <span className="whitespace-nowrap">Về trang chủ</span>
+                                </Link>
+                            )}
                             <div
                                 onClick={handleLogout}
                                 className="flex items-center gap-3 px-6 py-4 bg-white border-t rounded-b-lg cursor-pointer"

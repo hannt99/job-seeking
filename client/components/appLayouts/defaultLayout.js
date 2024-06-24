@@ -75,7 +75,7 @@ const DefaultLayout = ({ main }) => {
                     <div className="py-5 m-auto">{main}</div>
                     <div className="fixed top-0 left-0 bottom-0 right-0 bg-gradient-to-b from-[#161c2d]/5 to-[#161c2d]/100"></div>
                 </div>
-            ) : pathname?.includes('/employer') ? (
+            ) : pathname?.includes('/employer') || pathname?.includes('/admin') ? (
                 <>
                     <div
                         className={

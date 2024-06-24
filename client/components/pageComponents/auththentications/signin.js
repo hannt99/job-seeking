@@ -43,7 +43,11 @@ const Signin = () => {
             const decodedToken = jwtDecode(res?.data?.accessToken);
             localStorage.setItem('accessToken', res?.data?.accessToken);
             localStorage.setItem('userId', decodedToken?._id);
-            router.push('/');
+            if (decodedToken?.role === 2) {
+                router.push('/admin/dashboard');
+            } else {
+                router.push('/');
+            }
             return success(res?.data?.message);
         } else {
             setIsLoading(false);
