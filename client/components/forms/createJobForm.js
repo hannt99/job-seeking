@@ -14,19 +14,10 @@ import { dropListValidator, fullNameValidator, dateValidator, disabledPastDate }
 import { success, error } from '@/utils/toastMessage';
 import { socket } from '@/socket';
 
-const careers = [
-    { value: 'Kinh doanh/Bán hàng', label: 'Kinh doanh/Bán hàng' },
-    { value: 'Biên/Phiên dịch', label: 'Biên / Phiên dịch' },
-    { value: 'Bảo hiểm', label: 'Bảo hiểm' },
-];
-
-const skills = [
-    { value: 'HTML/CSS', label: 'HTML/CSS' },
-    { value: 'Javascript', label: 'Javascript' },
-    { value: 'React', label: 'React' },
-];
-
 const CreateJobForm = ({ formTitle }) => {
+    const [positions, setPositions] = useState([]);
+    const [careers, setCareers] = useState([]);
+    const [skills, setSkills] = useState([]);
     const [jobTitle, setJobTitle] = useState('');
     const [jobTitleErrMsg, setJobTitleErrMsg] = useState({});
     const [isJobTitleErr, setIsJobTitleErr] = useState(false);
@@ -133,6 +124,48 @@ const CreateJobForm = ({ formTitle }) => {
     };
 
     useEffect(() => {
+        const fetchSkill = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/skill/get-all?page=1&limit=9999`);
+            if (res?.data?.code === 200) {
+                const refactor = res?.data?.skills?.map((item) => {
+                    return {
+                        value: item?.skill,
+                        label: item?.skill,
+                    };
+                });
+                return setSkills(refactor);
+            } else {
+                return;
+            }
+        };
+        fetchSkill();
+    }, []);
+
+    useEffect(() => {
+        const fetchPosition = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/position/get-all?page=1&limit=9999`);
+            if (res?.data?.code === 200) {
+                return setPositions(res?.data?.positions);
+            } else {
+                return;
+            }
+        };
+        fetchPosition();
+    }, []);
+
+    useEffect(() => {
+        const fetchCategory = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/category/get-all?page=1&limit=9999`);
+            if (res?.data?.code === 200) {
+                return setCareers(res?.data?.categories);
+            } else {
+                return;
+            }
+        };
+        fetchCategory();
+    }, []);
+
+    useEffect(() => {
         const fetchProvinces = async () => {
             const res = await axios.get('https://esgoo.net/api-tinhthanh/1/0.htm');
             const result = res?.data?.data?.map((item) => {
@@ -218,9 +251,13 @@ const CreateJobForm = ({ formTitle }) => {
                             }`}
                         >
                             <option value="">-- Vị trí --</option>
-                            <option value="Nhân viên kinh doanh">Nhân viên kinh doanh</option>
-                            <option value="Thư kí trưởng">Thư kí trưởng</option>
-                            <option value="Kĩ sư phầm mềm">Kĩ sư phầm mềm</option>
+                            {positions?.map((p, index) => {
+                                return (
+                                    <option key={index} value={p?.position}>
+                                        {p?.position}
+                                    </option>
+                                );
+                            })}
                         </select>
                         <p className="text-red-600 text-[1.3rem]">{positionErrMsg.jobPosition}</p>
                     </div>
@@ -260,8 +297,8 @@ const CreateJobForm = ({ formTitle }) => {
                         <option value="">-- Ngành nghề --</option>
                         {careers?.map((c, index) => {
                             return (
-                                <option key={index} value={c?.value}>
-                                    {c?.label}
+                                <option key={index} value={c?.category}>
+                                    {c?.category}
                                 </option>
                             );
                         })}

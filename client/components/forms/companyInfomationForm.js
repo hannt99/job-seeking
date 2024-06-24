@@ -2,13 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import FormData from 'form-data';
-import {
-    fullNameValidator,
-    numberValidator,
-    dropListValidator,
-    numberValidatorFrom,
-    numberValidatorTo,
-} from '@/utils/formValidation';
+import { fullNameValidator, dropListValidator, numberValidatorFrom, numberValidatorTo } from '@/utils/formValidation';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 const JoditEditor = dynamic(() => import('jodit-react'), {
@@ -17,13 +11,8 @@ const JoditEditor = dynamic(() => import('jodit-react'), {
 import Loading from '@/components/common/loading';
 import { success, error } from '@/utils/toastMessage';
 
-const careers = [
-    { value: 'Kinh doanh/Bán hàng', label: 'Kinh doanh/Bán hàng' },
-    { value: 'Biên/Phiên dịch', label: 'Biên / Phiên dịch' },
-    { value: 'Bảo hiểm', label: 'Bảo hiểm' },
-];
-
 const CompanyInfomationForm = () => {
+    const [careers, setCareers] = useState([]);
     const [companyPhone, setCompanyPhone] = useState('');
     const [website, setWebsite] = useState('');
     const [companyEmail, setCompanyEmail] = useState('');
@@ -127,6 +116,18 @@ const CompanyInfomationForm = () => {
             return error(res?.data?.message);
         }
     };
+
+    useEffect(() => {
+        const fetchCategory = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/category/get-all?page=1&limit=9999`);
+            if (res?.data?.code === 200) {
+                return setCareers(res?.data?.categories);
+            } else {
+                return;
+            }
+        };
+        fetchCategory();
+    }, []);
 
     useEffect(() => {
         const fetchProvinces = async () => {
@@ -261,8 +262,8 @@ const CompanyInfomationForm = () => {
                     <option value="">-- Ngành/nghề --</option>
                     {careers?.map((c, index) => {
                         return (
-                            <option key={index} value={c?.value}>
-                                {c?.label}
+                            <option key={index} value={c?.category}>
+                                {c?.category}
                             </option>
                         );
                     })}

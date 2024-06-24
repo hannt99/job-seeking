@@ -7,19 +7,10 @@ import DropListMulti from '@/components/common/dropListMulti';
 import Loading from '@/components/common/loading';
 import { success, error } from '@/utils/toastMessage';
 
-const careers = [
-    { value: 'Kinh doanh/Bán hàng', label: 'Kinh doanh/Bán hàng' },
-    { value: 'Biên/Phiên dịch', label: 'Biên/Phiên dịch' },
-    { value: 'Bảo hiểm', label: 'Bảo hiểm' },
-];
-
-const skills = [
-    { value: 'HTML/CSS', label: 'HTML/CSS' },
-    { value: 'Javascript', label: 'Javascript' },
-    { value: 'React', label: 'React' },
-];
-
 const UserResumeForm = () => {
+    const [positions, setPositions] = useState([]);
+    const [careers, setCareers] = useState([]);
+    const [skills, setSkills] = useState([]);
     const [position, setPosition] = useState('');
     const [positionErrMsg, setPositionErrMsg] = useState({});
     const [isPositionErr, setIsPositionErr] = useState(false);
@@ -84,6 +75,54 @@ const UserResumeForm = () => {
     };
 
     useEffect(() => {
+        const fetchSkill = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/skill/get-all?page=1&limit=9999`);
+            if (res?.data?.code === 200) {
+                const refactor = res?.data?.skills?.map((item) => {
+                    return {
+                        value: item?.skill,
+                        label: item?.skill,
+                    };
+                });
+                return setSkills(refactor);
+            } else {
+                return;
+            }
+        };
+        fetchSkill();
+    }, []);
+
+    useEffect(() => {
+        const fetchCategory = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/category/get-all?page=1&limit=9999`);
+            if (res?.data?.code === 200) {
+                const refactor = res?.data?.categories?.map((item) => {
+                    return {
+                        value: item?.category,
+                        label: item?.category,
+                    };
+                });
+                return setCareers(refactor);
+            } else {
+                return;
+            }
+        };
+        fetchCategory();
+    }, []);
+
+    useEffect(() => {
+        const fetchPosition = async () => {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/position/get-all?page=1&limit=9999`);
+            if (res?.data?.code === 200) {
+                return setPositions(res?.data?.positions);
+            } else {
+                return;
+            }
+        };
+        fetchPosition();
+    }, []);
+
+    useEffect(() => {
         const fetchProvinces = async () => {
             const res = await axios.get('https://esgoo.net/api-tinhthanh/1/0.htm');
             const result = res?.data?.data?.map((item) => {
@@ -132,9 +171,13 @@ const UserResumeForm = () => {
                     }`}
                 >
                     <option value="">-- Vị trí --</option>
-                    <option value="Nhân viên kinh doanh">Nhân viên kinh doanh</option>
-                    <option value="Thư kí trưởng">Thư kí trưởng</option>
-                    <option value="Kĩ sư phầm mềm">Kĩ sư phầm mềm</option>
+                    {positions?.map((item, index) => {
+                        return (
+                            <option key={index} value={item?.position}>
+                                {item?.position}
+                            </option>
+                        );
+                    })}
                 </select>
                 <p className="text-red-600 text-[1.3rem]">{positionErrMsg.jobPosition}</p>
             </div>
