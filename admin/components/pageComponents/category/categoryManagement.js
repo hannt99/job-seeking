@@ -57,7 +57,7 @@ const CategoryManagement = () => {
     };
 
     const handleDelete = async (id) => {
-        const confirmMsg = `Bạn có chắc muốn xóa vĩnh viễn công việc này không?`;
+        const confirmMsg = `Bạn có chắc muốn xóa vĩnh viễn ngành nghề này không?`;
         if (!window.confirm(confirmMsg)) return;
         const res = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/category/delete/${id}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },

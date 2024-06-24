@@ -6,6 +6,7 @@ import resumeRoutes from './resume-routes.js';
 import jobRoutes from './job-routes.js';
 import notiRoutes from './notification-routes.js';
 import cateRoutes from './category-routes.js';
+import skillRoutes from './skill-routes.js';
 
 const router = Router();
 
@@ -16,5 +17,6 @@ router.use('/resume', resumeRoutes);
 router.use('/job', jobRoutes);
 router.use('/notification', notiRoutes);
 router.use('/category', cateRoutes);
+router.use('/skill', skillRoutes);
 
 export default router;
