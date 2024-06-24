@@ -2,8 +2,40 @@ import Job from '../models/Job.js';
 import Company from '../models/Company.js';
 import Resume from '../models/Resume.js';
 import Notification from '../models/Notification.js';
+import JobSave from '../models/JobSave.js';
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
+
+// Get all user controller
+export const getAllUserController = async (req, res) => {
+    try {
+        const allUsers = await User.find().sort({ createdAt: -1 });
+
+        const users = allUsers?.filter((item) => item?._id?.toString() !== req.user._id);
+
+        res.status(200).json({ code: 200, message: 'Success', users });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+    }
+};
+
+// Delete user by id controller
+export const deleteUserByIdController = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        await Resume.findOneAndDelete({ userId });
+        await Company.findOneAndDelete({ userId });
+        await JobSave.findOneAndDelete({ userId });
+        await User.findOneAndDelete({ _id: userId });
+
+        res.status(200).json({ code: 200, message: 'Xóa người dùng thành công' });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+    }
+};
 
 // Change password controller
 export const changePasswordController = async (req, res) => {

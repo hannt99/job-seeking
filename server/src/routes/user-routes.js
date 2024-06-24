@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import {
+    getAllUserController,
+    deleteUserByIdController,
     changePasswordController,
     updateUserController,
     changeAvatarController,
@@ -9,10 +11,16 @@ import {
     getCandidateChartDataController,
 } from '../controllers/user-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
-import { isEmployer } from '../middlewares/role.js';
+import { isEmployer, isAdmin } from '../middlewares/role.js';
 import upload from '../utils/uploadFile.js';
 
 const router = Router();
+
+// Get all user route
+router.get('/get-all', verifyToken, isAdmin, getAllUserController);
+
+// Delete user by id route
+router.delete('/delete/:userId', verifyToken, isAdmin, deleteUserByIdController);
 
 // Change password route
 router.patch('/change-password', verifyToken, changePasswordController);
