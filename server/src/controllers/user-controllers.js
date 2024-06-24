@@ -1,3 +1,7 @@
+import Job from '../models/Job.js';
+import Company from '../models/Company.js';
+import Resume from '../models/Resume.js';
+import Notification from '../models/Notification.js';
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 
@@ -91,6 +95,48 @@ export const changeSeekingStatusController = async (req, res) => {
         const isSeeking = req.body.isSeeking;
         await User.findByIdAndUpdate(req.user._id, { isSeeking });
         res.status(200).json({ code: 200, message: isSeeking ? 'Đã bật tìm việc' : 'Đã tắt tìm việc' });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Change user seeking status controller
+export const getEmployerDashboardController = async (req, res) => {
+    try {
+        const company = await Company.findOne({ userId: req.user._id });
+
+        const jobsCount = await Job.find({ companyId: company._id });
+        const candidatesCount = jobsCount?.reduce((total, currentValue) => {
+            return total + currentValue?.jobApplicants?.length;
+        }, 0);
+
+        const recommendCVs = await Promise.all(
+            jobsCount
+                ?.filter((j) => j?.jobStatus === 'Đang tuyển')
+                ?.map(async (item) => {
+                    let resumes = await Resume.find({
+                        skills: { $in: item?.jobSkills },
+                        experience: item?.jobExp,
+                    });
+                    resumes = resumes?.filter((item) => item?.userId?.toString() !== req.user._id);
+                    return resumes;
+                }),
+        );
+        const recommendCVsCount = recommendCVs?.reduce((total, item) => {
+            return total + item?.length;
+        }, 0);
+
+        const notisCount = await Notification.find({ receiverId: req.user._id }).sort({ createdAt: -1 });
+
+        res.status(200).json({
+            code: 200,
+            message: 'Success',
+            jobsCount,
+            candidatesCount,
+            recommendCVsCount,
+            notisCount,
+        });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(error);

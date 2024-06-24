@@ -5,8 +5,10 @@ import {
     changeAvatarController,
     changeAppearanceController,
     changeSeekingStatusController,
+    getEmployerDashboardController,
 } from '../controllers/user-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
+import { isEmployer } from '../middlewares/role.js';
 import upload from '../utils/uploadFile.js';
 
 const router = Router();
@@ -25,5 +27,8 @@ router.patch('/change-appearance', verifyToken, changeAppearanceController);
 
 // Change user seeking status route
 router.patch('/change-seeking-status', verifyToken, changeSeekingStatusController);
+
+// Get employer dashboard route
+router.get('/get-employer-dashboard', verifyToken, isEmployer, getEmployerDashboardController);
 
 export default router;

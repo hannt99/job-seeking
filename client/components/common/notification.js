@@ -8,7 +8,6 @@ import { socket } from '@/socket';
 
 const Notification = () => {
     const [notiTab, setNotiTab] = useState(false);
-    // const [isNewNoti, setIsNewNoti] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [notReadNoti, setNotReadNoti] = useState([]);
     const [reRender, setReRender] = useState(false);
