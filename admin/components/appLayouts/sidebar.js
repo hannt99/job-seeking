@@ -74,7 +74,7 @@ const Sidebar = () => {
                             }
                         >
                             <span className="text-[2.4rem]">
-                                <IoPeopleOutline />
+                                <MdOutlineRecommend />
                             </span>
                             <span>Quản lý kỹ năng</span>
                         </Link>
@@ -89,7 +89,7 @@ const Sidebar = () => {
                             }
                         >
                             <span className="text-[2.4rem]">
-                                <MdOutlineRecommend />
+                                <IoPeopleOutline />
                             </span>
                             <span>Quản lý người dùng</span>
                         </Link>

@@ -5,6 +5,7 @@ import companyRoutes from './company-routes.js';
 import resumeRoutes from './resume-routes.js';
 import jobRoutes from './job-routes.js';
 import notiRoutes from './notification-routes.js';
+import cateRoutes from './category-routes.js';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/company', companyRoutes);
 router.use('/resume', resumeRoutes);
 router.use('/job', jobRoutes);
 router.use('/notification', notiRoutes);
+router.use('/category', cateRoutes);
 
 export default router;
