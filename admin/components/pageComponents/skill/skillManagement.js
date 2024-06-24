@@ -16,6 +16,7 @@ const SkillManagement = () => {
     const [isEdit, setIsEdit] = useState(false);
 
     const handleSubmit = async () => {
+        if (!skill) return;
         let res;
         if (!skillId) {
             res = await axios.post(

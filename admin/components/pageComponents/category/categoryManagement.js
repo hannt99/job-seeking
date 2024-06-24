@@ -16,6 +16,7 @@ const CategoryManagement = () => {
     const [isEdit, setIsEdit] = useState(false);
 
     const handleSubmit = async () => {
+        if (!category) return;
         let res;
         if (!categoryId) {
             res = await axios.post(
