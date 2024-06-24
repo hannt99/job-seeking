@@ -6,6 +6,7 @@ import {
     changeAppearanceController,
     changeSeekingStatusController,
     getEmployerDashboardController,
+    getCandidateChartDataController,
 } from '../controllers/user-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 import { isEmployer } from '../middlewares/role.js';
@@ -30,5 +31,8 @@ router.patch('/change-seeking-status', verifyToken, changeSeekingStatusControlle
 
 // Get employer dashboard route
 router.get('/get-employer-dashboard', verifyToken, isEmployer, getEmployerDashboardController);
+
+// Get job chart data route
+router.get('/get-candidate-chart', verifyToken, isEmployer, getCandidateChartDataController);
 
 export default router;

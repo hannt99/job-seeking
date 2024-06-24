@@ -101,7 +101,7 @@ export const changeSeekingStatusController = async (req, res) => {
     }
 };
 
-// Change user seeking status controller
+// Get employer dashboard controller
 export const getEmployerDashboardController = async (req, res) => {
     try {
         const company = await Company.findOne({ userId: req.user._id });
@@ -136,6 +136,88 @@ export const getEmployerDashboardController = async (req, res) => {
             candidatesCount,
             recommendCVsCount,
             notisCount,
+        });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Get candidate chart data controller
+export const getCandidateChartDataController = async (req, res) => {
+    try {
+        const company = await Company.findOne({ userId: req.user._id });
+
+        const jobsCount = await Job.find({ companyId: company._id });
+
+        const allApplicants = jobsCount?.reduce((total, item) => {
+            return total?.concat(item?.jobApplicants);
+        }, []);
+
+        const getMonth = (num) => {
+            const d = new Date(num);
+            return d.getMonth();
+        };
+
+        const getYear = (num) => {
+            const d = new Date(num);
+            return d.getFullYear();
+        };
+
+        const janApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 0 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+        const febApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 1 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+        const marApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 2 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+        const aprApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 3 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+        const mayApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 4 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+        const junApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 5 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+        const julApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 6 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+        const augApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 7 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+        const sepApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 8 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+        const octApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 9 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+        const novApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 10 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+        const devApp = allApplicants?.filter(
+            (item) => getMonth(item?.appliedTime) === 11 && getYear(item?.appliedTime) === Number(req.query.year),
+        );
+
+        res.status(200).json({
+            code: 200,
+            message: 'Success',
+            data: {
+                janApp,
+                febApp,
+                marApp,
+                aprApp,
+                mayApp,
+                junApp,
+                julApp,
+                augApp,
+                sepApp,
+                octApp,
+                novApp,
+                devApp,
+            },
         });
     } catch (error) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });

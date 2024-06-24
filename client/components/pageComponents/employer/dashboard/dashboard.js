@@ -6,6 +6,7 @@ import { MdOutlineRecommend } from 'react-icons/md';
 import { FaRegBell, FaXmark } from 'react-icons/fa6';
 import axios from 'axios';
 import { formatVNTimeAgo } from '@/utils/formatDateTime';
+import Chart from './chart';
 
 const Dashboard = () => {
     const [jobsCount, setJobsCount] = useState(0);
@@ -13,6 +14,9 @@ const Dashboard = () => {
     const [recommendCVsCount, setRecommendCVsCount] = useState(0);
     const [notis, setNotis] = useState([]);
     const [reRender, setReRender] = useState(false);
+    const [filterYear, setFilterYear] = useState(2024);
+
+    const years = [2024, 2025, 2026, 2027, 2028, 2029, 2030];
 
     const handleDelete = async (id) => {
         const res = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/notification/delete/${id}`, {
@@ -83,11 +87,27 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
-            <div className="grid grid-cols-3 gap-10 mt-10">
-                <div className="col-span-2 h-fit bg-white p-10 rounded-lg custom-shadow-v1">
-                    <h2 className="font-semibold text-[1.8rem]">Biểu đồ ứng tuyển</h2>
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-10 mt-10">
+                <div className="xl:col-span-2 h-fit bg-white p-10 rounded-lg custom-shadow-v1 space-y-10">
+                    <div className="flex items-center justify-between">
+                        <h2 className="font-semibold text-[1.8rem]">Biểu đồ</h2>
+                        <select
+                            value={filterYear}
+                            onChange={(e) => setFilterYear(e.target.value)}
+                            className="block w-[100px] bg-[#f1f1f1] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
+                        >
+                            {years?.map((y, index) => {
+                                return (
+                                    <option key={index} value={y}>
+                                        {y}
+                                    </option>
+                                );
+                            })}
+                        </select>
+                    </div>
+                    <Chart year={filterYear} />
                 </div>
-                <div className="col-span-1 bg-white p-10 rounded-lg custom-shadow-v1">
+                <div className="xl:col-span-1 bg-white p-10 rounded-lg custom-shadow-v1">
                     <h2 className="font-semibold text-[1.8rem]">Thông báo</h2>
                     <ul className="w-full min-h-fit max-h-[430px] mt-10 space-y-5 overflow-y-auto no-scrollbar">
                         {notis?.map((n, index) => {
