@@ -55,7 +55,7 @@ export default function middleware(request) {
             request.nextUrl.pathname?.includes('/job') ||
             request.nextUrl.pathname === '/'
         ) {
-            const absUrl = new URL('/admin/dashboard', request.nextUrl.origin);
+            const absUrl = new URL('/admin/position-manage', request.nextUrl.origin);
             return NextResponse.redirect(absUrl.toString());
         }
     }
