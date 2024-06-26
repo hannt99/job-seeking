@@ -72,7 +72,9 @@ const Header = () => {
         <>
             <div className="flex items-center justify-between px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px] h-[60px]">
                 <div className="flex items-center gap-20 h-full">
-                    <div className="text-[2rem] text-[var(--primary-color)] font-semibold">TimViecNhanh</div>
+                    <div className="w-auto h-full py-2">
+                        <img src="../assets/images/logo.png" alt="logo" className="w-full h-full" />
+                    </div>
                     <ul className="hidden lg:flex items-center font-semibold text-[1.5rem] tracking-wide h-full">
                         <li className="group relative h-full">
                             <div
@@ -196,14 +198,14 @@ const Header = () => {
                                 )}
                             </ul>
                         </li>
-                        <li className="h-full">
+                        {/* <li className="h-full">
                             <Link
                                 href="#"
                                 className="flex items-center px-4 h-full hover:text-[var(--primary-color)] transition-all"
                             >
                                 Công cụ
                             </Link>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
                 <div className="flex items-center gap-3">
@@ -566,14 +568,14 @@ const Header = () => {
                             )}
                         </ul>
                     </li>
-                    <li>
+                    {/* <li>
                         <Link
                             href="#"
                             className="block px-10 py-7 hover:text-[var(--primary-color)] border-t border-[#cccccc]/[0.3] transition-all"
                         >
                             Công cụ
                         </Link>
-                    </li>
+                    </li> */}
                 </ul>
                 <div className="absolute top-0 right-0 text-[#cccccc] text-[3rem] p-5 cursor-pointer">
                     <FaXmark />

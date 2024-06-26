@@ -64,8 +64,10 @@ const Signin = () => {
         <>
             <div className="relative grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-[360px] md:w-[690px] lg:w-[925px] xl:w-[1120px] z-50 px-5 md:px-0">
                 <div className="bg-white w-full h-fit px-9 py-8 rounded-lg">
-                    <div className="font-bold text-center tracking-widest text-[2.4rem] text-[var(--primary-color)]">
-                        TimViecNhanh
+                    <div className="flex justify-center">
+                        <div className="w-[160px] h-auto">
+                            <img src="../assets/images/logo.png" alt="logo" className="w-full h-full" />
+                        </div>
                     </div>
                     <h1 className="font-semibold text-[2rem] my-7">Đăng nhập</h1>
                     <form>

@@ -13,9 +13,10 @@ const Sidebar = () => {
 
     return (
         <div className="flex flex-col w-full h-full custom-shadow-v1 select-none">
-            <div className="flex items-center justify-center w-full h-[60px] border-r border-[#f4f5f7]">
-                {/* <img src={'/logo_header.png'} alt="logo" className="w-full h-[60px] object-contain" /> */}
-                <h1 className="text-center text-[2rem] font-semibold text-[var(--primary-color)]">TimViecNhanh</h1>
+            <div className="flex justify-center pt-3">
+                <div className="w-[160px] h-auto">
+                    <img src="../assets/images/logo.png" alt="logo" className="w-full h-full" />
+                </div>
             </div>
             <div className="flex-1">
                 {pathName?.includes('/employer') ? (

@@ -4,9 +4,11 @@ import { FaLocationDot, FaPhone, FaEnvelope, FaEarthAsia } from 'react-icons/fa6
 const Footer = () => {
     return (
         <footer className="px-5 md:px-0 w-full md:w-[690px] lg:w-[960px] xl:w-[1200px]">
-            <div className="grid xl:grid-cols-5 py-16">
-                <div className="col-span-2">
-                    <div className="text-[2.8rem] text-[var(--primary-color)] font-semibold">TimViecNhanh</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-y-9 py-16">
+                <div className="xl:col-span-2">
+                    <div className="w-[160px] h-auto">
+                        <img src="../assets/images/logo.png" alt="logo" className="w-full h-full object-contain" />
+                    </div>
                     <div className="space-y-3 mt-6">
                         <p className="text-[1.7rem]">
                             <FaLocationDot className="inline mr-2" />
