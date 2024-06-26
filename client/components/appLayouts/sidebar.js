@@ -8,7 +8,7 @@ import { CiBoxList } from 'react-icons/ci';
 import { IoPeopleOutline } from 'react-icons/io5';
 import { MdOutlineRecommend } from 'react-icons/md';
 
-const Sidebar = () => {
+const Sidebar = ({ setToggleSidebar }) => {
     const pathName = usePathname();
 
     return (
@@ -21,7 +21,7 @@ const Sidebar = () => {
             <div className="flex-1">
                 {pathName?.includes('/employer') ? (
                     <ul className="flex flex-col gap-4 p-5 text-[1.4rem] font-medium text-[#888888]">
-                        <li>
+                        <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/employer/dashboard'}
                                 className={
@@ -36,7 +36,7 @@ const Sidebar = () => {
                                 <span>Bảng tin</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/employer/create-job'}
                                 className={
@@ -51,7 +51,7 @@ const Sidebar = () => {
                                 <span>Thêm việc làm mới</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/employer/manage-jobs'}
                                 className={
@@ -66,7 +66,7 @@ const Sidebar = () => {
                                 <span>Quản lý công việc</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/employer/all-applicants'}
                                 className={
@@ -81,7 +81,7 @@ const Sidebar = () => {
                                 <span>Tất cả ứng viên</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/employer/recommendation'}
                                 className={
@@ -96,7 +96,7 @@ const Sidebar = () => {
                                 <span>Gợi ý ứng viên</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/employer/account/setting'}
                                 className={
@@ -129,7 +129,7 @@ const Sidebar = () => {
                                 <span>Bảng tin</span>
                             </Link>
                         </li> */}
-                        <li>
+                        <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/admin/position-manage'}
                                 className={
@@ -144,7 +144,7 @@ const Sidebar = () => {
                                 <span>Quản lý vị trí tuyển dụng</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/admin/category-manage'}
                                 className={
@@ -159,7 +159,7 @@ const Sidebar = () => {
                                 <span>Quản lý ngành nghề</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/admin/skill-manage'}
                                 className={
@@ -174,7 +174,7 @@ const Sidebar = () => {
                                 <span>Quản lý kỹ năng</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/admin/user-manage'}
                                 className={
@@ -189,7 +189,7 @@ const Sidebar = () => {
                                 <span>Quản lý người dùng</span>
                             </Link>
                         </li>
-                        <li>
+                        <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/admin/account/setting'}
                                 className={

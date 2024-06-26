@@ -385,7 +385,7 @@ const Header = () => {
                             </div>
                         )}
                         <ul className={navUserOpen ? 'block' : 'hidden'}>
-                            <li>
+                            <li onClick={() => setNavOpen(false)}>
                                 <Link
                                     href="/account/setting-user-information"
                                     className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
@@ -409,7 +409,7 @@ const Header = () => {
                                     </Link>
                                 </li>
                             )}
-                            <li>
+                            <li onClick={() => setNavOpen(false)}>
                                 <Link
                                     href="/account/cv-manage"
                                     className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
@@ -420,7 +420,7 @@ const Header = () => {
                                     <span className="whitespace-nowrap">Quản lý CV</span>
                                 </Link>
                             </li>
-                            <li>
+                            <li onClick={() => setNavOpen(false)}>
                                 <Link
                                     href="/account/change-password"
                                     className="flex items-center gap-3 px-6 py-4 hover:bg-[var(--secondary-color)] hover:text-[var(--primary-color)] rounded-lg mx-3 cursor-pointer"
@@ -456,6 +456,7 @@ const Header = () => {
                         </div>
                         <ul className={navJobOpen ? 'block' : 'hidden'}>
                             <li
+                                onClick={() => setNavOpen(false)}
                                 className={`p-3 hover:text-[var(--primary-color)] ${
                                     pathname?.includes('/search-job') ? 'text-[var(--primary-color)]' : ''
                                 }`}
@@ -474,6 +475,7 @@ const Header = () => {
                                         <hr></hr>
                                     </li>
                                     <li
+                                        onClick={() => setNavOpen(false)}
                                         className={`p-3 hover:text-[var(--primary-color)] ${
                                             pathname?.includes('/applied-job') ? 'text-[var(--primary-color)]' : ''
                                         }`}
@@ -488,6 +490,7 @@ const Header = () => {
                                         </Link>
                                     </li>
                                     <li
+                                        onClick={() => setNavOpen(false)}
                                         className={`p-3 hover:text-[var(--primary-color)] ${
                                             pathname?.includes('/saved-job') ? 'text-[var(--primary-color)]' : ''
                                         }`}
@@ -504,6 +507,7 @@ const Header = () => {
                                         <hr></hr>
                                     </li>
                                     <li
+                                        onClick={() => setNavOpen(false)}
                                         className={`p-3 hover:text-[var(--primary-color)] ${
                                             pathname?.includes('/recommend-job') ? 'text-[var(--primary-color)]' : ''
                                         }`}
@@ -534,6 +538,7 @@ const Header = () => {
                         </div>
                         <ul className={navCompanyOpen ? 'block' : 'hidden'}>
                             <li
+                                onClick={() => setNavOpen(false)}
                                 className={`p-3 hover:text-[var(--primary-color)] ${
                                     pathname?.includes('/company-list') ? 'text-[var(--primary-color)]' : ''
                                 }`}
@@ -552,6 +557,7 @@ const Header = () => {
                                         <hr></hr>
                                     </li>
                                     <li
+                                        onClick={() => setNavOpen(false)}
                                         className={`p-3 hover:text-[var(--primary-color)] ${
                                             pathname?.includes('/followed-company') ? 'text-[var(--primary-color)]' : ''
                                         }`}

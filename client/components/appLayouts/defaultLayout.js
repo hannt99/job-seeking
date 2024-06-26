@@ -84,7 +84,7 @@ const DefaultLayout = ({ main }) => {
                                 : 'fixed top-0 left-0 bottom-0 translate-x-[-100%] lg:translate-x-0 w-full md:w-[260px] bg-white z-50 transition-all'
                         }
                     >
-                        <Sidebar />
+                        <Sidebar setToggleSidebar={setToggleSidebar} />
                         <div
                             onClick={() => setToggleSidebar(false)}
                             className="absolute top-0 right-0 w-[42px] h-[42px] flex lg:hidden items-center justify-center text-[24px] cursor-pointer"

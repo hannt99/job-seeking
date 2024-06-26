@@ -11,7 +11,7 @@ const AccountSetting = () => {
     return (
         <div className="p-10">
             <div className="grid grid-cols-1 md:grid-cols-4 custom-shadow-v1">
-                <ul className="grid grid-cols-3 md:block bg-[var(--secondary-color)]">
+                <ul className="grid grid-cols-2 md:block bg-[var(--secondary-color)]">
                     <li
                         onClick={() => setTab('cp')}
                         className={`flex items-center gap-3 p-5 cursor-pointer hover:bg-white hover:text-[var(--primary-color)] transition-all ${

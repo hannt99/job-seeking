@@ -51,7 +51,9 @@ export default function middleware(request) {
         if (
             request.nextUrl.pathname?.includes('/employer') ||
             request.nextUrl.pathname?.includes('/company') ||
-            request.nextUrl.pathname?.includes('/account') ||
+            request.nextUrl.pathname === '/account/change-password' ||
+            request.nextUrl.pathname === '/account/cv-manage' ||
+            request.nextUrl.pathname === '/account/setting-user-information' ||
             request.nextUrl.pathname?.includes('/job') ||
             request.nextUrl.pathname === '/'
         ) {
