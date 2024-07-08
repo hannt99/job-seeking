@@ -1,3 +1,4 @@
+import Catgory from '../models/Category.js';
 import Job from '../models/Job.js';
 import Company from '../models/Company.js';
 import Resume from '../models/Resume.js';
@@ -249,6 +250,106 @@ export const getCandidateChartDataController = async (req, res) => {
                 octApp,
                 novApp,
                 devApp,
+            },
+        });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Get admin dashboard controller
+export const getAdminDashboardController = async (req, res) => {
+    try {
+        const employers = await User.countDocuments({ role: 0 });
+        const candidates = await User.countDocuments({ role: 1 });
+        const jobs = await Job.countDocuments();
+        const categories = await Catgory.countDocuments();
+        const notifications = await Notification.find({ receiverId: req.user._id }).sort({ createdAt: -1 });
+
+        res.status(200).json({
+            code: 200,
+            message: 'Success',
+            employers,
+            candidates,
+            jobs,
+            categories,
+            notifications,
+        });
+    } catch (error) {
+        res.status(400).json({ code: 400, message: 'Unexpected error' });
+        console.log(error);
+    }
+};
+
+// Get candidate chart data controller
+export const getJobChartDataController = async (req, res) => {
+    try {
+        const jobs = await Job.find();
+
+        const getMonth = (num) => {
+            const d = new Date(num);
+            return d.getMonth();
+        };
+
+        const getYear = (num) => {
+            const d = new Date(num);
+            return d.getFullYear();
+        };
+
+        const janJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 0 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+        const febJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 1 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+        const marJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 2 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+        const aprJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 3 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+        const mayJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 4 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+        const junJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 5 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+        const julJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 6 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+        const augJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 7 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+        const sepJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 8 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+        const octJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 9 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+        const novJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 10 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+        const devJobs = jobs?.filter(
+            (item) => getMonth(item?.createdAt) === 11 && getYear(item?.createdAt) === Number(req.query.year),
+        );
+
+        res.status(200).json({
+            code: 200,
+            message: 'Success',
+            data: {
+                janJobs,
+                febJobs,
+                marJobs,
+                aprJobs,
+                mayJobs,
+                junJobs,
+                julJobs,
+                augJobs,
+                sepJobs,
+                octJobs,
+                novJobs,
+                devJobs,
             },
         });
     } catch (error) {

@@ -1,7 +1,7 @@
-import React from 'react';
+import Dashboard from '@/components/pageComponents/admin/dashboard/dashboard';
 
 const page = () => {
-    return <div>dashboard</div>;
+    return <Dashboard />;
 };
 
 export default page;

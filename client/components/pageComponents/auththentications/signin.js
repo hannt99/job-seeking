@@ -44,7 +44,7 @@ const Signin = () => {
             localStorage.setItem('accessToken', res?.data?.accessToken);
             localStorage.setItem('userId', decodedToken?._id);
             if (decodedToken?.role === 2) {
-                router.push('/admin/position-manage');
+                router.push('/admin/dashboard');
             } else {
                 router.push('/');
             }

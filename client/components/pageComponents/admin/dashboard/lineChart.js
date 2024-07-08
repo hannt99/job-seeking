@@ -16,12 +16,12 @@ import { Line } from 'react-chartjs-2';
 
 ChartJS.register(PointElement, LineElement, CategoryScale, LinearScale, Tooltip, Title, Legend);
 
-const Chart = ({ year }) => {
+const LineChart = ({ year }) => {
     const [chartData, setChartData] = useState({});
 
     useEffect(() => {
         const fetchChartData = async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/get-candidate-chart?year=${year}`, {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/get-jobs-chart?year=${year}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
             });
             if (res?.data?.code === 200) {
@@ -37,20 +37,20 @@ const Chart = ({ year }) => {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [
             {
-                label: 'Đơn ứng tuyển',
+                label: 'Việc làm',
                 data: [
-                    chartData?.janApp?.length,
-                    chartData?.febApp?.length,
-                    chartData?.marApp?.length,
-                    chartData?.aprApp?.length,
-                    chartData?.mayApp?.length,
-                    chartData?.junApp?.length,
-                    chartData?.julApp?.length,
-                    chartData?.augApp?.length,
-                    chartData?.sepApp?.length,
-                    chartData?.octApp?.length,
-                    chartData?.novApp?.length,
-                    chartData?.decApp?.length,
+                    chartData?.janJobs?.length,
+                    chartData?.febJobs?.length,
+                    chartData?.marJobs?.length,
+                    chartData?.aprJobs?.length,
+                    chartData?.mayJobs?.length,
+                    chartData?.junJobs?.length,
+                    chartData?.julJobs?.length,
+                    chartData?.augJobs?.length,
+                    chartData?.sepJobs?.length,
+                    chartData?.octJobs?.length,
+                    chartData?.novJobs?.length,
+                    chartData?.decJobs?.length,
                 ],
                 backgroundColor: ['rgba(255, 99, 132, 0.2)'],
                 borderColor: ['rgba(255, 99, 132, 1)'],
@@ -73,7 +73,7 @@ const Chart = ({ year }) => {
         plugins: {
             title: {
                 display: true,
-                text: `Biểu đồ thống kê đơn ứng tuyển năm ${year}`,
+                text: `Biểu đồ thống kê việc làm năm ${year}`,
             },
         },
     };
@@ -85,4 +85,4 @@ const Chart = ({ year }) => {
     );
 };
 
-export default Chart;
+export default LineChart;

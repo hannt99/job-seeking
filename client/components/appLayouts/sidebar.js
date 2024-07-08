@@ -114,7 +114,7 @@ const Sidebar = ({ setToggleSidebar }) => {
                     </ul>
                 ) : (
                     <ul className="flex flex-col gap-4 p-5 text-[1.4rem] font-medium text-[#888888]">
-                        {/* <li>
+                        <li>
                             <Link
                                 href={'/admin/dashboard'}
                                 className={
@@ -128,7 +128,7 @@ const Sidebar = ({ setToggleSidebar }) => {
                                 </span>
                                 <span>Bảng tin</span>
                             </Link>
-                        </li> */}
+                        </li>
                         <li onClick={() => setToggleSidebar(false)}>
                             <Link
                                 href={'/admin/position-manage'}

@@ -1,20 +1,24 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { IoBriefcaseOutline, IoDocumentTextOutline } from 'react-icons/io5';
-import { MdOutlineRecommend } from 'react-icons/md';
-import { FaRegBell, FaXmark } from 'react-icons/fa6';
 import axios from 'axios';
+import { IoDocumentTextOutline, IoBriefcaseOutline } from 'react-icons/io5';
+import { BiCategory } from 'react-icons/bi';
+import { FaRegBell, FaRegUser, FaXmark } from 'react-icons/fa6';
 import { formatVNTimeAgo } from '@/utils/formatDateTime';
-import Chart from './chart';
+import PieChart from './pieChart';
+import LineChart from './lineChart';
 
 const Dashboard = () => {
-    const [jobsCount, setJobsCount] = useState(0);
-    const [candidatesCount, setCandidatesCount] = useState(0);
-    const [recommendCVsCount, setRecommendCVsCount] = useState(0);
-    const [notis, setNotis] = useState([]);
     const [reRender, setReRender] = useState(false);
     const [filterYear, setFilterYear] = useState(2024);
+    const [users, setUsers] = useState({
+        employers: 0,
+        candidates: 0,
+    });
+    const [jobs, setJobs] = useState(0);
+    const [categories, setCategories] = useState(0);
+    const [notifications, setNotifications] = useState([]);
 
     const years = [2024, 2025, 2026, 2027, 2028, 2029, 2030];
 
@@ -31,14 +35,17 @@ const Dashboard = () => {
 
     useEffect(() => {
         const fetchDashboard = async () => {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/get-employer-dashboard`, {
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/user/get-admin-dashboard`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('accessToken')}` },
             });
             if (res?.data?.code === 200) {
-                setJobsCount(res?.data?.jobsCount?.length);
-                setCandidatesCount(res?.data?.candidatesCount);
-                setRecommendCVsCount(res?.data?.recommendCVsCount);
-                setNotis(res?.data?.notisCount);
+                setUsers({
+                    employers: res?.data?.employers,
+                    candidates: res?.data?.candidates,
+                });
+                setJobs(res?.data?.jobs);
+                setCategories(res?.data?.categories);
+                setNotifications(res?.data?.notifications);
             } else {
                 return;
             }
@@ -52,11 +59,13 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-11 mt-10">
                 <div className="flex items-center justify-between w-full bg-white rounded-lg custom-shadow-v1 p-10">
                     <div className="flex w-[70px] h-[70px] bg-blue-100 rounded-lg">
-                        <IoBriefcaseOutline className="text-blue-700 text-[4rem] m-auto" />
+                        <FaRegUser className="text-blue-700 text-[4rem] m-auto" />
                     </div>
                     <div className="text-right">
-                        <span className="block text-[2.8rem] text-blue-700 font-semibold">{jobsCount}</span>
-                        <span className="block text-[1.4rem]">Việc làm đã tạo</span>
+                        <span className="block text-[2.8rem] text-blue-700 font-semibold">
+                            {users?.employers + users?.candidates}
+                        </span>
+                        <span className="block text-[1.4rem]">Người dùng</span>
                     </div>
                 </div>
                 <div className="flex items-center justify-between w-full bg-white rounded-lg custom-shadow-v1 p-10">
@@ -64,17 +73,17 @@ const Dashboard = () => {
                         <IoDocumentTextOutline className="text-red-700 text-[4rem] m-auto" />
                     </div>
                     <div className="text-right">
-                        <span className="block text-[2.8rem] text-red-700 font-semibold">{candidatesCount}</span>
-                        <span className="block text-[1.4rem]">Đơn ứng tuyển</span>
+                        <span className="block text-[2.8rem] text-red-700 font-semibold">{jobs}</span>
+                        <span className="block text-[1.4rem]">Việc làm</span>
                     </div>
                 </div>
                 <div className="flex items-center justify-between w-full bg-white rounded-lg custom-shadow-v1 p-10">
                     <div className="flex w-[70px] h-[70px] bg-orange-100 rounded-lg">
-                        <MdOutlineRecommend className="text-orange-400 text-[4rem] m-auto" />
+                        <BiCategory className="text-orange-400 text-[4rem] m-auto" />
                     </div>
                     <div className="text-right">
-                        <span className="block text-[2.8rem] text-orange-400 font-semibold">{recommendCVsCount}</span>
-                        <span className="block text-[1.4rem]">Gợi ý ứng viên</span>
+                        <span className="block text-[2.8rem] text-orange-400 font-semibold">{categories}</span>
+                        <span className="block text-[1.4rem]">Ngành nghề</span>
                     </div>
                 </div>
                 <div className="flex items-center justify-between w-full bg-white rounded-lg custom-shadow-v1 p-10">
@@ -82,35 +91,41 @@ const Dashboard = () => {
                         <FaRegBell className="text-green-700 text-[4rem] m-auto" />
                     </div>
                     <div className="text-right">
-                        <span className="block text-[2.8rem] text-green-700 font-semibold">{notis?.length}</span>
+                        <span className="block text-[2.8rem] text-green-700 font-semibold">
+                            {notifications?.length}
+                        </span>
                         <span className="block text-[1.4rem]">Thông báo</span>
                     </div>
                 </div>
             </div>
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-10 mt-10">
-                <div className="xl:col-span-2 h-fit bg-white p-10 rounded-lg custom-shadow-v1 space-y-10">
-                    <div className="flex items-center justify-between">
-                        <h2 className="font-semibold text-[1.8rem]">Biểu đồ</h2>
-                        <select
-                            value={filterYear}
-                            onChange={(e) => setFilterYear(e.target.value)}
-                            className="block w-[100px] bg-[#f1f1f1] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
-                        >
-                            {years?.map((y, index) => {
-                                return (
-                                    <option key={index} value={y}>
-                                        {y}
-                                    </option>
-                                );
-                            })}
-                        </select>
+                <div className="xl:col-span-2 h-fit space-y-10">
+                    <div className="bg-white p-10 rounded-lg custom-shadow-v1 space-y-3">
+                        <div className="flex justify-end">
+                            <select
+                                value={filterYear}
+                                onChange={(e) => setFilterYear(e.target.value)}
+                                className="block w-[100px] bg-[#f1f1f1] text-[1.4rem] text-[#808080] outline-none border px-8 py-5 rounded-lg"
+                            >
+                                {years?.map((y, index) => {
+                                    return (
+                                        <option key={index} value={y}>
+                                            {y}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                        </div>
+                        <LineChart year={filterYear} />
                     </div>
-                    <Chart year={filterYear} />
+                    <div className="bg-white p-10 rounded-lg custom-shadow-v1">
+                        <PieChart employers={users?.employers} candidates={users?.candidates} />
+                    </div>
                 </div>
-                <div className="xl:col-span-1 bg-white p-10 rounded-lg custom-shadow-v1">
+                <div className="xl:col-span-1 min-h-fit max-h-[430px] bg-white p-10 rounded-lg custom-shadow-v1">
                     <h2 className="font-semibold text-[1.8rem]">Thông báo</h2>
-                    <ul className="w-full min-h-fit max-h-[430px] mt-10 space-y-5 overflow-y-auto no-scrollbar">
-                        {notis?.map((n, index) => {
+                    <ul className="w-full h-full mt-10 space-y-5 overflow-y-auto no-scrollbar">
+                        {notifications?.map((n, index) => {
                             return (
                                 <li
                                     key={index}

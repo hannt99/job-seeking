@@ -9,6 +9,8 @@ import {
     changeSeekingStatusController,
     getEmployerDashboardController,
     getCandidateChartDataController,
+    getAdminDashboardController,
+    getJobChartDataController,
 } from '../controllers/user-controllers.js';
 import { verifyToken } from '../middlewares/verifyToken.js';
 import { isEmployer, isAdmin } from '../middlewares/role.js';
@@ -42,5 +44,11 @@ router.get('/get-employer-dashboard', verifyToken, isEmployer, getEmployerDashbo
 
 // Get job chart data route
 router.get('/get-candidate-chart', verifyToken, isEmployer, getCandidateChartDataController);
+
+// Get admin dashboard route
+router.get('/get-admin-dashboard', verifyToken, isAdmin, getAdminDashboardController);
+
+// Get jobs dashboard route
+router.get('/get-jobs-chart', verifyToken, isAdmin, getJobChartDataController);
 
 export default router;
