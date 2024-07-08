@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { fullNameValidator, emailValidator, passwordValidator } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
 import Loading from '@/components/common/loading';
+import { socket } from '@/socket';
 
 const RegisterCandidate = () => {
     const [fullName, setFullName] = useState('');
@@ -53,6 +54,9 @@ const RegisterCandidate = () => {
             setPassword('');
             setConfirmPassword('');
             setIsLoading(false);
+            socket.emit('sendNotification', {
+                receiverId: res?.data?.adminId,
+            });
             router.push('/signin');
             return success(res?.data?.message);
         } else {

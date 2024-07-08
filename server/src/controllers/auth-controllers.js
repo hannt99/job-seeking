@@ -6,6 +6,7 @@ import sendMail from '../utils/email.js';
 import jwt from 'jsonwebtoken';
 import Resume from '../models/Resume.js';
 import JobSave from '../models/JobSave.js';
+import Notification from '../models/Notification.js';
 
 // Sigin controller
 export const signInController = async (req, res) => {
@@ -68,7 +69,17 @@ export const registerController = async (req, res) => {
         const html = `<p>Hãy nhấn vào <a href="${process.env.BASE_URL}/api/v1/auth/verify?token=${token}"> liên kết</a> để xác thực tài khoản của bạn</p>
         <p>Thời gian hiệu lực trong vòng 24 giờ</p>`;
         sendMail(newUser.email, subject, html);
-        res.status(200).json({ code: 200, message: 'Vui lòng kiểm tra email' });
+
+        const admin = await User.findOne({ role: 2 });
+        const newNotification = new Notification({
+            notification: 'Hệ thống có người dùng mới',
+            receiverId: admin?._id,
+            link: `${process.env.REACT_APP_BASE_URL}/admin/user-manage`,
+            isRead: false,
+        });
+        await newNotification.save();
+
+        res.status(200).json({ code: 200, message: 'Vui lòng kiểm tra email', adminId: admin?._id });
     } catch (err) {
         res.status(400).json({ code: 400, message: 'Unexpected error' });
         console.log(err);

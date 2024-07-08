@@ -4,6 +4,7 @@
 /server/.env
 /server/node_modules
 /server/uploads
+/socket/.env
 /socket/node_modules
 /admin/.env
 /admin/.next

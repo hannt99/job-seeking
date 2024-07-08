@@ -15,6 +15,7 @@ import {
 } from '@/utils/formValidation';
 import { success, error } from '@/utils/toastMessage';
 import Loading from '@/components/common/loading';
+import { socket } from '@/socket';
 
 const RegisterEmployer = () => {
     const [fullName, setFullName] = useState('');
@@ -124,6 +125,9 @@ const RegisterEmployer = () => {
             setProvince('');
             setDistrict('');
             setIsLoading(false);
+            socket.emit('sendNotification', {
+                receiverId: res?.data?.adminId,
+            });
             router.push('/signin');
             return success(res?.data?.message);
         } else {
