@@ -21,7 +21,12 @@ export const signInController = async (req, res) => {
 
         const accessToken = generateAccessToken(user);
 
-        res.cookie('accessToken', accessToken, { expires: new Date(Date.now() + 24 * 3600000), httpOnly: true })
+        res.cookie('accessToken', accessToken, {
+            expires: new Date(Date.now() + 24 * 3600000),
+            httpOnly: true,
+            secure: true,
+            sameSite: 'none',
+        })
             .status(200)
             .json({
                 code: 200,
