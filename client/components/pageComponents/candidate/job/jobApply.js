@@ -24,7 +24,11 @@ const JobApply = () => {
             if (res?.data?.code === 200) {
                 setUserId(res?.data?.userId);
                 return setAllAppliedJobs(
-                    res?.data?.result?.filter((item) => item?.jobApplicants?.find((item2) => item2?.status === filter)),
+                    res?.data?.result?.filter((item) =>
+                        item?.jobApplicants?.find(
+                            (item2) => item2?.userId?.toString() === res?.data?.userId && item2?.status === filter,
+                        ),
+                    ),
                 );
             } else {
                 return;
@@ -87,7 +91,7 @@ const JobApply = () => {
                 <div className="col-span-4 bg-white p-7 rounded-lg custom-shadow-v1 h-fit">
                     <div className="flex items-center justify-between">
                         <h2>
-                            <b>{allAppliedJobs?.length}</b> việc làm đã ứng tuyển
+                            <b>{allAppliedJobs?.length}</b> việc làm <span className="lowercase">{filter}</span>
                         </h2>
                         <select
                             value={filter}

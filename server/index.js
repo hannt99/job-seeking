@@ -7,6 +7,10 @@ import { fileURLToPath } from 'url';
 import connectDb from './src/configs/database.js';
 import router from './src/routes/index.js';
 
+// Socket.io
+import { Server } from 'socket.io';
+import http from 'http';
+
 const app = express();
 const port = process.env.PORT || 8888;
 const __filename = fileURLToPath(import.meta.url);
@@ -37,4 +41,48 @@ app.use(function (req, res, next) {
 // Routes init
 app.use('/api/v1', router);
 
-app.listen(port, () => console.log(`Server is running at port ${port}`));
+// Socket.io
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: process.env.REACT_APP_BASE_URL,
+    },
+});
+
+let users = [];
+
+const addUser = (userId, socketId) => {
+    !users.some((user) => user.userId === userId) && users.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+    users = users.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userId) => {
+    return users.find((user) => user.userId === userId);
+};
+
+io.on('connection', (socket) => {
+    console.log(`user ${socket.id} connected`);
+    socket.on('addUser', (userId) => {
+        addUser(userId, socket.id);
+        io.emit('getUsers', users);
+    });
+
+    socket.on('sendNotification', ({ _id, receiverId, text, link, isRead }) => {
+        const receiveUser = users?.find((item) => item?.userId === receiverId);
+        io.to(receiveUser?.socketId).emit('getNotification', {
+            receiverId,
+        });
+    });
+
+    socket.on('disconnect', () => {
+        console.log(`user ${socket.id} disconnected!`);
+        removeUser(socket.id);
+        io.emit('getUsers', users);
+    });
+});
+
+server.listen(port, () => console.log(`Server is running at port ${port}`));
