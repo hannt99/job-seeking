@@ -104,7 +104,7 @@ const UserInfomationForm = () => {
                     pathname?.includes('/employer') ? 'grid' : 'block'
                 } grid-cols-1 md:grid-cols-2 gap-5 mt-10`}
             >
-                {pathname?.includes('/employer') && (
+                {(pathname?.includes('/employer') || pathname?.includes('/admin')) && (
                     <div className="flex items-center gap-5">
                         <div className="w-[45px] h-[45px] border border-black rounded-full">
                             <img src={avatar} alt="user avatar" className="w-full h-full object-cover rounded-full" />

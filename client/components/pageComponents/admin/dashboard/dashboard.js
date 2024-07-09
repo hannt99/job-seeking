@@ -125,30 +125,36 @@ const Dashboard = () => {
                 <div className="xl:col-span-1 min-h-fit max-h-[430px] bg-white p-10 rounded-lg custom-shadow-v1">
                     <h2 className="font-semibold text-[1.8rem]">Thông báo</h2>
                     <ul className="w-full h-full mt-10 space-y-5 overflow-y-auto no-scrollbar">
-                        {notifications?.map((n, index) => {
-                            return (
-                                <li
-                                    key={index}
-                                    className="group/item-list relative flex items-center gap-5 w-full py-3"
-                                >
-                                    <div className="flex w-[35px] h-[35px] bg-blue-100 rounded-full">
-                                        <IoBriefcaseOutline className="text-blue-700 text-[1.8rem] m-auto" />
-                                    </div>
-                                    <div className="flex-1 w-full space-y-1">
-                                        <p title={n?.notification} className="truncate-1">
-                                            {n?.notification}
-                                        </p>
-                                        <p className="text-[1.3rem] text-[#808080]">{formatVNTimeAgo(n?.createdAt)}</p>
-                                    </div>
-                                    <div
-                                        onClick={() => handleDelete(n?._id)}
-                                        className="hidden absolute top-[50%] translate-y-[-50%] right-0 w-[30px] h-[30px] bg-white text-[1.8rem] leading-none rounded-full custom-shadow-v2 group-hover/item-list:flex cursor-pointer"
+                        {notifications?.length === 0 ? (
+                            <p className="text-center">Không có thông báo</p>
+                        ) : (
+                            notifications?.map((n, index) => {
+                                return (
+                                    <li
+                                        key={index}
+                                        className="group/item-list relative flex items-center gap-5 w-full py-3"
                                     >
-                                        <FaXmark className="m-auto" />
-                                    </div>
-                                </li>
-                            );
-                        })}
+                                        <div className="flex w-[35px] h-[35px] bg-blue-100 rounded-full">
+                                            <IoBriefcaseOutline className="text-blue-700 text-[1.8rem] m-auto" />
+                                        </div>
+                                        <div className="flex-1 w-full space-y-1">
+                                            <p title={n?.notification} className="truncate-1">
+                                                {n?.notification}
+                                            </p>
+                                            <p className="text-[1.3rem] text-[#808080]">
+                                                {formatVNTimeAgo(n?.createdAt)}
+                                            </p>
+                                        </div>
+                                        <div
+                                            onClick={() => handleDelete(n?._id)}
+                                            className="hidden absolute top-[50%] translate-y-[-50%] right-0 w-[30px] h-[30px] bg-white text-[1.8rem] leading-none rounded-full custom-shadow-v2 group-hover/item-list:flex cursor-pointer"
+                                        >
+                                            <FaXmark className="m-auto" />
+                                        </div>
+                                    </li>
+                                );
+                            })
+                        )}
                     </ul>
                 </div>
             </div>
